@@ -1,85 +1,77 @@
 import styled from 'styled-components';
-import 'typeface-roboto';
 
 import COLORS from './Colors';
 
 const FONT_FAMILY = {
-  logo: 'LeckerliOne, sans-serif',
-  header: 'Roboto, sans-serif',
-  body: 'Roboto, sans-serif'
+  // XX TODO
 };
 
 const FONT_SIZES = {
-  logo: '32px',
-  h1: '32px',
-  h2: '24px',
-  h3: '20px',
-  p: '16px',
-  finePrint: '12px'
+  logo: '32',
+  h1: '32',
+  h2: '24',
+  h3: '20',
+  p: '16',
+  finePrint: '12'
 };
 
-const LOGO = styled.span`
+const LOGO = styled.Text`
   font-size: ${FONT_SIZES.logo};
-  font-family: ${FONT_FAMILY.logo};
   font-weight: 400;
 `;
 
-const H1 = styled.h1`
+const H1 = styled.Text`
   font-size: ${FONT_SIZES.h1};
-  font-family: ${FONT_FAMILY.header};
   color: ${COLORS.greys.primary};
   font-weight: 500;
-  text-align: ${props => (props.centered ? 'center' : '')};
-  margin-bottom: ${props => (props.noMarginBottom ? '0px' : '')};
+  text-align: ${props => (props.centered ? 'center' : 'auto')};
+  margin-bottom: 16;
 `;
 
-const H2 = styled.h2`
+const H2 = styled.Text`
   font-size: ${FONT_SIZES.h2};
-  font-family: ${FONT_FAMILY.header};
   color: ${COLORS.greys.primary};
   font-weight: 400;
-  text-align: ${props => (props.centered ? 'center' : '')};
-  margin-bottom: ${props => (props.noMarginBottom ? '0px' : '')};
+  text-align: ${props => (props.centered ? 'center' : 'auto')};
+  margin-bottom: 16;
 `;
 
-const H3 = styled.h3`
+const H3 = styled.Text`
   font-size: ${FONT_SIZES.h3};
-  font-family: ${FONT_FAMILY.header};
   color: ${COLORS.greys.primary};
   font-weight: 400;
-  text-align: ${props => (props.centered ? 'center' : '')};
-  margin-bottom: ${props => (props.noMarginBottom ? '0px' : '')};
+  text-align: ${props => (props.centered ? 'center' : 'auto')};
+  margin-bottom: 16;
 `;
 
-const P = styled.p`
+const P = styled.Text`
   font-size: ${FONT_SIZES.p};
-  font-family: ${FONT_FAMILY.body};
   font-weight: 300;
   color: ${COLORS.greys.primary};
   margin: 0;
-  text-align: ${props => (props.centered ? 'center' : '')};
+  text-align: ${props => (props.centered ? 'center' : 'auto')};
+  margin-bottom: 8;
 `;
 
-const FinePrint = styled.span`
+const FinePrint = styled.Text`
   font-size: ${FONT_SIZES.finePrint};
-  font-family: ${FONT_FAMILY.body};
   font-weight: 300;
   color: ${COLORS.greys.secondary};
   margin: 8px 0;
   text-align: center;
+  margin-bottom: 8;
 `;
 
-const ERROR = styled.p`
+const ERROR = styled.Text`
   font-size: ${FONT_SIZES.p};
-  font-family: ${FONT_FAMILY.body};
   font-weight: bold;
   color: red;
   margin: 8px 0;
   margin: ${props => (props.noMargin ? '0px' : '')};
-  text-align: ${props => (props.centered ? 'center' : '')};
+  text-align: ${props => (props.centered ? 'center' : 'auto')};
 `;
 
-const A = styled.a`
+const A = styled.Text`
   text-decoration: none;
   color: ${COLORS.primary.red};
   font-weight: bold;
@@ -87,7 +79,8 @@ const A = styled.a`
   :hover {
     text-decoration: underline;
   }
-  text-align: ${props => (props.centered ? 'center' : '')};
+  text-align: ${props => (props.centered ? 'center' : 'auto')};
+  margin-bottom: 8;
 `;
 
 const FONTS = {};
