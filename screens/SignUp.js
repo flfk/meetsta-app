@@ -6,6 +6,10 @@ import Container from '../components/Container';
 import InputText from '../components/InputText';
 import Btn from '../components/Btn';
 
+const STEP_NAME = 0;
+const STEP_EMAIL = 1;
+const STEP_PASSWORD = 2;
+
 class SignUp extends React.Component {
   state = {
     email: 'test@email.com',
@@ -71,14 +75,16 @@ class SignUp extends React.Component {
 
     let signUpComponent = null;
     switch (signUpStep) {
-      case 2:
+      case STEP_PASSWORD:
         signUpComponent = signUpPassword;
         break;
-      case 1:
+      case STEP_EMAIL:
         signUpComponent = signUpEmail;
         break;
-      default:
+      case STEP_NAME:
         signUpComponent = signUpName;
+        break;
+      default:
     }
 
     return <Container>{signUpComponent}</Container>;

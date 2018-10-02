@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { View } from 'react-native';
 import styled from 'styled-components';
 
 import Colors from '../utils/Colors';
+import Content from './Content';
 import Fonts from '../utils/Fonts';
 
 const propTypes = {
@@ -23,7 +23,7 @@ const InputText = props => {
   const { label, value, placeholder, handler, isSecureTextEntry } = props;
 
   return (
-    <View>
+    <Content>
       <Label>{label}</Label>
       <Input
         value={value}
@@ -31,7 +31,7 @@ const InputText = props => {
         secureTextEntry={isSecureTextEntry}
         placeholder={placeholder}
       />
-    </View>
+    </Content>
   );
 };
 

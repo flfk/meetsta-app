@@ -75,10 +75,6 @@ const A = styled.Text`
   text-decoration: none;
   color: ${COLORS.primary.red};
   font-weight: bold;
-  cursor: pointer;
-  :hover {
-    text-decoration: underline;
-  }
   text-align: ${props => (props.centered ? 'center' : 'auto')};
   margin-bottom: 8;
 `;
