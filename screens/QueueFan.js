@@ -11,8 +11,6 @@ class QueueFan extends React.Component {
     queueWaitTimeMins: 10
   };
 
-  handleChangeOrderNum = orderNum => this.setState({ orderNum });
-
   render() {
     const { eventTitle, queuePosition, queueWaitTimeMins } = this.state;
 

@@ -32,6 +32,7 @@ const Wrapper = styled.TouchableOpacity`
   margin-bottom: 16;
   border-radius: 50;
   align-items: center;
+  width: 100%;
 `;
 
 const WrapperPrimary = styled(Wrapper)`
