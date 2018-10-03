@@ -1,5 +1,4 @@
 import React from 'react';
-import { View } from 'react-native';
 
 // import BtnNavBar from '../components/BtnNavBar';
 import Btn from '../components/Btn';

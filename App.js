@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 import AddTicket from './screens/AddTicket';
 // import EventsOrganiser from './screens/EventsOrganiser';
-// import CallFan from './screens/CallFan';
+import CallFan from './screens/CallFan';
 // import CallOrganiser from './screens/CallOrganiser';
 // import CallEndedFan from './screens/CallEndedFan';
 // import CallEndedOrganiser from './screens/CallEndedOrganiser';
@@ -15,6 +15,6 @@ import Tickets from './screens/Tickets';
 
 export default class App extends React.Component {
   render() {
-    return <QueueOrganiser />;
+    return <CallFan />;
   }
 }
