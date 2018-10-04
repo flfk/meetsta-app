@@ -26,6 +26,7 @@ const H1 = styled.Text`
   font-weight: 500;
   text-align: ${props => (props.center ? 'center' : 'auto')};
   margin-bottom: 16;
+  ${props => (props.marginLeft ? 'margin-left: 16' : '')};
 `;
 
 const H2 = styled.Text`

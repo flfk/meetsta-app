@@ -69,7 +69,7 @@ class Events extends React.Component {
     return (
       <Container>
         <ListTickets
-          ListHeaderComponent={<Fonts.H1>My Tickets</Fonts.H1>}
+          ListHeaderComponent={<Fonts.H1 marginLeft>My Tickets</Fonts.H1>}
           renderItem={this.renderItem}
           data={this.state.events}
           keyExtractor={(event, index) => event + index}
