@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { Text } from 'react-native';
 
 import Btn from '../components/Btn';
+import Content from '../components/Content';
 import Container from '../components/Container';
 import Fonts from '../utils/Fonts';
 
@@ -42,8 +43,9 @@ class CallEndedFan extends React.Component {
 
     return (
       <Container padding>
-        <Fonts.H1>We hope you had an awesome time meeting {organiserName}!</Fonts.H1>
+        <Fonts.H1 center>🎉 We hope you had an awesome time meeting {organiserName}!</Fonts.H1>
         {addOnsView}
+        <Content.Seperator />
         {btnSouvenirs}
         <Btn.Tertiary title={'Back home'} />
       </Container>

@@ -24,7 +24,7 @@ const H1 = styled.Text`
   font-size: ${FONT_SIZES.h1};
   color: ${COLORS.greys.primary};
   font-weight: 500;
-  text-align: ${props => (props.centered ? 'center' : 'auto')};
+  text-align: ${props => (props.center ? 'center' : 'auto')};
   margin-bottom: 16;
 `;
 
@@ -32,7 +32,7 @@ const H2 = styled.Text`
   font-size: ${FONT_SIZES.h2};
   color: ${COLORS.greys.primary};
   font-weight: 400;
-  text-align: ${props => (props.centered ? 'center' : 'auto')};
+  text-align: ${props => (props.center ? 'center' : 'auto')};
   margin-bottom: 16;
 `;
 
@@ -40,7 +40,7 @@ const H3 = styled.Text`
   font-size: ${FONT_SIZES.h3};
   color: ${COLORS.greys.primary};
   font-weight: 400;
-  text-align: ${props => (props.centered ? 'center' : 'auto')};
+  text-align: ${props => (props.center ? 'center' : 'auto')};
   margin-bottom: 16;
 `;
 
@@ -49,7 +49,7 @@ const P = styled.Text`
   font-weight: 300;
   color: ${COLORS.greys.primary};
   margin: 0;
-  text-align: ${props => (props.centered ? 'center' : 'auto')};
+  text-align: ${props => (props.center ? 'center' : 'auto')};
   margin-bottom: 8;
 `;
 
@@ -68,14 +68,14 @@ const ERROR = styled.Text`
   color: red;
   margin: 8px 0;
   margin: ${props => (props.noMargin ? '0px' : '')};
-  text-align: ${props => (props.centered ? 'center' : 'auto')};
+  text-align: ${props => (props.center ? 'center' : 'auto')};
 `;
 
 const A = styled.Text`
   text-decoration: none;
   color: ${COLORS.primary.red};
   font-weight: bold;
-  text-align: ${props => (props.centered ? 'center' : 'auto')};
+  text-align: ${props => (props.center ? 'center' : 'auto')};
   margin-bottom: 8;
 `;
 

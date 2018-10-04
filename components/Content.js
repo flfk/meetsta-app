@@ -9,4 +9,11 @@ const Content = styled.View`
   ${props => (props.spaceBetween ? 'justify-content: space-between' : '')};
 `;
 
+const Seperator = styled.View`
+  height: 16;
+  width: 100%;
+`;
+
+Content.Seperator = Seperator;
+
 export default Content;
