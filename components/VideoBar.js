@@ -8,11 +8,6 @@ const Top = styled.View`
   left: 0;
   height: 64;
   width: 100%;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
 `;
 
 const Background = styled.View`
@@ -32,26 +27,39 @@ const Bottom = styled.View`
   left: 0;
   height: 48;
   width: 100%;
+`;
 
+const Content = styled.View`
+  flex: 1;
+  height: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  padding-top: 16;
+  padding-left: 16;
+  padding-right: 16;
 `;
 
 const Text = styled.Text`
   color: white;
   font-weight: bold;
   font-size: ${Fonts.sizes.h1};
-  margin-top: 16;
-  margin-right: 16;
-  margin-left: 16;
+`;
+
+const Timer = styled.View`
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 112;
 `;
 
 const VideoBar = {};
 VideoBar.Background = Background;
 VideoBar.Bottom = Bottom;
+VideoBar.Content = Content;
 VideoBar.Text = Text;
+VideoBar.Timer = Timer;
 VideoBar.Top = Top;
 
 export default VideoBar;

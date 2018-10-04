@@ -15,6 +15,6 @@ import Tickets from './screens/Tickets';
 
 export default class App extends React.Component {
   render() {
-    return <CallOrganiser />;
+    return <CallFan />;
   }
 }

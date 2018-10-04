@@ -25,16 +25,20 @@ class CallOrganiser extends React.Component {
         </VideoCallee>
         <VideoBar.Top>
           <VideoBar.Background />
-          <VideoBar.Text>{fanName}</VideoBar.Text>
-          <VideoBar.Text>
-            {Icons.Hourglass}
-            5:10
-          </VideoBar.Text>
+          <VideoBar.Content>
+            <VideoBar.Text>{fanName}</VideoBar.Text>
+            <VideoBar.Text>
+              {Icons.Hourglass}
+              5:10
+            </VideoBar.Text>
+          </VideoBar.Content>
         </VideoBar.Top>
         <VideoBar.Bottom>
           <VideoBar.Background />
-          <View />
-          <VideoBar.Text>{Icons.Hangup}</VideoBar.Text>
+          <VideoBar.Content>
+            <View />
+            <VideoBar.Text>{Icons.Hangup}</VideoBar.Text>
+          </VideoBar.Content>
         </VideoBar.Bottom>
         <VideoCaller>
           <VideoCaller.Image source={ORGANISER_ON_CALL} />
