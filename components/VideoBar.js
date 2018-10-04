@@ -30,10 +30,13 @@ const Bottom = styled.View`
   position: absolute;
   bottom: 0;
   left: 0;
-  height: 64;
+  height: 48;
   width: 100%;
 
-  background-color: orange;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const Text = styled.Text`
@@ -42,6 +45,7 @@ const Text = styled.Text`
   font-size: ${Fonts.sizes.h1};
   margin-top: 16;
   margin-right: 16;
+  margin-left: 16;
 `;
 
 const VideoBar = {};
