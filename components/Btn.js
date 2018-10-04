@@ -25,6 +25,14 @@ const Secondary = ({ title, onPress }) => (
 
 Secondary.propTypes = propTypes;
 
+const Tertiary = ({ title, onPress }) => (
+  <WrapperTertiary onPress={onPress}>
+    <TextSecondary>{title}</TextSecondary>
+  </WrapperTertiary>
+);
+
+Tertiary.propTypes = propTypes;
+
 // Styles
 
 const Wrapper = styled.TouchableOpacity`
@@ -42,6 +50,10 @@ const WrapperPrimary = styled(Wrapper)`
 
 const WrapperSecondary = styled(Wrapper)`
   border: 2px solid ${COLORS.primary.red};
+`;
+
+const WrapperTertiary = styled(Wrapper)`
+  border: 2px solid white;
 `;
 
 const BtnText = styled.Text`
@@ -62,5 +74,6 @@ const TextSecondary = styled(BtnText)`
 const Btn = {};
 Btn.Primary = Primary;
 Btn.Secondary = Secondary;
+Btn.Tertiary = Tertiary;
 
 export default Btn;
