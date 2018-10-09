@@ -3,13 +3,21 @@ import { Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import AddTicket from '../screens/AddTicket';
+import COLORS from '../utils/Colors';
 import EventsOrganiser from '../screens/EventsOrganiser';
 import TabBarIcon from '../components/TabBarIcon';
 import Tickets from '../screens/Tickets';
 
-const StackTickets = createStackNavigator({
-  Tickets
-});
+const StackTickets = createStackNavigator(
+  {
+    AddTicket,
+    Tickets
+  },
+  {
+    initialRouteName: 'Tickets'
+  }
+);
 
 StackTickets.navigationOptions = {
   tabBarLabel: 'Tickets',

@@ -1,6 +1,6 @@
 import React from 'react';
 
-// import BtnNavBar from '../components/BtnNavBar';
+import BtnNavBar from '../components/BtnNavBar';
 import Btn from '../components/Btn';
 import CellTicket from '../components/CellTicket';
 import Container from '../components/Container';
@@ -31,11 +31,11 @@ const propTypes = {};
 const defaultProps = {};
 
 class Events extends React.Component {
-  // static navigationOptions = ({ navigation }) => {
-  //   return {
-  //     headerRight: <BtnNavBar title="Add ticket" onPress={() => navigation.navigate('AddTicket')} />
-  //   };
-  // };
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerRight: <BtnNavBar title="Add ticket" onPress={() => navigation.navigate('AddTicket')} />
+    };
+  };
 
   state = {
     events: []
