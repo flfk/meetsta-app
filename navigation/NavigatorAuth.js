@@ -4,7 +4,7 @@ import COLORS from '../utils/Colors';
 import Login from '../screens/Login';
 import SignUp from '../screens/SignUp';
 
-const NavigatorLogin = createStackNavigator(
+const NavigatorAuth = createStackNavigator(
   {
     Login,
     SignUp
@@ -22,4 +22,4 @@ const NavigatorLogin = createStackNavigator(
   }
 );
 
-export default NavigatorLogin;
+export default NavigatorAuth;

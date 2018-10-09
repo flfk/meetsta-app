@@ -51,6 +51,10 @@ class Events extends React.Component {
     this.setState({ events: TEST_EVENTS });
   };
 
+  startEvent = () => {
+    // XX TODO
+  };
+
   renderItem = ({ item, index }) => {
     return (
       <CellTicket key={index}>
@@ -68,8 +72,7 @@ class Events extends React.Component {
         <Fonts.H2>
           {item.addOnsSold} <Fonts.P>add ons sold</Fonts.P>
         </Fonts.H2>
-        <Btn.Primary title="Start Event" />
-        <Btn.Secondary title="Edit Event" />
+        <Btn.Primary title="Start Event" onPress={this.startEvent} />
       </CellTicket>
     );
   };

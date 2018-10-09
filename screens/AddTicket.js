@@ -7,14 +7,17 @@ import InputText from '../components/InputText';
 // import BtnNavBar from '../components/BtnNavBar';
 
 class AddTicket extends React.Component {
-  // static navigationOptions = ({ navigation }) => {
-  //   return {
-  //     headerTitle: 'Add Ticket'
-  //   };
-  // };
+  static navigationOptions = {
+    headerTitle: 'Add Ticket',
+    tabBarVisible: false
+  };
 
   state = {
     orderNum: ''
+  };
+
+  addTicket = () => {
+    // XX TODO
   };
 
   handleChangeOrderNum = orderNum => this.setState({ orderNum });
@@ -23,7 +26,7 @@ class AddTicket extends React.Component {
     const { orderNum } = this.state;
 
     return (
-      <Container>
+      <Container padding>
         <Fonts.H1>What is your ticket order number?</Fonts.H1>
         <InputText
           label={'Order confirmation number'}
@@ -31,7 +34,7 @@ class AddTicket extends React.Component {
           handler={this.handleChangeOrderNum}
           placeholder={'Type the number here'}
         />
-        <Btn.Primary title="Submit" />
+        <Btn.Primary title="Submit" onPress={this.addTicket} />
       </Container>
     );
   }

@@ -68,6 +68,7 @@ class SignUp extends React.Component {
           value={password}
           handler={this.handleChangePassword}
           placeholder={''}
+          isSecureTextEntry={true}
         />
         <Btn.Primary title="Next" onPress={this.goToNext} />
       </View>
@@ -87,7 +88,11 @@ class SignUp extends React.Component {
       default:
     }
 
-    return <Container>{signUpComponent}</Container>;
+    return (
+      <Container padding spaceBetween>
+        {signUpComponent}
+      </Container>
+    );
   }
 }
 

@@ -30,7 +30,7 @@ const propTypes = {};
 
 const defaultProps = {};
 
-class Events extends React.Component {
+class Tickets extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       headerRight: <BtnNavBar title="Add ticket" onPress={() => navigation.navigate('AddTicket')} />
@@ -49,6 +49,10 @@ class Events extends React.Component {
     this.setState({ events: TEST_EVENTS });
   };
 
+  joinQueue = () => {
+    // XX TODO
+  };
+
   renderItem = ({ item, index }) => {
     return (
       <CellTicket key={index}>
@@ -58,7 +62,7 @@ class Events extends React.Component {
         <Fonts.P>{item.date}</Fonts.P>
         <Fonts.P>{item.time}</Fonts.P>
         <Fonts.P>Order #{item.order}</Fonts.P>
-        <Btn.Primary title="Join Queue" />
+        <Btn.Primary title="Join Queue" onPress={this.joinQueue} />
       </CellTicket>
     );
   };
@@ -79,7 +83,7 @@ class Events extends React.Component {
   }
 }
 
-Events.propTypes = propTypes;
-Events.defaultProps = defaultProps;
+Tickets.propTypes = propTypes;
+Tickets.defaultProps = defaultProps;
 
-export default Events;
+export default Tickets;
