@@ -11,6 +11,22 @@ class QueueFan extends React.Component {
     queueWaitTimeMins: 10
   };
 
+  JOINCALL = () => {
+    // XX DELETE TESTING ONLY
+    const { navigation } = this.props;
+    navigation.navigate('CallFan');
+  };
+
+  leaveQueue = () => {
+    // XX todo
+    this.goToMain();
+  };
+
+  goToMain = () => {
+    const { navigation } = this.props;
+    navigation.navigate('Main');
+  };
+
   render() {
     const { eventTitle, queuePosition, queueWaitTimeMins } = this.state;
 
@@ -28,12 +44,13 @@ class QueueFan extends React.Component {
     }
 
     return (
-      <Container>
+      <Container paddingHorizontal>
         <Fonts.H2>You are in the queue for </Fonts.H2>
         <Fonts.H1>{eventTitle}</Fonts.H1>
         <Fonts.H2>{queuePositionText}</Fonts.H2>
         <Fonts.H2>Your estimated wait time is {queueWaitTimeMins} minutes</Fonts.H2>
-        <Btn.Secondary title="Leave Queue" />
+        <Btn.Primary title="TEST BTN - JOIN CALL" onPress={this.JOINCALL} />
+        <Btn.Secondary title="Leave Queue" onPress={this.leaveQueue} />
       </Container>
     );
   }

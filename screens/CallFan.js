@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 
 import Content from '../components/Content';
 import Icons from '../components/Icons';
@@ -12,7 +12,7 @@ import ORGANISER_ON_CALL from '../assets/ORGANISER_ON_CALL.png';
 
 class CallFan extends React.Component {
   state = {
-    remainingSecs: 60,
+    remainingSecs: 5,
     timeFormatted: {
       mins: 0,
       secs: 0
@@ -26,6 +26,14 @@ class CallFan extends React.Component {
   componentWillUnmount() {
     this.countdownStop();
   }
+
+  addLeadingZeros = value => {
+    let valueUpdated = String(value);
+    while (valueUpdated.length < 2) {
+      valueUpdated = `0${valueUpdated}`;
+    }
+    return valueUpdated;
+  };
 
   countdownStart = () => {
     this.interval = setInterval(() => {
@@ -41,6 +49,11 @@ class CallFan extends React.Component {
 
   countdownStop = () => {
     clearInterval(this.interval);
+    this.endCall();
+  };
+
+  endCall = () => {
+    this.goToCallEndedFan();
   };
 
   formatTime = secs => {
@@ -53,13 +66,12 @@ class CallFan extends React.Component {
     return timeFormatted;
   };
 
-  addLeadingZeros = value => {
-    let valueUpdated = String(value);
-    while (valueUpdated.length < 2) {
-      valueUpdated = `0${valueUpdated}`;
-    }
-    return valueUpdated;
+  goToCallEndedFan = () => {
+    const { navigation } = this.props;
+    navigation.navigate('CallEndedFan');
   };
+
+  disconnect = () => {};
 
   render() {
     const { timeFormatted } = this.state;
@@ -85,7 +97,9 @@ class CallFan extends React.Component {
           <VideoBar.Background />
           <VideoBar.Content>
             <View />
-            <VideoBar.Text>{Icons.Hangup}</VideoBar.Text>
+            <TouchableOpacity onPress={this.endCall}>
+              <VideoBar.Text>{Icons.Hangup}</VideoBar.Text>
+            </TouchableOpacity>
           </VideoBar.Content>
         </VideoBar.Bottom>
         <VideoCaller>

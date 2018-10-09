@@ -51,6 +51,8 @@ class Tickets extends React.Component {
 
   joinQueue = () => {
     // XX TODO
+    const { navigation } = this.props;
+    navigation.navigate('EventFan');
   };
 
   renderItem = ({ item, index }) => {

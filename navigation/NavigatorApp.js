@@ -16,15 +16,17 @@ import QueueOrganiser from '../screens/QueueOrganiser';
 import Tickets from '../screens/Tickets';
 
 import NavigatorAuth from './NavigatorAuth';
+import NavigatorCallFan from './NavigatorCallFan';
 import NavigatorMain from './NavigatorMain';
 
 const AppNavigator = createSwitchNavigator(
   {
     Auth: NavigatorAuth,
-    Main: NavigatorMain
+    Main: NavigatorMain,
+    EventFan: NavigatorCallFan
   },
   {
-    initialRouteName: 'Auth'
+    initialRouteName: 'EventFan'
   }
 );
 
