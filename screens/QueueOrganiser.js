@@ -14,6 +14,17 @@ class QueueOrganiser extends React.Component {
     nextCaller: 'Jessica'
   };
 
+  ENDEVENT = () => {
+    // XX DELETE TESTING ONLY
+    const { navigation } = this.props;
+    navigation.navigate('EventEndedOrganiser');
+  };
+
+  startCall = () => {
+    const { navigation } = this.props;
+    navigation.navigate('CallOrganiser');
+  };
+
   render() {
     const { callsTotal, remainingCalls, remainingMins, nextCaller } = this.state;
 
@@ -21,7 +32,7 @@ class QueueOrganiser extends React.Component {
     const remainingMinsTxt = `${remainingMins} minutes left`;
 
     return (
-      <Container padding spaceAround>
+      <Container paddingHorizontal spaceAround>
         <Content center>
           <Fonts.H2>{remainingCallsTxt}</Fonts.H2>
           <Fonts.H2>{remainingMinsTxt}</Fonts.H2>
@@ -30,7 +41,8 @@ class QueueOrganiser extends React.Component {
           <Fonts.H2>Next fan is</Fonts.H2>
           <Fonts.H1>{nextCaller}</Fonts.H1>
         </Content>
-        <Btn.Primary title="Start Call" />
+        <Btn.Primary title="Start Call" onPress={this.startCall} />
+        <Btn.Secondary title="TEST BTN END EVENT" onPress={this.ENDEVENT} />
       </Container>
     );
   }

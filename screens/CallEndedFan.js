@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, Linking } from 'react-native';
 
 import Btn from '../components/Btn';
 import Content from '../components/Content';
@@ -11,6 +11,15 @@ class CallEndedFan extends React.Component {
     organiserName: 'Andre Swilley',
     email: 'test@email.com',
     addOns: []
+  };
+
+  goToSouvenirCheckout = () => {
+    Linking.openURL('https://www.google.com');
+  };
+
+  goToMain = () => {
+    const { navigation } = this.props;
+    navigation.navigate('Main');
   };
 
   render() {
@@ -34,20 +43,20 @@ class CallEndedFan extends React.Component {
           Within the 7 days we will your {addOnsFormatted} will be emailed to {email}.
         </Fonts.H3>
       );
-      btnSouvenirs = <Btn.Primary title="Get More Souvenirs" />;
+      btnSouvenirs = <Btn.Primary title="Get More Souvenirs" onPress={this.goToSouvenirCheckout} />;
     }
     if (addOns.length === 0) {
       addOnsView = null;
-      btnSouvenirs = <Btn.Primary title="Get Souvenirs" />;
+      btnSouvenirs = <Btn.Primary title="Get Souvenirs" onPress={this.goToSouvenirCheckout} />;
     }
 
     return (
-      <Container padding>
+      <Container paddingHorizontal>
         <Fonts.H1 center>🎉 We hope you had an awesome time meeting {organiserName}!</Fonts.H1>
         {addOnsView}
         <Content.Seperator />
         {btnSouvenirs}
-        <Btn.Tertiary title={'Back home'} />
+        <Btn.Tertiary title={'Back home'} onPress={this.goToMain} />
       </Container>
     );
   }

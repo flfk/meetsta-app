@@ -8,18 +8,16 @@ class Login extends React.Component {
   static navigationOptions = {};
 
   Login = () => {
-    // Todo XX
-    // this.props.navigation.navigate('Main');
+    this.props.navigation.navigate('Main');
   };
 
   SignUp = () => {
-    // Todo xx
-    // this.props.navigation.navigate('SignUp');
+    this.props.navigation.navigate('SignupName');
   };
 
   render() {
     return (
-      <Container>
+      <Container paddingHorizontal>
         <Btn.Primary title="Sign Up" onPress={this.SignUp} />
         <Btn.Secondary title="Sign In With Facebook" onPress={this.Login} />
         <Btn.Secondary title="Log In" onPress={this.Login} />

@@ -36,9 +36,10 @@ Tertiary.propTypes = propTypes;
 // Styles
 
 const Wrapper = styled.TouchableOpacity`
-  padding: 8px 8px;
+  padding-bottom: 8;
+  padding-top: 8;
   margin-bottom: 16;
-  border-radius: 50;
+  border-radius: 5;
   align-items: center;
   width: 100%;
 `;

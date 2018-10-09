@@ -1,6 +1,6 @@
 import React from 'react';
 
-// import BtnNavBar from '../components/BtnNavBar';
+import BtnNavBar from '../components/BtnNavBar';
 import Btn from '../components/Btn';
 import CellTicket from '../components/CellTicket';
 import Container from '../components/Container';
@@ -30,12 +30,12 @@ const propTypes = {};
 
 const defaultProps = {};
 
-class Events extends React.Component {
-  // static navigationOptions = ({ navigation }) => {
-  //   return {
-  //     headerRight: <BtnNavBar title="Add ticket" onPress={() => navigation.navigate('AddTicket')} />
-  //   };
-  // };
+class Tickets extends React.Component {
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerRight: <BtnNavBar title="Add ticket" onPress={() => navigation.navigate('AddTicket')} />
+    };
+  };
 
   state = {
     events: []
@@ -49,6 +49,12 @@ class Events extends React.Component {
     this.setState({ events: TEST_EVENTS });
   };
 
+  joinQueue = () => {
+    // XX TODO
+    const { navigation } = this.props;
+    navigation.navigate('EventFan');
+  };
+
   renderItem = ({ item, index }) => {
     return (
       <CellTicket key={index}>
@@ -58,7 +64,7 @@ class Events extends React.Component {
         <Fonts.P>{item.date}</Fonts.P>
         <Fonts.P>{item.time}</Fonts.P>
         <Fonts.P>Order #{item.order}</Fonts.P>
-        <Btn.Primary title="Join Queue" />
+        <Btn.Primary title="Join Queue" onPress={this.joinQueue} />
       </CellTicket>
     );
   };
@@ -79,7 +85,7 @@ class Events extends React.Component {
   }
 }
 
-Events.propTypes = propTypes;
-Events.defaultProps = defaultProps;
+Tickets.propTypes = propTypes;
+Tickets.defaultProps = defaultProps;
 
-export default Events;
+export default Tickets;

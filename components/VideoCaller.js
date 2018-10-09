@@ -7,8 +7,6 @@ const VideoCaller = styled.View`
   height: 110;
   width: 90;
   border-radius: 5;
-
-  background-color: red;
 `;
 
 const Image = styled.Image`

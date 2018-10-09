@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 
 import Icons from '../components/Icons';
 import VideoBar from '../components/VideoBar';
@@ -13,6 +13,11 @@ class CallOrganiser extends React.Component {
   state = {
     remainingSecs: 60,
     fanName: 'Jessica'
+  };
+
+  endCall = () => {
+    const { navigation } = this.props;
+    navigation.navigate('QueueOrganiser');
   };
 
   render() {
@@ -29,7 +34,7 @@ class CallOrganiser extends React.Component {
             <VideoBar.Text>{fanName}</VideoBar.Text>
             <VideoBar.Text>
               {Icons.Hourglass}
-              5:10
+              5:12
             </VideoBar.Text>
           </VideoBar.Content>
         </VideoBar.Top>
@@ -37,7 +42,9 @@ class CallOrganiser extends React.Component {
           <VideoBar.Background />
           <VideoBar.Content>
             <View />
-            <VideoBar.Text>{Icons.Hangup}</VideoBar.Text>
+            <TouchableOpacity onPress={this.endCall}>
+              <VideoBar.Text>{Icons.Hangup}</VideoBar.Text>
+            </TouchableOpacity>
           </VideoBar.Content>
         </VideoBar.Bottom>
         <VideoCaller>
