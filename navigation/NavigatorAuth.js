@@ -2,12 +2,17 @@ import { createStackNavigator } from 'react-navigation';
 
 import COLORS from '../utils/Colors';
 import Login from '../screens/Login';
-import SignUp from '../screens/SignUp';
+// import Signup from '../screens/Signup';
+import SignupEmail from '../screens/SignupEmail';
+import SignupName from '../screens/SignupName';
+import SignupPassword from '../screens/SignupPassword';
 
 const NavigatorAuth = createStackNavigator(
   {
     Login,
-    SignUp
+    SignupEmail,
+    SignupName,
+    SignupPassword
   },
   {
     initialRouteName: 'Login',

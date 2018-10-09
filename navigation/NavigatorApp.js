@@ -13,7 +13,6 @@ import EventEndedOrganiser from '../screens/EventEndedOrganiser';
 import Login from '../screens/Login';
 import QueueFan from '../screens/QueueFan';
 import QueueOrganiser from '../screens/QueueOrganiser';
-import SignUp from '../screens/SignUp';
 import Tickets from '../screens/Tickets';
 
 import NavigatorAuth from './NavigatorAuth';

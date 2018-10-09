@@ -12,7 +12,8 @@ class Settings extends React.Component {
   state = {};
 
   logOut = () => {
-    // XX TODO
+    const { navigation } = this.props;
+    navigation.navigate('Auth');
   };
 
   render() {

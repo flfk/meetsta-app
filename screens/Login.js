@@ -12,7 +12,7 @@ class Login extends React.Component {
   };
 
   SignUp = () => {
-    this.props.navigation.navigate('SignUp');
+    this.props.navigation.navigate('SignupName');
   };
 
   render() {
