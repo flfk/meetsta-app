@@ -1,10 +1,9 @@
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 import { Platform } from 'react-native';
-import PropTypes from 'prop-types';
 import React from 'react';
 
 import AddTicket from '../screens/AddTicket';
-import COLORS from '../utils/Colors';
+import NavBarStyle from './NavBarStyle';
 import EventsOrganiser from '../screens/EventsOrganiser';
 import TabBarIcon from '../components/TabBarIcon';
 import Tickets from '../screens/Tickets';
@@ -15,12 +14,12 @@ const StackTickets = createStackNavigator(
     Tickets
   },
   {
-    initialRouteName: 'Tickets'
+    initialRouteName: 'Tickets',
+    navigationOptions: NavBarStyle
   }
 );
 
 StackTickets.navigationOptions = {
-  tabBarLabel: 'Tickets',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -33,9 +32,15 @@ StackTickets.navigationOptions = {
   )
 };
 
-const StackEventsOrganiser = createStackNavigator({
-  EventsOrganiser
-});
+const StackEventsOrganiser = createStackNavigator(
+  {
+    EventsOrganiser
+  },
+  {
+    initialRouteName: 'EventsOrganiser',
+    navigationOptions: NavBarStyle
+  }
+);
 
 StackEventsOrganiser.navigationOptions = {
   tabBarLabel: 'Events',
