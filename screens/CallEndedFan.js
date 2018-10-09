@@ -42,7 +42,7 @@ class CallEndedFan extends React.Component {
     }
 
     return (
-      <Container padding>
+      <Container paddingHorizontal>
         <Fonts.H1 center>🎉 We hope you had an awesome time meeting {organiserName}!</Fonts.H1>
         {addOnsView}
         <Content.Seperator />

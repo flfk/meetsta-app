@@ -21,7 +21,7 @@ class QueueOrganiser extends React.Component {
     const remainingMinsTxt = `${remainingMins} minutes left`;
 
     return (
-      <Container padding spaceAround>
+      <Container paddingHorizontal spaceAround>
         <Content center>
           <Fonts.H2>{remainingCallsTxt}</Fonts.H2>
           <Fonts.H2>{remainingMinsTxt}</Fonts.H2>

@@ -17,7 +17,7 @@ class Login extends React.Component {
 
   render() {
     return (
-      <Container padding>
+      <Container paddingHorizontal>
         <Btn.Primary title="Sign Up" onPress={this.SignUp} />
         <Btn.Secondary title="Sign In With Facebook" onPress={this.Login} />
         <Btn.Secondary title="Log In" onPress={this.Login} />

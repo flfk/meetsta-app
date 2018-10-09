@@ -38,7 +38,7 @@ class SignupEmail extends React.Component {
     const { email } = this.state;
 
     return (
-      <Container padding>
+      <Container paddingHorizontal>
         <Fonts.H1>And, your email?</Fonts.H1>
         <InputText
           label={'Email'}

@@ -37,7 +37,7 @@ class SignupPassword extends React.Component {
     const { password } = this.state;
 
     return (
-      <Container padding>
+      <Container paddingHorizontal>
         <Fonts.H1>Create a password</Fonts.H1>
         <InputText
           label={'Password'}

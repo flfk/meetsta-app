@@ -26,7 +26,7 @@ class AddTicket extends React.Component {
     const { orderNum } = this.state;
 
     return (
-      <Container padding>
+      <Container paddingHorizontal>
         <Fonts.H1>What is your ticket order number?</Fonts.H1>
         <InputText
           label={'Order confirmation number'}

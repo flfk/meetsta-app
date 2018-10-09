@@ -17,7 +17,7 @@ class CallEndedFan extends React.Component {
     const { revenue, ticketsSold, addOnsSold, paypalEmail } = this.state;
 
     return (
-      <Container padding>
+      <Container paddingHorizontal>
         <Fonts.H1>🎉 Done!</Fonts.H1>
         <Fonts.H1>
           ${revenue} <Fonts.H3>earned</Fonts.H3>

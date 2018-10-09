@@ -30,7 +30,7 @@ class SignupName extends React.Component {
     const { name } = this.state;
 
     return (
-      <Container padding>
+      <Container paddingHorizontal>
         <Fonts.H1>And, your name?</Fonts.H1>
         <InputText
           label={'Name'}

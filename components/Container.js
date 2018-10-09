@@ -7,8 +7,8 @@ const Container = styled.View`
   align-items: flex-start;
   background-color: white;
 
-  ${props => (props.padding ? 'padding: 16px' : '')};
-  ${props => (props.paddingSides ? 'padding-left: 16px; padding-right: 16px' : '')};
+  ${props => (props.paddingHorizontal ? 'padding-left: 16px; padding-right: 16px' : '')};
+  ${props => (props.paddingVertical ? 'padding-top: 16px; padding-bottom: 16px' : '')};
 
   ${props => (props.spaceAround ? 'justify-content: space-around' : '')};
   ${props => (props.spaceBetween ? 'justify-content: space-between' : '')};

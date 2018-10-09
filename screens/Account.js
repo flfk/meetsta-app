@@ -18,7 +18,7 @@ class Settings extends React.Component {
 
   render() {
     return (
-      <Container spaceBetween paddingSides>
+      <Container spaceBetween paddingHorizontal>
         <Fonts.H1>Your Account</Fonts.H1>
         <Btn.Secondary title="Log Out" onPress={this.logOut} />
       </Container>
