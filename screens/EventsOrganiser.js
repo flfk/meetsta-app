@@ -53,6 +53,8 @@ class Events extends React.Component {
 
   startEvent = () => {
     // XX TODO
+    const { navigation } = this.props;
+    navigation.navigate('EventOrganiser');
   };
 
   renderItem = ({ item, index }) => {

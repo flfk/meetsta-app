@@ -17,16 +17,18 @@ import Tickets from '../screens/Tickets';
 
 import NavigatorAuth from './NavigatorAuth';
 import NavigatorCallFan from './NavigatorCallFan';
+import NavigatorCallOrganiser from './NavigatorCallOrganiser';
 import NavigatorMain from './NavigatorMain';
 
 const AppNavigator = createSwitchNavigator(
   {
     Auth: NavigatorAuth,
     Main: NavigatorMain,
-    EventFan: NavigatorCallFan
+    EventFan: NavigatorCallFan,
+    EventOrganiser: NavigatorCallOrganiser
   },
   {
-    initialRouteName: 'EventFan'
+    initialRouteName: 'Auth'
   }
 );
 

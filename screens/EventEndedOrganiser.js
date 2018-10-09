@@ -13,6 +13,15 @@ class CallEndedFan extends React.Component {
     paypalEmail: 'test@paypal.com'
   };
 
+  goToCreateEvent = () => {
+    // XX Todo
+  };
+
+  goToMain = () => {
+    const { navigation } = this.props;
+    navigation.navigate('Main');
+  };
+
   render() {
     const { revenue, ticketsSold, addOnsSold, paypalEmail } = this.state;
 
@@ -32,8 +41,8 @@ class CallEndedFan extends React.Component {
           You will be paid at your paypal account {paypalEmail} within 48 hours
         </Fonts.H3>
         <Content.Seperator />
-        <Btn.Primary title={'Make another event'} />
-        <Btn.Tertiary title={'Back home'} />
+        <Btn.Primary title={'Make another event'} onPress={this.goToCreateEvent} />
+        <Btn.Tertiary title={'Back home'} onPress={this.goToMain} />
       </Container>
     );
   }
