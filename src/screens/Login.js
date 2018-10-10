@@ -2,27 +2,24 @@ import React from 'react';
 
 import Btn from '../components/Btn';
 import Container from '../components/Container';
-import Content from '../components/Content';
-
-import db from '../data/firebase';
 
 class Login extends React.Component {
   static navigationOptions = {};
 
-  Login = () => {
+  handleLogin = () => {
     this.props.navigation.navigate('Main');
   };
 
-  SignUp = () => {
+  handleSignup = () => {
     this.props.navigation.navigate('SignupName');
   };
 
   render() {
     return (
-      <Container paddingHorizontal>
-        <Btn.Primary title="Sign Up" onPress={this.SignUp} />
-        <Btn.Secondary title="Sign In With Facebook" onPress={this.Login} />
-        <Btn.Secondary title="Log In" onPress={this.Login} />
+      <Container paddingHorizontal center>
+        <Btn.Primary title="Sign Up" onPress={this.handleSignup} />
+        <Btn.Secondary title="Sign In With Facebook" onPress={this.handleLogin} />
+        <Btn.Secondary title="Log In" onPress={this.handleLogin} />
       </Container>
     );
   }

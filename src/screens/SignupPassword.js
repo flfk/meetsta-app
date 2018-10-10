@@ -6,6 +6,8 @@ import Fonts from '../utils/Fonts';
 import InputText from '../components/InputText';
 import Btn from '../components/Btn';
 
+import auth from '../firebase/auth';
+
 const propTypes = {
   navigation: PropTypes.object.isRequired
 };
@@ -15,8 +17,6 @@ class SignupPassword extends React.Component {
     password: ''
   };
 
-  handleChangePassword = password => this.setState({ password });
-
   getNavParams = () => {
     const { navigation } = this.props;
     return {
@@ -25,12 +25,39 @@ class SignupPassword extends React.Component {
     };
   };
 
-  submitUser = () => {
+  handleChangePassword = password => this.setState({ password });
+
+  handleSignup = async () => {
     const { name, email } = this.getNavParams();
     const { password } = this.state;
-    const { navigation } = this.props;
-    console.log('creating new user with ', name, email, password);
-    navigation.navigate('Main');
+    const user = await this.createUser(email, password);
+    if (user) {
+      const updatedUser = await this.updateDisplayName(name);
+      const { navigation } = this.props;
+      navigation.navigate('Main');
+    }
+  };
+
+  createUser = async (email, password) => {
+    try {
+      const user = await auth.createUserWithEmailAndPassword(email, password);
+      return user;
+    } catch (error) {
+      console.log('error', error);
+      const errorCode = error.code;
+      const { navigation } = this.props;
+      navigation.navigate('AuthErrors', { errorCode });
+    }
+  };
+
+  updateDisplayName = async displayName => {
+    try {
+      const user = await auth.currentUser;
+      const updatedUser = await user.updateProfile({ displayName });
+      return updatedUser;
+    } catch (error) {
+      console.error('Error updating display name, ', error);
+    }
   };
 
   render() {
@@ -46,7 +73,7 @@ class SignupPassword extends React.Component {
           placeholder={''}
           isSecureTextEntry={true}
         />
-        <Btn.Primary title="Submit" onPress={this.submitUser} />
+        <Btn.Primary title="Submit" onPress={this.handleSignup} />
       </Container>
     );
   }

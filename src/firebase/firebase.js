@@ -13,12 +13,14 @@ const config = {
 
 firebase.initializeApp(config);
 
-const db = firebase.firestore();
+export default firebase;
 
-export const storage = firebase.storage();
+// const db = firebase.firestore();
+
+// export const storage = firebase.storage();
 
 // To ensure ensure firestore timestamp objects supported in future
-const settings = { timestampsInSnapshots: true };
-db.settings(settings);
+// const settings = { timestampsInSnapshots: true };
+// db.settings(settings);
 
-export default db;
+// export default db;
