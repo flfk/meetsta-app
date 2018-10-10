@@ -4,6 +4,8 @@ import Btn from '../components/Btn';
 import Container from '../components/Container';
 import Content from '../components/Content';
 
+import db from '../data/firebase';
+
 class Login extends React.Component {
   static navigationOptions = {};
 
