@@ -8,7 +8,7 @@ const config = {
   databaseURL: 'https://online-meet-and-greets.firebaseio.com',
   projectId: 'online-meet-and-greets',
   storageBucket: 'online-meet-and-greets.appspot.com',
-  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID
+  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
 };
 
 firebase.initializeApp(config);
