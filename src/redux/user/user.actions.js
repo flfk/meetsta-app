@@ -1,4 +1,4 @@
-import api from '../firebase/api';
+import api from '../../firebase/api';
 
 import { CREATE_USER } from './user.types';
 

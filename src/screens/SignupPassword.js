@@ -8,7 +8,7 @@ import InputText from '../components/InputText';
 import Btn from '../components/Btn';
 
 import auth from '../firebase/auth';
-import { createUser } from '../actions/user.actions';
+import { createUser } from '../redux/user/user.actions';
 
 const propTypes = {
   navigation: PropTypes.object.isRequired,

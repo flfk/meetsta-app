@@ -1,8 +1,8 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import store from './store';
+import store from './redux/Store';
 
-import TestRedux from './screens/TESTREDUX';
+// import TestRedux from './screens/TESTREDUX';
 
 import NavigatorApp from './navigation/NavigatorApp';
 
