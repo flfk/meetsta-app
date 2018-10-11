@@ -9,9 +9,8 @@ const initialStateUser = {
 const reducerUser = (state = initialStateUser, action) => {
   switch (action.type) {
     case GET_USER:
-      return { ...state, user: action.payload };
+      return { ...state, ...action.payload };
     case UPDATE_USER:
-      console.log('reducing update user with user ', action.payload);
       return { ...state, ...action.payload };
     default:
       return state;

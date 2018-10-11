@@ -1,46 +1,41 @@
 // TestRedux DELETE
 import PropTypes from 'prop-types';
 import React from 'react';
-import { AppState, View, Text, Button } from 'react-native';
+import { View, Text, Button } from 'react-native';
 
 import { connect } from 'react-redux';
 import { updateUser } from '../actions/user';
 
 const propTypes = {
-  user: PropTypes.object.isRequired,
-  updateUser: PropTypes.func.isRequired,
+  uid: PropTypes.string.isRequired,
+  updateUid: PropTypes.func.isRequired,
 };
 
 const defaultProps = {};
 
 // Takes state from redux and returns to component properties
 const mapStateToProps = state => ({
-  user: state.user,
+  uid: state.user.uid,
 });
 
 // Takes dispatch and applies to component properties
 const mapDispatchToProps = dispatch => ({
-  updateUser: user => dispatch(updateUser(user)),
+  updateUid: uid => dispatch(updateUser({ uid })),
 });
 
 class TestRedux extends React.Component {
   handleUpdate = () => {
-    console.log('handling update');
-    console.log('app state', AppState.currentState);
-    const { user } = this.props;
-    const userUpdated = { uid: 'xyz' };
-    this.props.updateUser(userUpdated);
+    const { updateUid } = this.props;
+    updateUid('www');
   };
 
   render() {
-    const { user } = this.props;
-
-    console.log('the user in props is ', user);
+    const { uid } = this.props;
 
     return (
       <View style={style.View}>
         <Text style={style.Text}>Testing redux</Text>
-        <Text style={style.Text}>{user.uid}</Text>
+        <Text style={style.Text}>{uid}</Text>
         <Button title="update" onPress={this.handleUpdate} />
       </View>
     );
