@@ -4,28 +4,41 @@ import React from 'react';
 import { View, Text, Button } from 'react-native';
 
 import { connect } from 'react-redux';
-import { setFavoriteAnimal } from '../actions';
+import { updateUser } from '../actions/user';
 
-const propTypes = {};
+const propTypes = {
+  user: PropTypes.object.isRequired,
+  updateUser: PropTypes.func.isRequired,
+};
 
 const defaultProps = {};
 
-class TestRedux extends React.Component {
-  state = {
-    favoriteAnimal: this.props.favoriteAnimal,
-  };
+// Takes state from redux and returns to component properties
+const mapStateToProps = state => ({
+  user: state.user,
+});
 
-  handleSetFavoriteAnimalPress = () => {
-    const { setFavoriteAnimal } = this.props;
-    setFavoriteAnimal('chicken');
+// Takes dispatch and applies to component properties
+const mapDispatchToProps = dispatch => ({
+  updateUser: user => dispatch(updateUser(user)),
+});
+
+class TestRedux extends React.Component {
+  handleUpdate = () => {
+    console.log('handling update');
+    const { user } = this.props;
+    const userUpdated = { uid: 'xyz' };
+    this.props.updateUser(userUpdated);
   };
 
   render() {
+    const { user } = this.props;
+
     return (
       <View style={style.View}>
         <Text style={style.Text}>Testing redux</Text>
-        <Text style={style.Text}>{this.props.favoriteAnimal}</Text>
-        <Button title="set favorite animal" onPress={this.handleSetFavoriteAnimalPress} />
+        <Text style={style.Text}>{user.uid}</Text>
+        <Button title="update" onPress={this.handleUpdate} />
       </View>
     );
   }
@@ -44,16 +57,6 @@ const style = {
 
 TestRedux.propTypes = propTypes;
 TestRedux.defaultProps = defaultProps;
-
-// Takes state from redux and returns to component properties
-const mapStateToProps = state => ({
-  favoriteAnimal: state.favoriteAnimal,
-});
-
-// Takes dispatch and applies to component properties
-const mapDispatchToProps = dispatch => ({
-  setFavoriteAnimal: text => dispatch(setFavoriteAnimal(text)),
-});
 
 export default connect(
   mapStateToProps,
