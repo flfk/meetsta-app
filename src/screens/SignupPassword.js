@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
 
 import Container from '../components/Container';
 import Fonts from '../utils/Fonts';
@@ -7,21 +8,31 @@ import InputText from '../components/InputText';
 import Btn from '../components/Btn';
 
 import auth from '../firebase/auth';
+import { createUser } from '../actions/user.actions';
 
 const propTypes = {
-  navigation: PropTypes.object.isRequired
+  navigation: PropTypes.object.isRequired,
+  createUser: PropTypes.func.isRequired,
 };
+
+const mapStateToProps = state => ({
+  email: state.user.user.email,
+});
+
+const mapDispatchToProps = dispatch => ({
+  createUser: (email, password) => dispatch(createUser(email, password)),
+});
 
 class SignupPassword extends React.Component {
   state = {
-    password: ''
+    password: '',
   };
 
   getNavParams = () => {
     const { navigation } = this.props;
     return {
       name: navigation.getParam('name', 'NO-NAME'),
-      email: navigation.getParam('email', 'NO-EMAIL')
+      email: navigation.getParam('email', 'NO-EMAIL'),
     };
   };
 
@@ -30,25 +41,31 @@ class SignupPassword extends React.Component {
   handleSignup = async () => {
     const { name, email } = this.getNavParams();
     const { password } = this.state;
-    const user = await this.createUser(email, password);
-    if (user) {
-      const updatedUser = await this.updateDisplayName(name);
-      const { navigation } = this.props;
-      navigation.navigate('Main');
+    try {
+      this.props.createUser(email, password);
+    } catch (error) {
+      console.log('Error handling signup', error);
     }
+
+    // const user = await this.createUser(email, password);
+    // if (user) {
+    //   const updatedUser = await this.updateDisplayName(name);
+    //   const { navigation } = this.props;
+    //   navigation.navigate('Main');
+    // }
   };
 
-  createUser = async (email, password) => {
-    try {
-      const user = await auth.createUserWithEmailAndPassword(email, password);
-      return user;
-    } catch (error) {
-      console.log('error', error);
-      const errorCode = error.code;
-      const { navigation } = this.props;
-      navigation.navigate('AuthErrors', { errorCode });
-    }
-  };
+  // createUser = async (email, password) => {
+  //   try {
+  //     const user = await auth.createUserWithEmailAndPassword(email, password);
+  //     return user;
+  //   } catch (error) {
+  //     console.log('error', error);
+  //     const errorCode = error.code;
+  //     const { navigation } = this.props;
+  //     navigation.navigate('AuthErrors', { errorCode });
+  //   }
+  // };
 
   updateDisplayName = async displayName => {
     try {
@@ -63,8 +80,12 @@ class SignupPassword extends React.Component {
   render() {
     const { password } = this.state;
 
+    const { email } = this.props;
+
     return (
       <Container paddingHorizontal>
+        <Fonts.H1>Email: {email}</Fonts.H1>
+
         <Fonts.H1>Create a password</Fonts.H1>
         <InputText
           label={'Password'}
@@ -81,4 +102,7 @@ class SignupPassword extends React.Component {
 
 SignupPassword.propTypes = propTypes;
 
-export default SignupPassword;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SignupPassword);

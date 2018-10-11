@@ -7,19 +7,19 @@ import TestRedux from './screens/TESTREDUX';
 import NavigatorApp from './navigation/NavigatorApp';
 
 export default class App extends React.Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <TestRedux />
-      </Provider>
-    );
-  }
-
   // render() {
   //   return (
   //     <Provider store={store}>
-  //       <NavigatorApp />
+  //       <TestRedux />
   //     </Provider>
   //   );
   // }
+
+  render() {
+    return (
+      <Provider store={store}>
+        <NavigatorApp />
+      </Provider>
+    );
+  }
 }
