@@ -13,13 +13,7 @@ import { createUser } from '../redux/user/user.actions';
 const propTypes = {
   navigation: PropTypes.object.isRequired,
   actionCreateUser: PropTypes.func.isRequired,
-  createUserError: PropTypes.string.isRequired,
 };
-
-const mapStateToProps = state => ({
-  email: state.user.user.email,
-  createUserError: state.user.error,
-});
 
 const mapDispatchToProps = dispatch => ({
   actionCreateUser: (email, password) => dispatch(createUser(email, password)),
@@ -57,15 +51,8 @@ class SignupPassword extends React.Component {
     }
   };
 
-  goToAuthErrors = errorCode => {
-    const { navigation } = this.props;
-    navigation.navigate('AuthErrors', { errorCode });
-  };
-
   render() {
     const { password } = this.state;
-
-    const { createUserError } = this.props;
 
     return (
       <Container paddingHorizontal>
@@ -78,7 +65,6 @@ class SignupPassword extends React.Component {
           isSecureTextEntry={true}
         />
         <Btn.Primary title="Submit" onPress={this.handleSignup} />
-        <Fonts.ERROR>{createUserError}</Fonts.ERROR>
       </Container>
     );
   }
@@ -87,6 +73,6 @@ class SignupPassword extends React.Component {
 SignupPassword.propTypes = propTypes;
 
 export default connect(
-  mapStateToProps,
+  null,
   mapDispatchToProps
 )(SignupPassword);

@@ -1,11 +1,7 @@
 import api from '../../firebase/api';
-
+import NavigationService from '../../navigation/NavigationService';
 import { CREATE_USER } from './user.types';
 
-// export const GET_USER = 'GET_USER';
-// export const UPDATE_UID = 'UPDATE_UID';
-
-// Action creators
 export const createUser = (email, password) => dispatch => {
   dispatch({
     type: CREATE_USER.PENDING,
@@ -13,7 +9,6 @@ export const createUser = (email, password) => dispatch => {
   api
     .createUser(email, password)
     .then(user => {
-      console.log('user.actions created user', user);
       dispatch({
         type: CREATE_USER.SUCCESS,
         payload: user,
@@ -24,7 +19,8 @@ export const createUser = (email, password) => dispatch => {
         type: CREATE_USER.ERROR,
         payload: error.message,
       });
-      return { error };
+      const errorCode = error.code;
+      NavigationService.navigate('AuthErrors', { errorCode });
     });
 };
 

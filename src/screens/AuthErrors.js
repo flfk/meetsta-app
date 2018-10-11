@@ -5,12 +5,12 @@ import Container from '../components/Container';
 import Fonts from '../utils/Fonts';
 
 const propTypes = {
-  navigation: PropTypes.object.isRequired
+  navigation: PropTypes.object.isRequired,
 };
 
 class AuthErrors extends React.Component {
   state = {
-    errorCode: ''
+    errorCode: '',
   };
 
   componentDidMount() {
@@ -21,7 +21,7 @@ class AuthErrors extends React.Component {
   getErrorText = errorCode => {
     const errorText = {
       title: "Oops, something wen't wrong",
-      message: 'Please try again or contact us at contact.meetsta.com for help.'
+      message: 'Please try again or contact us at contact.meetsta.com for help.',
     };
 
     if (errorCode === 'auth/email-already-in-use') {
@@ -52,8 +52,6 @@ class AuthErrors extends React.Component {
     const { errorCode } = this.state;
 
     const errorText = this.getErrorText(errorCode);
-
-    console.log('error code, ', errorCode);
 
     return (
       <Container paddingHorizontal>

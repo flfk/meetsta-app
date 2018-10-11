@@ -10,10 +10,10 @@ const AppNavigator = createSwitchNavigator(
     Auth: NavigatorAuth,
     Main: NavigatorMain,
     EventFan: NavigatorCallFan,
-    EventOrganiser: NavigatorCallOrganiser
+    EventOrganiser: NavigatorCallOrganiser,
   },
   {
-    initialRouteName: 'Auth'
+    initialRouteName: 'Auth',
   }
 );
 

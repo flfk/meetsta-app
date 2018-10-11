@@ -27,13 +27,6 @@ const reducerUser = (state = initialState, action) => {
         error: action.payload,
         isPendingUser: false,
       };
-    // case GET_USER:
-    //   return {
-    //     ...state,
-    //     ...action.payload,
-    //   };
-    // case UPDATE_UID:
-    //   return { ...state, uid: action.payload };
     default:
       return state;
   }
