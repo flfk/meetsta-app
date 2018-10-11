@@ -11,8 +11,8 @@ const reducerUser = (state = initialStateUser, action) => {
     case GET_USER:
       return { ...state, user: action.payload };
     case UPDATE_USER:
-      console.log('reducing update user');
-      return { ...state, user: action.payload };
+      console.log('reducing update user with user ', action.payload);
+      return { ...state, ...action.payload };
     default:
       return state;
   }

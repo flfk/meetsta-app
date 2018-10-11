@@ -15,7 +15,10 @@ export const getUser = user => ({
   payload: user,
 });
 
-export const updateUser = user => ({
-  type: UPDATE_USER,
-  payload: user,
-});
+export const updateUser = user => {
+  console.log('calling action: update user with uid', user.uid);
+  return {
+    type: UPDATE_USER,
+    payload: user,
+  };
+};

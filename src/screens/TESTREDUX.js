@@ -1,7 +1,7 @@
 // TestRedux DELETE
 import PropTypes from 'prop-types';
 import React from 'react';
-import { View, Text, Button } from 'react-native';
+import { AppState, View, Text, Button } from 'react-native';
 
 import { connect } from 'react-redux';
 import { updateUser } from '../actions/user';
@@ -26,6 +26,7 @@ const mapDispatchToProps = dispatch => ({
 class TestRedux extends React.Component {
   handleUpdate = () => {
     console.log('handling update');
+    console.log('app state', AppState.currentState);
     const { user } = this.props;
     const userUpdated = { uid: 'xyz' };
     this.props.updateUser(userUpdated);
@@ -33,6 +34,8 @@ class TestRedux extends React.Component {
 
   render() {
     const { user } = this.props;
+
+    console.log('the user in props is ', user);
 
     return (
       <View style={style.View}>
