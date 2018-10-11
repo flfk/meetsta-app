@@ -12,15 +12,17 @@ import { createUser } from '../redux/user/user.actions';
 
 const propTypes = {
   navigation: PropTypes.object.isRequired,
-  createUser: PropTypes.func.isRequired,
+  actionCreateUser: PropTypes.func.isRequired,
+  createUserError: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
   email: state.user.user.email,
+  createUserError: state.user.error,
 });
 
 const mapDispatchToProps = dispatch => ({
-  createUser: (email, password) => dispatch(createUser(email, password)),
+  actionCreateUser: (email, password) => dispatch(createUser(email, password)),
 });
 
 class SignupPassword extends React.Component {
@@ -41,31 +43,9 @@ class SignupPassword extends React.Component {
   handleSignup = async () => {
     const { name, email } = this.getNavParams();
     const { password } = this.state;
-    try {
-      this.props.createUser(email, password);
-    } catch (error) {
-      console.log('Error handling signup', error);
-    }
-
-    // const user = await this.createUser(email, password);
-    // if (user) {
-    //   const updatedUser = await this.updateDisplayName(name);
-    //   const { navigation } = this.props;
-    //   navigation.navigate('Main');
-    // }
+    const { actionCreateUser } = this.props;
+    actionCreateUser(email, password);
   };
-
-  // createUser = async (email, password) => {
-  //   try {
-  //     const user = await auth.createUserWithEmailAndPassword(email, password);
-  //     return user;
-  //   } catch (error) {
-  //     console.log('error', error);
-  //     const errorCode = error.code;
-  //     const { navigation } = this.props;
-  //     navigation.navigate('AuthErrors', { errorCode });
-  //   }
-  // };
 
   updateDisplayName = async displayName => {
     try {
@@ -77,15 +57,18 @@ class SignupPassword extends React.Component {
     }
   };
 
+  goToAuthErrors = errorCode => {
+    const { navigation } = this.props;
+    navigation.navigate('AuthErrors', { errorCode });
+  };
+
   render() {
     const { password } = this.state;
 
-    const { email } = this.props;
+    const { createUserError } = this.props;
 
     return (
       <Container paddingHorizontal>
-        <Fonts.H1>Email: {email}</Fonts.H1>
-
         <Fonts.H1>Create a password</Fonts.H1>
         <InputText
           label={'Password'}
@@ -95,6 +78,7 @@ class SignupPassword extends React.Component {
           isSecureTextEntry={true}
         />
         <Btn.Primary title="Submit" onPress={this.handleSignup} />
+        <Fonts.ERROR>{createUserError}</Fonts.ERROR>
       </Container>
     );
   }
