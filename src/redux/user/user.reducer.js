@@ -4,13 +4,15 @@ const initialState = {
   error: '',
   isPendingUser: false,
   user: {
-    email: 'initialState@email',
-    uid: 'initial uid',
     displayName: 'initialName',
+    email: 'initialState@email',
+    photoURL: '',
+    uid: 'initial uid',
   },
 };
 
 const reducerUser = (state = initialState, action) => {
+  const stateUpdated = Object.assign({}, state);
   switch (action.type) {
     case CREATE_USER.PENDING:
       return {
@@ -64,9 +66,9 @@ const reducerUser = (state = initialState, action) => {
         isPendingUser: false,
       };
     case UPDATE_DISPLAY_NAME.SUCCESS:
+      stateUpdated.user.displayName = action.payload;
       return {
-        ...state,
-        user: { ...state.user, displayName: action.payload },
+        ...stateUpdated,
       };
     default:
       return state;

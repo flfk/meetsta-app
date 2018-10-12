@@ -12,10 +12,11 @@ export const fetchUser = async (email, password) => {
 
 export const setDisplayName = async displayName => {
   const user = await auth.currentUser;
-  const userUpdated = await user.updateProfile({ displayName });
-  console.log('userUpdated in api is', userUpdated);
+  await user.updateProfile({
+    displayName: displayName,
+  });
 };
 
 export const signOutUser = async () => {
-  const data = await auth.signOut();
+  await auth.signOut();
 };

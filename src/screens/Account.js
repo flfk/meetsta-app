@@ -7,6 +7,8 @@ import Container from '../components/Container';
 import Fonts from '../utils/Fonts';
 import { signOut } from '../redux/user/user.actions';
 
+import auth from '../firebase/auth';
+
 const propTypes = {
   actionSignOut: PropTypes.func.isRequired,
   displayName: PropTypes.string,
@@ -40,12 +42,9 @@ class Account extends React.Component {
   render() {
     const { displayName, email, uid, state } = this.props;
 
-    console.log(state);
-
     return (
       <Container spaceBetween paddingHorizontal>
-        <Fonts.H1>Your Account</Fonts.H1>
-        <Fonts.H3>{displayName}</Fonts.H3>
+        <Fonts.H1>{displayName}</Fonts.H1>
         <Fonts.H3>{email}</Fonts.H3>
         <Fonts.H3>{uid}</Fonts.H3>
         <Btn.Secondary title="Log Out" onPress={this.handleSignOut} />

@@ -2,16 +2,31 @@ import { addUser, fetchUser, setDisplayName, signOutUser } from '../../firebase/
 import NavigationService from '../../navigation/NavigationService';
 import { CREATE_USER, LOGIN_USER, UPDATE_DISPLAY_NAME, SIGNOUT_USER } from './user.types';
 
-export const createUser = (email, password) => dispatch => {
+export const updateDisplayName = displayName => dispatch => {
+  console.log('calling setDisplayName');
+  setDisplayName(displayName)
+    .then(() => {
+      dispatch({ type: UPDATE_DISPLAY_NAME.SUCCESS, payload: displayName });
+      console.log('user actions updateDisplayName displayName is', displayName);
+    })
+    .catch(error => {
+      console.error('Error actions user updateDisplayName, ', error);
+    });
+};
+
+export const createUser = (email, password, displayName) => dispatch => {
   dispatch({
     type: CREATE_USER.PENDING,
   });
+  console.log('calling addUser');
   addUser(email, password)
     .then(user => {
       dispatch({
         type: CREATE_USER.SUCCESS,
         payload: user,
       });
+      console.log('addUser successful');
+      dispatch(updateDisplayName(displayName));
       NavigationService.navigate('Main');
     })
     .catch(error => {
@@ -69,15 +84,5 @@ export const signOut = () => dispatch => {
       console.log('Error actions sign out, ', error);
       const errorCode = error.code;
       console.log('Error code is, ', errorCode);
-    });
-};
-
-export const updateDisplayName = displayName => dispatch => {
-  setDisplayName(displayName)
-    .then(() => {
-      dispatch({ type: UPDATE_DISPLAY_NAME.SUCCESS, payload: displayName });
-    })
-    .catch(error => {
-      console.error('Error actions user updateDisplayName, ', error);
     });
 };
