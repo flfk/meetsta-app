@@ -9,6 +9,7 @@ import EventsOrganiser from '../screens/EventsOrganiser';
 import TabBarIcon from '../components/TabBarIcon';
 import Tickets from '../screens/Tickets';
 import Account from '../screens/Account';
+import AccountEdit from '../screens/AccountEdit';
 
 const StackTickets = createStackNavigator(
   {
@@ -67,21 +68,31 @@ StackEventsOrganiser.navigationOptions = {
 const StackAccount = createStackNavigator(
   {
     Account,
+    AccountEdit,
   },
   {
     initialRouteName: 'Account',
+    mode: 'modal',
     navigationOptions: NavBarStyle,
   }
 );
 
-StackAccount.navigationOptions = {
-  tabBarLabel: 'Account',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? `ios-settings${focused ? '' : '-outline'}` : 'md-settings'}
-    />
-  ),
+StackAccount.navigationOptions = ({ navigation }) => {
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible,
+    tabBarLabel: 'Account',
+    tabBarIcon: ({ focused }) => (
+      <TabBarIcon
+        focused={focused}
+        name={Platform.OS === 'ios' ? `ios-settings${focused ? '' : '-outline'}` : 'md-settings'}
+      />
+    ),
+  };
 };
 
 const NavigatorMain = createBottomTabNavigator(

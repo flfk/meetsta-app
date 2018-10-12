@@ -9,22 +9,6 @@ export const addUser = async (email, password) => {
   return data.user;
 };
 
-export const fetchUser = async (email, password) => {
-  const data = await auth.signInWithEmailAndPassword(email, password);
-  return data.user;
-};
-
-export const setDisplayName = async displayName => {
-  const user = await auth.currentUser;
-  await user.updateProfile({
-    displayName: displayName,
-  });
-};
-
-export const signOutUser = async () => {
-  await auth.signOut();
-};
-
 export const fetchUserFacebook = async () => {
   const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync(
     FACEBOOK_APP_ID,
@@ -43,8 +27,30 @@ export const fetchUserFacebook = async () => {
   if (type === 'cancel') {
     // Do nothing
   }
-
   return {};
+};
+
+export const fetchUser = async (email, password) => {
+  const data = await auth.signInWithEmailAndPassword(email, password);
+  return data.user;
+};
+
+export const setDisplayName = async displayName => {
+  const user = await auth.currentUser;
+  await user.updateProfile({
+    displayName: displayName,
+  });
+};
+
+export const setEmail = async email => {
+  const user = await auth.currentUser;
+  await user.updateProfile({
+    email: email,
+  });
+};
+
+export const signOutUser = async () => {
+  await auth.signOut();
 };
 
 export const signInWithCredential = async token => {

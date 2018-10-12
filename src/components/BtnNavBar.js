@@ -8,12 +8,13 @@ import COLORS from '../utils/Colors';
 const BtnText = styled.Text`
   padding: 4px 8px;
   font-size: 18;
+  font-weight: bold;
   color: ${COLORS.primary.red};
 `;
 
 const propTypes = {
   title: PropTypes.string.isRequired,
-  onPress: PropTypes.func.isRequired
+  onPress: PropTypes.func.isRequired,
 };
 
 // const defaultProps = {};

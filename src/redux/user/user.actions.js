@@ -3,6 +3,7 @@ import {
   fetchUser,
   fetchUserFacebook,
   setDisplayName,
+  setEmail,
   signInWithCredential,
   signOutUser,
 } from '../../firebase/api';
@@ -11,17 +12,16 @@ import {
   CREATE_USER,
   LOGIN_USER,
   LOGIN_USER_FACEBOOK,
-  UPDATE_DISPLAY_NAME,
   GET_LOGGED_IN_USER,
   SIGNOUT_USER,
+  UPDATE_DISPLAY_NAME,
+  UPDATE_EMAIL,
 } from './user.types';
 
 export const updateDisplayName = displayName => dispatch => {
-  console.log('calling setDisplayName');
   setDisplayName(displayName)
     .then(() => {
       dispatch({ type: UPDATE_DISPLAY_NAME.SUCCESS, payload: displayName });
-      console.log('user actions updateDisplayName displayName is', displayName);
     })
     .catch(error => {
       console.error('Error actions user updateDisplayName, ', error);
@@ -32,14 +32,12 @@ export const createUser = (email, password, displayName) => dispatch => {
   dispatch({
     type: CREATE_USER.PENDING,
   });
-  console.log('calling addUser');
   addUser(email, password)
     .then(user => {
       dispatch({
         type: CREATE_USER.SUCCESS,
         payload: user,
       });
-      console.log('addUser successful');
       dispatch(updateDisplayName(displayName));
       NavigationService.navigate('Main');
     })
@@ -48,7 +46,7 @@ export const createUser = (email, password, displayName) => dispatch => {
         type: CREATE_USER.ERROR,
         payload: error.message,
       });
-      console.log('Error actions user createUser, ', error);
+      console.error('Error actions user createUser, ', error);
       const errorCode = error.code;
       NavigationService.navigate('AuthErrors', { errorCode });
     });
@@ -129,5 +127,15 @@ export const signOut = () => dispatch => {
       console.log('Error actions sign out, ', error);
       const errorCode = error.code;
       console.log('Error code is, ', errorCode);
+    });
+};
+
+export const updateEmail = email => dispatch => {
+  setEmail(email)
+    .then(() => {
+      dispatch({ type: UPDATE_EMAIL.SUCCESS, payload: email });
+    })
+    .catch(error => {
+      console.error('Error actions user updateEmail, ', error);
     });
 };
