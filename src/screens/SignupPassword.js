@@ -8,7 +8,7 @@ import InputText from '../components/InputText';
 import Btn from '../components/Btn';
 
 import auth from '../firebase/auth';
-import { createUser } from '../redux/user/user.actions';
+import { createUser, updateDisplayName } from '../redux/user/user.actions';
 
 const propTypes = {
   navigation: PropTypes.object.isRequired,
@@ -17,6 +17,7 @@ const propTypes = {
 
 const mapDispatchToProps = dispatch => ({
   actionCreateUser: (email, password) => dispatch(createUser(email, password)),
+  actionupdateDisplayName: displayName => dispatch(updateDisplayName(displayName)),
 });
 
 class SignupPassword extends React.Component {
@@ -37,11 +38,12 @@ class SignupPassword extends React.Component {
   handleSignup = async () => {
     const { name, email } = this.getNavParams();
     const { password } = this.state;
-    const { actionCreateUser } = this.props;
+    const { actionCreateUser, actionupdateDisplayName } = this.props;
     actionCreateUser(email, password);
+    actionupdateDisplayName(name);
   };
 
-  updateDisplayName = async displayName => {
+  setDisplayName = async displayName => {
     try {
       const user = await auth.currentUser;
       const updatedUser = await user.updateProfile({ displayName });

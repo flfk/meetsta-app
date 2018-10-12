@@ -1,11 +1,12 @@
 import auth from './auth';
 
-const createUser = async (email, password) => {
+export const addUser = async (email, password) => {
   const data = await auth.createUserWithEmailAndPassword(email, password);
   return data.user;
 };
 
-const api = {};
-api.createUser = createUser;
-
-export default api;
+export const setDisplayName = async displayName => {
+  const user = await auth.currentUser;
+  const userUpdated = await user.updateProfile({ displayName });
+  console.log('userUpdated in api is', userUpdated);
+};

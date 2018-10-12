@@ -1,11 +1,13 @@
-import { CREATE_USER } from './user.types';
+import { CREATE_USER, UPDATE_DISPLAY_NAME } from './user.types';
 
 const initialState = {
-  user: {
-    email: 'initialState@Email.com',
-  },
-  isPendingUser: false,
   error: '',
+  isPendingUser: false,
+  user: {
+    email: 'initialState@email',
+    uid: 'initial uid',
+    displayName: 'initialName',
+  },
 };
 
 const reducerUser = (state = initialState, action) => {
@@ -19,13 +21,17 @@ const reducerUser = (state = initialState, action) => {
       return {
         ...state,
         user: action.payload,
-        isPendingUser: false,
       };
     case CREATE_USER.ERROR:
       return {
         ...state,
         error: action.payload,
         isPendingUser: false,
+      };
+    case UPDATE_DISPLAY_NAME.SUCCESS:
+      return {
+        ...state,
+        user: { ...state.user, displayName: action.payload },
       };
     default:
       return state;
