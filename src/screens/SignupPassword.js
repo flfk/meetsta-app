@@ -64,7 +64,7 @@ class SignupPassword extends React.Component {
           value={password}
           handler={this.handleChangePassword}
           placeholder={''}
-          isSecureTextEntry={true}
+          isSecureTextEntry
         />
         <Btn.Primary title="Submit" onPress={this.handleSignup} />
       </Container>

@@ -40,6 +40,17 @@ class AuthErrors extends React.Component {
       errorText.title = 'Oops, your password needs to be at least 6 characters';
     }
 
+    if (errorCode === 'auth/wrong-password') {
+      errorText.title = 'Wrong password';
+      errorText.message =
+        "The email and password don't match. Please try again or contact us at contact.meetsta.com for help.";
+    }
+
+    if (errorCode === 'auth/user-not-found') {
+      errorText.title = "You haven't signed up yet";
+      errorText.message = "Looks like you don't have an account yet. You'll need to sign up first.";
+    }
+
     return errorText;
   };
 
