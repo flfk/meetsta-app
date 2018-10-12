@@ -1,4 +1,4 @@
-import { CREATE_USER, LOGIN_USER, UPDATE_DISPLAY_NAME } from './user.types';
+import { CREATE_USER, LOGIN_USER, UPDATE_DISPLAY_NAME, SIGNOUT_USER } from './user.types';
 
 const initialState = {
   error: '',
@@ -41,6 +41,23 @@ const reducerUser = (state = initialState, action) => {
         isPendingUser: false,
       };
     case LOGIN_USER.ERROR:
+      return {
+        ...state,
+        error: action.payload,
+        isPendingUser: false,
+      };
+    case SIGNOUT_USER.PENDING:
+      return {
+        ...state,
+        isPendingUser: true,
+      };
+    case SIGNOUT_USER.SUCCESS:
+      return {
+        ...state,
+        user: action.payload,
+        isPendingUser: false,
+      };
+    case SIGNOUT_USER.ERROR:
       return {
         ...state,
         error: action.payload,

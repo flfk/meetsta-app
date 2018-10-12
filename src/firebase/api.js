@@ -15,3 +15,7 @@ export const setDisplayName = async displayName => {
   const userUpdated = await user.updateProfile({ displayName });
   console.log('userUpdated in api is', userUpdated);
 };
+
+export const signOutUser = async () => {
+  const data = await auth.signOut();
+};

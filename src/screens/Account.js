@@ -5,16 +5,20 @@ import { connect } from 'react-redux';
 import Btn from '../components/Btn';
 import Container from '../components/Container';
 import Fonts from '../utils/Fonts';
-
-import auth from '../firebase/auth';
+import { signOut } from '../redux/user/user.actions';
 
 const propTypes = {
-  displayName: PropTypes.string.isRequired,
-  email: PropTypes.string.isRequired,
-  uid: PropTypes.string.isRequired,
+  actionSignOut: PropTypes.func.isRequired,
+  displayName: PropTypes.string,
+  email: PropTypes.string,
+  uid: PropTypes.string,
 };
 
-const defaultProps = {};
+const defaultProps = {
+  displayName: '',
+  email: '',
+  uid: '',
+};
 
 const mapStateToProps = state => ({
   displayName: state.user.user.displayName,
@@ -23,10 +27,14 @@ const mapStateToProps = state => ({
   state: state,
 });
 
-class Settings extends React.Component {
-  logOut = () => {
-    const { navigation } = this.props;
-    navigation.navigate('Auth');
+const mapDispatchToProps = dispatch => ({
+  actionSignOut: () => dispatch(signOut()),
+});
+
+class Account extends React.Component {
+  handleSignOut = () => {
+    const { actionSignOut } = this.props;
+    actionSignOut();
   };
 
   render() {
@@ -40,16 +48,16 @@ class Settings extends React.Component {
         <Fonts.H3>{displayName}</Fonts.H3>
         <Fonts.H3>{email}</Fonts.H3>
         <Fonts.H3>{uid}</Fonts.H3>
-        <Btn.Secondary title="Log Out" onPress={this.logOut} />
+        <Btn.Secondary title="Log Out" onPress={this.handleSignOut} />
       </Container>
     );
   }
 }
 
-Settings.propTypes = propTypes;
-Settings.defaultProps = defaultProps;
+Account.propTypes = propTypes;
+Account.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,
-  null
-)(Settings);
+  mapDispatchToProps
+)(Account);

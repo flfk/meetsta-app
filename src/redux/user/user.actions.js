@@ -1,6 +1,6 @@
-import { addUser, fetchUser, setDisplayName } from '../../firebase/api';
+import { addUser, fetchUser, setDisplayName, signOutUser } from '../../firebase/api';
 import NavigationService from '../../navigation/NavigationService';
-import { CREATE_USER, LOGIN_USER, UPDATE_DISPLAY_NAME } from './user.types';
+import { CREATE_USER, LOGIN_USER, UPDATE_DISPLAY_NAME, SIGNOUT_USER } from './user.types';
 
 export const createUser = (email, password) => dispatch => {
   dispatch({
@@ -46,6 +46,29 @@ export const login = (email, password) => dispatch => {
       const errorCode = error.code;
       console.log('Error code is, ', errorCode);
       NavigationService.navigate('AuthErrors', { errorCode });
+    });
+};
+
+export const signOut = () => dispatch => {
+  dispatch({
+    type: SIGNOUT_USER.PENDING,
+  });
+  signOutUser()
+    .then(() => {
+      dispatch({
+        type: SIGNOUT_USER.SUCCESS,
+        payload: {},
+      });
+      NavigationService.navigate('Auth');
+    })
+    .catch(error => {
+      dispatch({
+        type: SIGNOUT_USER.ERROR,
+        payload: error.message,
+      });
+      console.log('Error actions sign out, ', error);
+      const errorCode = error.code;
+      console.log('Error code is, ', errorCode);
     });
 };
 
