@@ -1,6 +1,20 @@
-import { addUser, fetchUser, setDisplayName, signOutUser } from '../../firebase/api';
+import {
+  addUser,
+  fetchUser,
+  fetchUserFacebook,
+  setDisplayName,
+  signInWithCredential,
+  signOutUser,
+} from '../../firebase/api';
 import NavigationService from '../../navigation/NavigationService';
-import { CREATE_USER, LOGIN_USER, UPDATE_DISPLAY_NAME, SIGNOUT_USER } from './user.types';
+import {
+  CREATE_USER,
+  LOGIN_USER,
+  LOGIN_USER_FACEBOOK,
+  UPDATE_DISPLAY_NAME,
+  GET_LOGGED_IN_USER,
+  SIGNOUT_USER,
+} from './user.types';
 
 export const updateDisplayName = displayName => dispatch => {
   console.log('calling setDisplayName');
@@ -62,6 +76,37 @@ export const login = (email, password) => dispatch => {
       console.log('Error code is, ', errorCode);
       NavigationService.navigate('AuthErrors', { errorCode });
     });
+};
+
+export const loginWithFacebook = () => dispatch => {
+  dispatch({
+    type: LOGIN_USER_FACEBOOK.PENDING,
+  });
+  fetchUserFacebook().then(response => {
+    const { token, name } = response;
+    signInWithCredential(token)
+      .then(user => {
+        dispatch({
+          type: LOGIN_USER_FACEBOOK.SUCCESS,
+          payload: user,
+        });
+        NavigationService.navigate('Main');
+      })
+      .catch(error => {
+        dispatch({
+          type: LOGIN_USER_FACEBOOK.ERROR,
+          payload: error.message,
+        });
+        console.log('Error actions user login with facebook, ', error);
+      });
+  });
+};
+
+export const getLoggedInUser = user => dispatch => {
+  dispatch({
+    type: GET_LOGGED_IN_USER.SUCCESS,
+    payload: user,
+  });
 };
 
 export const signOut = () => dispatch => {

@@ -13,11 +13,11 @@ import Account from '../screens/Account';
 const StackTickets = createStackNavigator(
   {
     AddTicket,
-    Tickets
+    Tickets,
   },
   {
     initialRouteName: 'Tickets',
-    navigationOptions: NavBarStyle
+    navigationOptions: NavBarStyle,
   }
 );
 
@@ -30,6 +30,7 @@ StackTickets.navigationOptions = ({ navigation }) => {
 
   return {
     tabBarVisible,
+    tabBarLabel: 'Tickets',
     tabBarIcon: ({ focused }) => (
       <TabBarIcon
         focused={focused}
@@ -39,17 +40,17 @@ StackTickets.navigationOptions = ({ navigation }) => {
             : 'md-information-circle'
         }
       />
-    )
+    ),
   };
 };
 
 const StackEventsOrganiser = createStackNavigator(
   {
-    EventsOrganiser
+    EventsOrganiser,
   },
   {
     initialRouteName: 'EventsOrganiser',
-    navigationOptions: NavBarStyle
+    navigationOptions: NavBarStyle,
   }
 );
 
@@ -60,16 +61,16 @@ StackEventsOrganiser.navigationOptions = {
       focused={focused}
       name={Platform.OS === 'ios' ? `ios-options${focused ? '' : '-outline'}` : 'md-options'}
     />
-  )
+  ),
 };
 
 const StackAccount = createStackNavigator(
   {
-    Account
+    Account,
   },
   {
     initialRouteName: 'Account',
-    navigationOptions: NavBarStyle
+    navigationOptions: NavBarStyle,
   }
 );
 
@@ -80,19 +81,19 @@ StackAccount.navigationOptions = {
       focused={focused}
       name={Platform.OS === 'ios' ? `ios-settings${focused ? '' : '-outline'}` : 'md-settings'}
     />
-  )
+  ),
 };
 
 const NavigatorMain = createBottomTabNavigator(
   {
     StackTickets,
     StackEventsOrganiser,
-    StackAccount
+    StackAccount,
   },
   {
     tabBarOptions: {
-      activeTintColor: `${COLORS.primary.red}`
-    }
+      activeTintColor: `${COLORS.primary.red}`,
+    },
   }
 );
 

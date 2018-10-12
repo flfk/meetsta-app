@@ -17,11 +17,16 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
-    }
+      "supportsTablet": true,
+      "bundleIdentifier": "com.meetsta.meetsta-app"
+    },
+    "android": {
+      "package": "com.meetsta.meetsta-app"
+    },
+    "facebookScheme": "fb300757057416010",
+    "facebookAppId": "300757057416010",
+    "facebookDisplayName": "meetsta-app"
   }
 }
