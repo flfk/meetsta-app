@@ -1,36 +1,44 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
 
 import Container from '../components/Container';
 import Fonts from '../utils/Fonts';
 import InputText from '../components/InputText';
 import Btn from '../components/Btn';
 
+import { createUser, updateDisplayName } from '../redux/user/user.actions';
+
 const propTypes = {
-  navigation: PropTypes.object.isRequired
+  navigation: PropTypes.object.isRequired,
+  actionCreateUser: PropTypes.func.isRequired,
 };
+
+const mapDispatchToProps = dispatch => ({
+  actionCreateUser: (email, password, displayName) =>
+    dispatch(createUser(email, password, displayName)),
+});
 
 class SignupPassword extends React.Component {
   state = {
-    password: ''
+    password: '',
   };
-
-  handleChangePassword = password => this.setState({ password });
 
   getNavParams = () => {
     const { navigation } = this.props;
     return {
       name: navigation.getParam('name', 'NO-NAME'),
-      email: navigation.getParam('email', 'NO-EMAIL')
+      email: navigation.getParam('email', 'NO-EMAIL'),
     };
   };
 
-  submitUser = () => {
+  handleChangePassword = password => this.setState({ password });
+
+  handleSignup = async () => {
     const { name, email } = this.getNavParams();
     const { password } = this.state;
-    const { navigation } = this.props;
-    console.log('creating new user with ', name, email, password);
-    navigation.navigate('Main');
+    const { actionCreateUser } = this.props;
+    actionCreateUser(email, password, name);
   };
 
   render() {
@@ -44,9 +52,9 @@ class SignupPassword extends React.Component {
           value={password}
           handler={this.handleChangePassword}
           placeholder={''}
-          isSecureTextEntry={true}
+          isSecureTextEntry
         />
-        <Btn.Primary title="Submit" onPress={this.submitUser} />
+        <Btn.Primary title="Submit" onPress={this.handleSignup} />
       </Container>
     );
   }
@@ -54,4 +62,7 @@ class SignupPassword extends React.Component {
 
 SignupPassword.propTypes = propTypes;
 
-export default SignupPassword;
+export default connect(
+  null,
+  mapDispatchToProps
+)(SignupPassword);

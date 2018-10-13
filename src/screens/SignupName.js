@@ -31,7 +31,7 @@ class SignupName extends React.Component {
 
     return (
       <Container paddingHorizontal>
-        <Fonts.H1>And, your name?</Fonts.H1>
+        <Fonts.H1>Tell us your name</Fonts.H1>
         <InputText
           label={'Name'}
           value={name}

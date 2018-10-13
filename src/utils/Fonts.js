@@ -12,7 +12,7 @@ const FONT_SIZES = {
   h2: '24',
   h3: '20',
   p: '16',
-  finePrint: '12'
+  finePrint: '12',
 };
 
 const LOGO = styled.Text`
@@ -67,8 +67,7 @@ const ERROR = styled.Text`
   font-size: ${FONT_SIZES.p};
   font-weight: bold;
   color: red;
-  margin: 8px 0;
-  margin: ${props => (props.noMargin ? '0px' : '')};
+  margin: 0;
   text-align: ${props => (props.center ? 'center' : 'auto')};
 `;
 

@@ -9,15 +9,16 @@ import EventsOrganiser from '../screens/EventsOrganiser';
 import TabBarIcon from '../components/TabBarIcon';
 import Tickets from '../screens/Tickets';
 import Account from '../screens/Account';
+import AccountEdit from '../screens/AccountEdit';
 
 const StackTickets = createStackNavigator(
   {
     AddTicket,
-    Tickets
+    Tickets,
   },
   {
     initialRouteName: 'Tickets',
-    navigationOptions: NavBarStyle
+    navigationOptions: NavBarStyle,
   }
 );
 
@@ -30,6 +31,7 @@ StackTickets.navigationOptions = ({ navigation }) => {
 
   return {
     tabBarVisible,
+    tabBarLabel: 'Tickets',
     tabBarIcon: ({ focused }) => (
       <TabBarIcon
         focused={focused}
@@ -39,17 +41,17 @@ StackTickets.navigationOptions = ({ navigation }) => {
             : 'md-information-circle'
         }
       />
-    )
+    ),
   };
 };
 
 const StackEventsOrganiser = createStackNavigator(
   {
-    EventsOrganiser
+    EventsOrganiser,
   },
   {
     initialRouteName: 'EventsOrganiser',
-    navigationOptions: NavBarStyle
+    navigationOptions: NavBarStyle,
   }
 );
 
@@ -60,39 +62,49 @@ StackEventsOrganiser.navigationOptions = {
       focused={focused}
       name={Platform.OS === 'ios' ? `ios-options${focused ? '' : '-outline'}` : 'md-options'}
     />
-  )
+  ),
 };
 
 const StackAccount = createStackNavigator(
   {
-    Account
+    Account,
+    AccountEdit,
   },
   {
     initialRouteName: 'Account',
-    navigationOptions: NavBarStyle
+    mode: 'modal',
+    navigationOptions: NavBarStyle,
   }
 );
 
-StackAccount.navigationOptions = {
-  tabBarLabel: 'Account',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? `ios-settings${focused ? '' : '-outline'}` : 'md-settings'}
-    />
-  )
+StackAccount.navigationOptions = ({ navigation }) => {
+  let tabBarVisible = true;
+  if (navigation.state.index > 0) {
+    tabBarVisible = false;
+  }
+
+  return {
+    tabBarVisible,
+    tabBarLabel: 'Account',
+    tabBarIcon: ({ focused }) => (
+      <TabBarIcon
+        focused={focused}
+        name={Platform.OS === 'ios' ? `ios-settings${focused ? '' : '-outline'}` : 'md-settings'}
+      />
+    ),
+  };
 };
 
 const NavigatorMain = createBottomTabNavigator(
   {
     StackTickets,
     StackEventsOrganiser,
-    StackAccount
+    StackAccount,
   },
   {
     tabBarOptions: {
-      activeTintColor: `${COLORS.primary.red}`
-    }
+      activeTintColor: `${COLORS.primary.red}`,
+    },
   }
 );
 
