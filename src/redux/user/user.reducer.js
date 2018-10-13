@@ -19,7 +19,6 @@ const initialState = {
 };
 
 const reducerUser = (state = initialState, action) => {
-  let stateUpdated = Object.assign({}, state);
   switch (action.type) {
     case CREATE_USER.PENDING:
       return {
