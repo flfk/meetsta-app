@@ -1,4 +1,4 @@
-import {} from './tickets.types';
+import { ADD_ORDER } from './orders.types';
 
 const initialState = [
   {
@@ -23,10 +23,9 @@ const initialState = [
 
 const reducerTickets = (state = initialState, action) => {
   switch (action.type) {
-    // case CREATE_USER.PENDING:
-    //   return {
-    //     ...state,
-    //   };
+    case ADD_ORDER.SUCCESS:
+      console.log('reducer called for Add Order');
+      return [...state, action.payload];
     default:
       return state;
   }

@@ -1,12 +1,32 @@
 import auth from './auth';
-import firebase from 'firebase/app';
+import db from './db';
 
+// Collection and document Names
+const COLL_ADD_ONS = 'addOns';
+const COLL_EVENTS = 'events';
+const COLL_ORDERS = 'orders';
+const COLL_TICKETS = 'tickets';
 const FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID;
 const FACEBOOK_OPTIONS = { permissions: ['public_profile', 'email'], behaviour: 'native' };
 
 export const addUser = async (email, password) => {
   const data = await auth.createUserWithEmailAndPassword(email, password);
   return data.user;
+};
+
+export const fetchDocOrder = async orderRef => {
+  let order = {};
+  try {
+    const ordersRef = db.collection(COLL_ORDERS);
+    const snapshots = await ordersRef.where('orderRef', '==', orderRef).get();
+    snapshots.forEach(snap => {
+      order = snap.data();
+      order.ID = snap.id;
+    });
+  } catch (error) {
+    console.error('Error api fetchDocOrder, ', error);
+  }
+  return order;
 };
 
 export const fetchUserFacebook = async () => {

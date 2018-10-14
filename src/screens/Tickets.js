@@ -12,27 +12,8 @@ import ListTickets from '../components/ListTickets';
 
 import BANNER_ANDRE from '../assets/EventBannerAndre.jpg';
 
-const TEST_EVENTS = [
-  {
-    title: 'Meet Andre Swilley',
-    organiser: 'Andre Swiley',
-    date: 'Sunday, 26 August',
-    time: '3:05pm PDT',
-    orderNum: '123123123',
-    name: 'Say Hi and Get a Selfie',
-  },
-  {
-    title: 'Meet Mostly Luca',
-    organiser: 'Andre Swiley',
-    date: 'Sunday, 26 August',
-    time: '3:05pm PDT',
-    orderNum: '123123123',
-    name: 'Say Hi and Get a Selfie',
-  },
-];
-
 const propTypes = {
-  tickets: PropTypes.arrayOf(
+  orders: PropTypes.arrayOf(
     PropTypes.shape({
       title: PropTypes.string.isRequired,
       organiser: PropTypes.string.isRequired,
@@ -48,7 +29,7 @@ const propTypes = {
 const defaultProps = {};
 
 const mapStateToProps = state => ({
-  tickets: state.tickets,
+  orders: state.orders,
 });
 
 class Tickets extends React.Component {
@@ -60,16 +41,19 @@ class Tickets extends React.Component {
     };
   };
 
-  state = {
-    events: [],
-  };
+  state = {};
 
   componentDidMount() {
-    this.getData();
+    this.getTickets();
   }
 
-  getData = () => {
-    this.setState({ events: TEST_EVENTS });
+  getTickets = () => {
+    // XX TODO
+    // Check to see if the user has any orders
+    // If they have orders dispatch orders to store
+    // If they have none, present instructions to add a ticket
+    // handle errors
+    // swipe up to reload
   };
 
   joinQueue = () => {
@@ -94,17 +78,20 @@ class Tickets extends React.Component {
 
   renderHeader = {};
 
-  render() {
-    console.log(this.props.tickets);
+  sortTickets = (a, b) => a.dateStart - b.dateStart;
 
-    const { tickets } = this.props;
+  render() {
+    console.log('Tickets orders are', this.props.orders);
+
+    const { orders } = this.props;
+    const ordersSorted = orders.sort(this.sortTickets);
 
     return (
       <Container>
         <ListTickets
           ListHeaderComponent={<Fonts.H1 marginLeft>My Tickets</Fonts.H1>}
           renderItem={this.renderItem}
-          data={tickets}
+          data={ordersSorted}
           keyExtractor={(event, index) => event + index}
         />
       </Container>
