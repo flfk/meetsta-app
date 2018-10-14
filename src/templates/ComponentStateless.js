@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
-import { View } from 'react-native';
+import { ScrollView, Line } from 'react-native';
+
+import ShimmerPlaceHolder from 'react-native-shimmer-placeholder';
 
 const propTypes = {};
 

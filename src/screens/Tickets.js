@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { RefreshControl } from 'react-native';
+import { RefreshControl, ScrollView, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import BtnNavBar from '../components/BtnNavBar';
@@ -10,11 +10,10 @@ import Container from '../components/Container';
 import Fonts from '../utils/Fonts';
 import { getDate, getTimeStart } from '../utils/Helpers';
 import ListTickets from '../components/ListTickets';
+import ListTicketsPlaceholder from '../components/ListTicketsPlaceholder';
 
 import { fetchCollOrders, fetchAdditionalOrderFields } from '../firebase/api';
 import { addOrdersAll } from '../redux/orders/orders.actions';
-
-import BANNER_ANDRE from '../assets/EventBannerAndre.jpg';
 
 const propTypes = {
   actionAddOrdersAll: PropTypes.func.isRequired,
@@ -53,6 +52,7 @@ class Tickets extends React.Component {
   };
 
   state = {
+    isLoading: false,
     refreshing: false,
   };
 
@@ -61,6 +61,7 @@ class Tickets extends React.Component {
   }
 
   loadOrders = async () => {
+    this.setState({ isLoading: true });
     const { actionAddOrdersAll, uid } = this.props;
     const orderColl = await fetchCollOrders(uid);
     const orders = await Promise.all(
@@ -75,6 +76,7 @@ class Tickets extends React.Component {
       // XX TODO
       // If they have none, present instructions to add a ticket
     }
+    this.setState({ isLoading: false });
   };
 
   joinQueue = () => {
@@ -110,21 +112,23 @@ class Tickets extends React.Component {
 
   render() {
     // console.log('Tickets orders are', this.props.orders);
-    const { refreshing } = this.state;
+    const { isLoading, refreshing } = this.state;
     const { orders } = this.props;
     const ordersSorted = orders.sort(this.sortTickets);
 
-    return (
-      <Container>
-        <ListTickets
-          ListHeaderComponent={<Fonts.H1 marginLeft>My Tickets</Fonts.H1>}
-          renderItem={this.renderItem}
-          data={ordersSorted}
-          keyExtractor={(event, index) => event + index}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} />}
-        />
-      </Container>
+    const listTickets = (
+      <ListTickets
+        ListHeaderComponent={<Fonts.H1 marginLeft>My Tickets</Fonts.H1>}
+        renderItem={this.renderItem}
+        data={ordersSorted}
+        keyExtractor={(event, index) => event + index}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} />}
+      />
     );
+
+    const list = isLoading ? <ListTicketsPlaceholder /> : listTickets;
+
+    return <Container>{list}</Container>;
   }
 }
 
