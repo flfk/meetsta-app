@@ -29,6 +29,39 @@ export const fetchDocOrder = async orderRef => {
   return order;
 };
 
+export const fetchDocEvent = async eventID => {
+  let event = {};
+  try {
+    const eventsRef = db.collection(COLL_EVENTS).doc(eventID);
+    const snapshot = await eventsRef.get();
+    event = snapshot.data();
+  } catch (error) {
+    console.error('Error api fetchDocEvent, ', error);
+  }
+  return event;
+};
+
+export const fetchCollEventTickets = async eventID => {
+  const tickets = [];
+  try {
+    const ticketsRef = db
+      .collection(COLL_EVENTS)
+      .doc(eventID)
+      .collection(COLL_TICKETS);
+    const snapshot = await ticketsRef.get();
+    snapshot.forEach(snap => {
+      const ticket = snap.data();
+      const { id } = snap;
+      ticket.ticketID = id;
+      tickets.push(ticket);
+    });
+    return tickets;
+  } catch (error) {
+    console.error('Error api fetchCollEventTickets ', error);
+  }
+  return tickets;
+};
+
 export const fetchUserFacebook = async () => {
   const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync(
     FACEBOOK_APP_ID,
