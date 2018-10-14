@@ -69,12 +69,12 @@ class Tickets extends React.Component {
         return { ...orderDoc, ...additionalFields };
       })
     );
-    console.log('orders are ', orders);
-    actionAddOrdersAll(orders);
-
-    // XX TODO
-    // If they have none, present instructions to add a ticket
-    // swipe up to reload
+    if (orders.length > 0) {
+      actionAddOrdersAll(orders);
+    } else {
+      // XX TODO
+      // If they have none, present instructions to add a ticket
+    }
   };
 
   joinQueue = () => {
