@@ -14,14 +14,66 @@ export const addUser = async (email, password) => {
   return data.user;
 };
 
+export const fetchAdditionalOrderFields = async order => {
+  const event = await fetchDocEvent(order.eventID);
+  const ticket = await fetchDocTicket(order.eventID, order.ticketID);
+  return {
+    ...order,
+    dateStart: event.dateStart,
+    name: ticket.name,
+    organiserName: event.organiserName,
+    previewImgURL: ticket.previewImgURL,
+    title: event.title,
+  };
+};
+
+export const fetchCollOrders = async uid => {
+  const orders = [];
+  try {
+    const ordersRef = db.collection(COLL_ORDERS);
+    const snapshots = await ordersRef.where('uid', '==', uid).get();
+    snapshots.forEach(snap => {
+      const order = snap.data();
+      const { id } = snap;
+      order.orderID = id;
+      orders.push(order);
+    });
+    return orders;
+  } catch (error) {
+    console.error('Error api fetchCollOrders ', error);
+  }
+  return orders;
+};
+
+export const fetchCollEventTickets = async eventID => {
+  const tickets = [];
+  try {
+    const ticketsRef = db
+      .collection(COLL_EVENTS)
+      .doc(eventID)
+      .collection(COLL_TICKETS);
+    const snapshot = await ticketsRef.get();
+    snapshot.forEach(snap => {
+      const ticket = snap.data();
+      const { id } = snap;
+      ticket.ticketID = id;
+      tickets.push(ticket);
+    });
+    return tickets;
+  } catch (error) {
+    console.error('Error api fetchCollEventTickets ', error);
+  }
+  return tickets;
+};
+
 export const fetchDocOrder = async orderRef => {
-  let order = {};
+  let orderComplete = {};
   try {
     const ordersRef = db.collection(COLL_ORDERS);
     const snapshots = await ordersRef.where('orderRef', '==', orderRef).get();
     snapshots.forEach(snap => {
       order = snap.data();
-      order.ID = snap.id;
+      order.orderID = snap.id;
     });
   } catch (error) {
     console.error('Error api fetchDocOrder, ', error);
@@ -55,27 +107,6 @@ export const fetchDocTicket = async (eventID, ticketID) => {
     console.error('Error api fetchDocTicket, ', error);
   }
   return ticket;
-};
-
-export const fetchCollEventTickets = async eventID => {
-  const tickets = [];
-  try {
-    const ticketsRef = db
-      .collection(COLL_EVENTS)
-      .doc(eventID)
-      .collection(COLL_TICKETS);
-    const snapshot = await ticketsRef.get();
-    snapshot.forEach(snap => {
-      const ticket = snap.data();
-      const { id } = snap;
-      ticket.ticketID = id;
-      tickets.push(ticket);
-    });
-    return tickets;
-  } catch (error) {
-    console.error('Error api fetchCollEventTickets ', error);
-  }
-  return tickets;
 };
 
 export const fetchUserFacebook = async () => {
@@ -128,4 +159,15 @@ export const signInWithCredential = async token => {
   console.log(data);
   // from data you can get data.additionalUserInfo and then isNewUser, profile.picture.url (100px by 100px)
   return data.user;
+};
+
+export const updateDocOrder = async (orderID, field, value) => {
+  try {
+    const orderRef = db.collection(COLL_ORDERS).doc(orderID);
+    const fieldValuePair = {};
+    fieldValuePair[field] = value;
+    orderRef.update({ ...fieldValuePair });
+  } catch (error) {
+    console.error('Error api updateDocOrder, ', error);
+  }
 };
