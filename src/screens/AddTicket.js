@@ -9,7 +9,7 @@ import InputText from '../components/InputText';
 
 import { addOrder } from '../redux/orders/orders.actions';
 
-import { fetchDocOrder, fetchDocEvent, fetchCollEventTickets } from '../firebase/api';
+import { fetchDocOrder, fetchDocEvent, fetchDocTicket } from '../firebase/api';
 import NavigationService from '../navigation/NavigationService';
 
 const propTypes = {
@@ -37,8 +37,18 @@ class AddTicket extends React.Component {
     const { actionAddOrder } = this.props;
     const order = await fetchDocOrder(orderRef);
     const event = await fetchDocEvent(order.eventID);
-    event.tickets = await fetchCollEventTickets(order.eventID);
+    const ticket = await fetchDocTicket(order.eventID, order.ticketID);
+
     console.log('event is', event);
+    console.log('ticket is', ticket);
+
+    order.dateStart = event.dateStart;
+    order.name = ticket.name;
+    order.organiserName = event.organiserName;
+    order.previewImgURL = ticket.previewImgURL;
+    order.title = event.title;
+
+    console.log('order being added is', order);
     actionAddOrder(order);
     // NavigationService.navigate('Tickets');
     // attempt to fetch the ticket

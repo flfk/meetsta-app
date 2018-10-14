@@ -16,9 +16,9 @@ const propTypes = {
   orders: PropTypes.arrayOf(
     PropTypes.shape({
       title: PropTypes.string.isRequired,
-      organiser: PropTypes.string.isRequired,
+      organiserName: PropTypes.string.isRequired,
       dateStart: PropTypes.number.isRequired,
-      orderNum: PropTypes.string.isRequired,
+      orderRef: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
       ticketID: PropTypes.string.isRequired,
       eventID: PropTypes.string.isRequired,
@@ -65,12 +65,12 @@ class Tickets extends React.Component {
   renderItem = ({ item, index }) => {
     return (
       <CellTicket key={index}>
-        <CellTicket.Image source={BANNER_ANDRE} />
+        <CellTicket.Image source={{ uri: item.previewImgURL }} />
         <Fonts.H1>{item.name}</Fonts.H1>
-        <Fonts.H2>{item.organiser}</Fonts.H2>
+        <Fonts.H2>{item.organiserName}</Fonts.H2>
         <Fonts.P>{getDate(item.dateStart)}</Fonts.P>
         <Fonts.P>{getTimeStart(item.dateStart)}</Fonts.P>
-        <Fonts.P>Order #{item.orderNum}</Fonts.P>
+        <Fonts.P>Order ref {item.orderRef}</Fonts.P>
         <Btn.Primary title="Join Queue" onPress={this.joinQueue} />
       </CellTicket>
     );
@@ -81,7 +81,7 @@ class Tickets extends React.Component {
   sortTickets = (a, b) => a.dateStart - b.dateStart;
 
   render() {
-    console.log('Tickets orders are', this.props.orders);
+    // console.log('Tickets orders are', this.props.orders);
 
     const { orders } = this.props;
     const ordersSorted = orders.sort(this.sortTickets);

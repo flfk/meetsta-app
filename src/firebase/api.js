@@ -41,6 +41,22 @@ export const fetchDocEvent = async eventID => {
   return event;
 };
 
+export const fetchDocTicket = async (eventID, ticketID) => {
+  let ticket = {};
+  try {
+    const eventsRef = db
+      .collection(COLL_EVENTS)
+      .doc(eventID)
+      .collection(COLL_TICKETS)
+      .doc(ticketID);
+    const snapshot = await eventsRef.get();
+    ticket = snapshot.data();
+  } catch (error) {
+    console.error('Error api fetchDocTicket, ', error);
+  }
+  return ticket;
+};
+
 export const fetchCollEventTickets = async eventID => {
   const tickets = [];
   try {
