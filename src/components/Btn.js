@@ -17,7 +17,7 @@ const defaultProps = {
 };
 
 const Primary = ({ title, onPress, disabled, icon }) => (
-  <WrapperPrimary onPress={onPress} disabled>
+  <WrapperPrimary onPress={onPress} disabled={disabled}>
     <TextPrimary>{icon}</TextPrimary>
     <TextPrimary>{title}</TextPrimary>
   </WrapperPrimary>
@@ -27,7 +27,7 @@ Primary.propTypes = propTypes;
 Primary.defaultProps = defaultProps;
 
 const Secondary = ({ title, onPress, disabled, icon }) => (
-  <WrapperSecondary onPress={onPress} disabled>
+  <WrapperSecondary onPress={onPress} disabled={disabled}>
     <TextSecondary>{icon}</TextSecondary>
     <TextSecondary>{title}</TextSecondary>
   </WrapperSecondary>
@@ -37,7 +37,7 @@ Secondary.propTypes = propTypes;
 Secondary.defaultProps = defaultProps;
 
 const Tertiary = ({ title, onPress, disabled, icon }) => (
-  <WrapperTertiary onPress={onPress} disabled>
+  <WrapperTertiary onPress={onPress} disabled={disabled}>
     <TextSecondary>{icon}</TextSecondary>
     <TextSecondary>{title}</TextSecondary>
   </WrapperTertiary>
