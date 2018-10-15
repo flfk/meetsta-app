@@ -46,7 +46,6 @@ export const createUser = (email, password, displayName) => dispatch => {
         type: CREATE_USER.ERROR,
         payload: error.message,
       });
-      console.error('Error actions user createUser, ', error);
       const errorCode = error.code;
       NavigationService.navigate('AuthErrors', { errorCode });
     });

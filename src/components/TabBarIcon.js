@@ -6,7 +6,7 @@ import COLORS from '../utils/Colors';
 
 const propTypes = {
   name: PropTypes.string.isRequired,
-  focused: PropTypes.bool.isRequired
+  focused: PropTypes.bool.isRequired,
 };
 
 const defaultProps = {};
@@ -15,7 +15,7 @@ const TabBarIcon = props => {
   const { name, focused } = props;
 
   return (
-    <Icon.Ionicons
+    <Icon.MaterialCommunityIcons
       name={name}
       size={26}
       style={{ marginBottom: -3 }}

@@ -1,7 +1,7 @@
-import styled from 'styled-components';
-import { TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { TouchableOpacity } from 'react-native';
+import styled from 'styled-components';
 
 import COLORS from '../utils/Colors';
 

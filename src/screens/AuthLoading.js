@@ -30,7 +30,6 @@ class AuthLoading extends React.Component {
     auth.onAuthStateChanged(user => {
       if (user) {
         // User is signed in.
-        console.log('user signed in');
         const { actionGetLoggedInUser } = this.props;
         actionGetLoggedInUser(user);
 

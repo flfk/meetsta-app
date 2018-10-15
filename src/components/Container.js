@@ -6,6 +6,7 @@ const Container = styled.View`
   justify-content: flex-start;
   align-items: flex-start;
   background-color: white;
+  width: 100%;
 
   ${props => (props.paddingHorizontal ? 'padding-left: 16px; padding-right: 16px' : '')};
   ${props => (props.paddingVertical ? 'padding-top: 16px; padding-bottom: 16px' : '')};

@@ -7,12 +7,12 @@ import InputText from '../components/InputText';
 import Btn from '../components/Btn';
 
 const propTypes = {
-  navigation: PropTypes.object.isRequired
+  navigation: PropTypes.object.isRequired,
 };
 
 class SignupEmail extends React.Component {
   state = {
-    email: ''
+    email: '',
   };
 
   handleChangeEmail = email => this.setState({ email });
@@ -20,17 +20,18 @@ class SignupEmail extends React.Component {
   getNavParams = () => {
     const { navigation } = this.props;
     return {
-      name: navigation.getParam('name', 'NO-NAME')
+      name: navigation.getParam('name', 'NO-NAME'),
     };
   };
 
   goToNext = () => {
     const { email } = this.state;
+    const emailFormatted = email.toLowerCase().trim();
     const { name } = this.getNavParams();
     const { navigation } = this.props;
     navigation.navigate('SignupPassword', {
-      email,
-      name
+      emailFormatted,
+      name,
     });
   };
 
