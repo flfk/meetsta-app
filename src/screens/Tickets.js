@@ -2,13 +2,15 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
+import moment from 'moment-timezone';
 
 import BtnNavBar from '../components/BtnNavBar';
 import Btn from '../components/Btn';
 import CellTicket from '../components/CellTicket';
 import Container from '../components/Container';
 import Fonts from '../utils/Fonts';
-import { getDate, getTimeStart } from '../utils/Helpers';
+import Icons from '../components/Icons';
+import { getDate, getTimeStart, getTimeRemaining } from '../utils/Helpers';
 import List from '../components/List';
 import ListTicketsPlaceholder from '../components/ListTicketsPlaceholder';
 import OnboardingBubble from '../components/OnboardingBubble';
@@ -84,6 +86,16 @@ class Tickets extends React.Component {
   };
 
   renderItem = ({ item, index }) => {
+    let btn = null;
+    const timeRemaining = getTimeRemaining(item.dateStart);
+    const { days, diffMillis, hours, minutes } = timeRemaining;
+    const btnText = `${days}d : ${hours}h : ${minutes}m to go`;
+    if (diffMillis < 0) {
+      btn = <Btn.Primary title="Join Queue" onPress={this.joinQueue} icon={Icons.Video} />;
+    } else {
+      btn = <Btn.Tertiary title={btnText} onPress={() => true} disabled icon={Icons.Hourglass} />;
+    }
+
     return (
       <CellTicket key={index}>
         <CellTicket.Image source={{ uri: item.previewImgURL }} />
@@ -92,7 +104,7 @@ class Tickets extends React.Component {
         <Fonts.P>{getDate(item.dateStart)}</Fonts.P>
         <Fonts.P>{getTimeStart(item.dateStart)}</Fonts.P>
         <Fonts.P>Order ref {item.orderRef}</Fonts.P>
-        <Btn.Primary title="Join Queue" onPress={this.joinQueue} />
+        {btn}
       </CellTicket>
     );
   };

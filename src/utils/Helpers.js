@@ -15,3 +15,17 @@ export const getTimeStart = dateStart => {
 
 export const getDate = dateStart =>
   moment.tz(dateStart, 'America/Los_Angeles').format('dddd, MMM Do, YYYY');
+
+export const getTimeRemaining = timestampMillis => {
+  const momentCurrent = moment();
+  const momentStart = moment(timestampMillis);
+  const diffMillis = momentStart.diff(momentCurrent);
+  const duration = moment.duration({ milliseconds: diffMillis });
+  return {
+    days: duration.days(),
+    diffMillis,
+    hours: duration.hours(),
+    minutes: duration.minutes(),
+    seconds: duration.seconds(),
+  };
+};

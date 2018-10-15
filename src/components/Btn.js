@@ -7,31 +7,44 @@ import COLORS from '../utils/Colors';
 const propTypes = {
   title: PropTypes.string.isRequired,
   onPress: PropTypes.func.isRequired,
+  disabled: PropTypes.bool,
+  icon: PropTypes.element,
 };
 
-const Primary = ({ title, onPress }) => (
-  <WrapperPrimary onPress={onPress}>
+const defaultProps = {
+  disabled: false,
+  icon: null,
+};
+
+const Primary = ({ title, onPress, disabled, icon }) => (
+  <WrapperPrimary onPress={onPress} disabled>
+    <TextPrimary>{icon}</TextPrimary>
     <TextPrimary>{title}</TextPrimary>
   </WrapperPrimary>
 );
 
 Primary.propTypes = propTypes;
+Primary.defaultProps = defaultProps;
 
-const Secondary = ({ title, onPress }) => (
-  <WrapperSecondary onPress={onPress}>
+const Secondary = ({ title, onPress, disabled, icon }) => (
+  <WrapperSecondary onPress={onPress} disabled>
+    <TextSecondary>{icon}</TextSecondary>
     <TextSecondary>{title}</TextSecondary>
   </WrapperSecondary>
 );
 
 Secondary.propTypes = propTypes;
+Secondary.defaultProps = defaultProps;
 
-const Tertiary = ({ title, onPress }) => (
-  <WrapperTertiary onPress={onPress}>
+const Tertiary = ({ title, onPress, disabled, icon }) => (
+  <WrapperTertiary onPress={onPress} disabled>
+    <TextSecondary>{icon}</TextSecondary>
     <TextSecondary>{title}</TextSecondary>
   </WrapperTertiary>
 );
 
 Tertiary.propTypes = propTypes;
+Tertiary.defaultProps = defaultProps;
 
 // Styles
 
@@ -41,8 +54,10 @@ const Wrapper = styled.TouchableOpacity`
   padding-top: 8;
   margin-bottom: 16;
   border-radius: 5;
-  align-items: center;
   width: 100%;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 `;
 
 const WrapperPrimary = styled(Wrapper)`

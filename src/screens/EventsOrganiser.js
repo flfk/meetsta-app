@@ -7,7 +7,8 @@ import Btn from '../components/Btn';
 import CellTicket from '../components/CellTicket';
 import Container from '../components/Container';
 import Fonts from '../utils/Fonts';
-import { getDate, getTimeStart } from '../utils/Helpers';
+import Icons from '../components/Icons';
+import { getDate, getTimeStart, getTimeRemaining } from '../utils/Helpers';
 import List from '../components/List';
 import ListEventsPlaceholder from '../components/ListEventsPlaceholder';
 
@@ -65,7 +66,6 @@ class Events extends React.Component {
         return { ...eventsDoc, ...additionalFields };
       })
     );
-    console.log('events are', events);
     if (events.length > 0) {
       actionAddEventsAll(events);
     }
@@ -73,6 +73,16 @@ class Events extends React.Component {
   };
 
   renderItem = ({ item, index }) => {
+    let btn = null;
+    const timeRemaining = getTimeRemaining(item.dateStart);
+    const { days, diffMillis, hours, minutes } = timeRemaining;
+    const btnText = `${days}d : ${hours}h : ${minutes}m to go`;
+    if (diffMillis < 0) {
+      btn = <Btn.Primary title="Start Event" onPress={this.startEvent} icon={Icons.Video} />;
+    } else {
+      btn = <Btn.Tertiary title={btnText} onPress={() => true} disabled icon={Icons.Hourglass} />;
+    }
+
     return (
       <CellTicket key={index}>
         <CellTicket.Image source={{ uri: item.previewImgURL }} />
@@ -88,7 +98,7 @@ class Events extends React.Component {
         <Fonts.H2>
           {item.addOnsSold} <Fonts.P>add ons sold</Fonts.P>
         </Fonts.H2>
-        <Btn.Primary title="Start Event" onPress={this.startEvent} />
+        {btn}
       </CellTicket>
     );
   };
