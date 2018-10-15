@@ -1,6 +1,8 @@
 import auth from './auth';
 import db from './db';
 
+import { MEETSTA_COMMISSION } from '../utils/Constants';
+
 // Collection and document Names
 const COLL_ADD_ONS = 'addOns';
 const COLL_EVENTS = 'events';
@@ -14,11 +16,23 @@ export const addUser = async (email, password) => {
   return data.user;
 };
 
+export const fetchAdditionalEventFields = async eventID => {
+  const orders = await fetchCollEventOrders(eventID);
+  const revenueTotal = orders.reduce((total, order) => total + order.priceTotal, 0);
+  const revenueOrganiser = revenueTotal * (1 - MEETSTA_COMMISSION);
+  const ticketsSold = orders.filter(order => order.lengthMins).length;
+  const addOnsSold = orders.reduce((total, order) => total + order.addOns.length, 0);
+  return {
+    revenue: revenueOrganiser,
+    ticketsSold,
+    addOnsSold,
+  };
+};
+
 export const fetchAdditionalOrderFields = async order => {
   const event = await fetchDocEvent(order.eventID);
   const ticket = await fetchDocTicket(order.eventID, order.ticketID);
   return {
-    ...order,
     dateStart: event.dateStart,
     name: ticket.name,
     organiserName: event.organiserName,
@@ -45,11 +59,11 @@ export const fetchCollOrders = async uid => {
   return orders;
 };
 
-export const fetchCollEvents = async () => {
+export const fetchCollEvents = async uid => {
   const events = [];
   try {
     const eventsRef = db.collection(COLL_EVENTS);
-    const snapshot = await eventsRef.get();
+    const snapshot = await eventsRef.where('organiserUid', '==', uid).get();
     snapshot.forEach(snap => {
       const event = snap.data();
       const { id } = snap;
@@ -82,6 +96,24 @@ export const fetchCollEventTickets = async eventID => {
     console.error('Error api fetchCollEventTickets ', error);
   }
   return tickets;
+};
+
+export const fetchCollEventOrders = async eventID => {
+  const orders = [];
+  try {
+    const ordersRef = db.collection(COLL_ORDERS);
+    const snapshot = await ordersRef.where('eventID', '==', eventID).get();
+    snapshot.forEach(snap => {
+      const order = snap.data();
+      const { id } = snap;
+      order.orderID = id;
+      orders.push(order);
+    });
+    return orders;
+  } catch (error) {
+    console.error('Error api fetchCollEventOrders ', error);
+  }
+  return orders;
 };
 
 export const fetchDocOrder = async orderRef => {

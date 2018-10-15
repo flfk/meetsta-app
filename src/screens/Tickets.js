@@ -9,7 +9,7 @@ import CellTicket from '../components/CellTicket';
 import Container from '../components/Container';
 import Fonts from '../utils/Fonts';
 import { getDate, getTimeStart } from '../utils/Helpers';
-import ListTickets from '../components/ListTickets';
+import List from '../components/List';
 import ListTicketsPlaceholder from '../components/ListTicketsPlaceholder';
 import OnboardingBubble from '../components/OnboardingBubble';
 
@@ -115,7 +115,7 @@ class Tickets extends React.Component {
     const ordersSorted = orders.sort(this.sortOrders);
 
     const listTickets = (
-      <ListTickets
+      <List
         ListHeaderComponent={<Fonts.H1 marginLeft>My Tickets</Fonts.H1>}
         renderItem={this.renderItem}
         data={ordersSorted}
@@ -124,13 +124,13 @@ class Tickets extends React.Component {
       />
     );
 
-    let list = isLoading ? <ListTicketsPlaceholder /> : listTickets;
+    let content = isLoading ? <ListTicketsPlaceholder /> : listTickets;
 
-    if (!isLoading && orders.length == 0) {
-      list = <OnboardingBubble text={'Click here to add your first ticket'} />;
+    if (!isLoading && orders.length === 0) {
+      content = <OnboardingBubble text="Click here to add your first ticket" />;
     }
 
-    return <Container>{list}</Container>;
+    return <Container>{content}</Container>;
   }
 }
 

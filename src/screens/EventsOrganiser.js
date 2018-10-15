@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { RefreshControl } from 'react-native';
+import { Linking, RefreshControl, View } from 'react-native';
 import { connect } from 'react-redux';
 
 import Btn from '../components/Btn';
@@ -8,31 +8,11 @@ import CellTicket from '../components/CellTicket';
 import Container from '../components/Container';
 import Fonts from '../utils/Fonts';
 import { getDate, getTimeStart } from '../utils/Helpers';
-import ListTickets from '../components/ListTickets';
+import List from '../components/List';
+import ListEventsPlaceholder from '../components/ListEventsPlaceholder';
 
-// import { XX } from '../firebase/api';
-import { addEventsAll } from '../redux/orders/orders.actions';
-
-import BANNER_ANDRE from '../assets/EventBannerAndre.jpg';
-
-// const TEST_EVENTS = [
-//   {
-//     title: 'Meet Andre Swilley',
-//     revenue: 50,
-//     ticketsSold: 12,
-//     addOnsSold: 5,
-//     date: 'Sunday, 26 August',
-//     time: '3:05pm PDT',
-//   },
-//   {
-//     title: 'Meet Mostly Luca',
-//     revenue: 50,
-//     ticketsSold: 8,
-//     addOnsSold: 5,
-//     date: 'Sunday, 26 August',
-//     time: '3:05pm PDT',
-//   },
-// ];
+import { fetchAdditionalEventFields, fetchCollEvents } from '../firebase/api';
+import { addEventsAll } from '../redux/events/events.actions';
 
 const propTypes = {
   actionAddEventsAll: PropTypes.func.isRequired,
@@ -77,30 +57,30 @@ class Events extends React.Component {
 
   loadEvents = async () => {
     this.setState({ isLoading: true });
-    // const { actionAddEventsAll, uid } = this.props;
-    // const orderColl = await fetchCollEvents(uid);
-    // const orders = await Promise.all(
-    //   orderColl.map(async orderDoc => {
-    //     const additionalFields = await fetchAdditionalOrderFields(orderDoc);
-    //     return { ...orderDoc, ...additionalFields };
-    //   })
-    // );
-    // if (orders.length > 0) {
-    //   actionAddEventsAll(orders);
-    // }
+    const { actionAddEventsAll, uid } = this.props;
+    const eventsColl = await fetchCollEvents(uid);
+    const events = await Promise.all(
+      eventsColl.map(async eventsDoc => {
+        const additionalFields = await fetchAdditionalEventFields(eventsDoc.eventID);
+        return { ...eventsDoc, ...additionalFields };
+      })
+    );
+    console.log('events are', events);
+    if (events.length > 0) {
+      actionAddEventsAll(events);
+    }
     this.setState({ isLoading: false });
   };
 
   renderItem = ({ item, index }) => {
     return (
       <CellTicket key={index}>
-        <CellTicket.Image source={BANNER_ANDRE} />
+        <CellTicket.Image source={{ uri: item.previewImgURL }} />
         <Fonts.H1>{item.title}</Fonts.H1>
-        <Fonts.H3>
-          {getDate(item.dateStart)}, {getTimeStart(item.dateStart)}
-        </Fonts.H3>
+        <Fonts.H3>{getDate(item.dateStart)}</Fonts.H3>
+        <Fonts.H3>{getTimeStart(item.dateStart)}</Fonts.H3>
         <Fonts.H2>
-          ${item.revenue} <Fonts.P>earned</Fonts.P>
+          ${item.revenue.toFixed(0)} <Fonts.P>earned</Fonts.P>
         </Fonts.H2>
         <Fonts.H2>
           {item.ticketsSold} <Fonts.P>tickets sold</Fonts.P>
@@ -135,17 +115,37 @@ class Events extends React.Component {
     const { events } = this.props;
     const eventsSorted = events.sort(this.sortEvents);
 
-    return (
-      <Container>
-        <ListTickets
-          ListHeaderComponent={<Fonts.H1 marginLeft>My Events</Fonts.H1>}
-          renderItem={this.renderItem}
-          data={events}
-          keyExtractor={(event, index) => event + index}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} />}
-        />
-      </Container>
+    const listEvents = (
+      <List
+        ListHeaderComponent={<Fonts.H1 marginLeft>My Events</Fonts.H1>}
+        renderItem={this.renderItem}
+        data={events}
+        keyExtractor={(event, index) => event + index}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} />}
+      />
     );
+
+    let content = isLoading ? <ListEventsPlaceholder /> : listEvents;
+
+    if (!isLoading && events.length === 0) {
+      content = (
+        <Container paddingHorizontal>
+          <Fonts.H1>Sorry for now creating events is an invite only feature</Fonts.H1>
+          <Fonts.P>
+            Are you an influencer and want to host your own event? Click the button below and send
+            us your instagram handle.
+          </Fonts.P>
+          <Btn.Primary
+            title="Request Access"
+            onPress={() =>
+              Linking.openURL('mailto:contact.meetsta@gmail.com?subject=I want a Meetsta Event')
+            }
+          />
+        </Container>
+      );
+    }
+
+    return <Container>{content}</Container>;
   }
 }
 

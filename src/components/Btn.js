@@ -6,7 +6,7 @@ import COLORS from '../utils/Colors';
 
 const propTypes = {
   title: PropTypes.string.isRequired,
-  onPress: PropTypes.func.isRequired
+  onPress: PropTypes.func.isRequired,
 };
 
 const Primary = ({ title, onPress }) => (
@@ -36,6 +36,7 @@ Tertiary.propTypes = propTypes;
 // Styles
 
 const Wrapper = styled.TouchableOpacity`
+  flex-shrink: 0;
   padding-bottom: 8;
   padding-top: 8;
   margin-bottom: 16;

@@ -43,6 +43,15 @@ const H2Placeholder = styled(ShimmerPlaceHolder)`
 
 const H2 = props => <H2Placeholder autoRun visible={false} />;
 
+const H3Placeholder = styled(ShimmerPlaceHolder)`
+  width: 100%;
+  border-radius: 5px;
+  height: 24.5;
+  margin-bottom: 16;
+`;
+
+const H3 = props => <H3Placeholder autoRun visible={false} />;
+
 const List = styled.ScrollView`
   width: 100%;
 `;
@@ -62,6 +71,7 @@ Placeholder.Cell = Cell;
 Placeholder.CellImage = CellImage;
 Placeholder.H1 = H1;
 Placeholder.H2 = H2;
+Placeholder.H3 = H3;
 Placeholder.List = List;
 Placeholder.P = P;
 
