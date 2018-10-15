@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
 
-import reducerTickets from './orders/orders.reducer';
+import reducerEvents from './events/events.reducer';
+import reducerOrders from './orders/orders.reducer';
 import reducerUser from './user/user.reducer';
 
 const reducerRoot = combineReducers({
-  orders: reducerTickets,
+  events: reducerEvents,
+  orders: reducerOrders,
   user: reducerUser,
 });
 

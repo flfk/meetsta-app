@@ -15,7 +15,7 @@ const initialState = [
   // },
 ];
 
-const reducerTickets = (state = initialState, action) => {
+const reducerEvents = (state = initialState, action) => {
   switch (action.type) {
     case ADD_ORDER.SUCCESS:
       return [...state, action.payload];
@@ -26,4 +26,4 @@ const reducerTickets = (state = initialState, action) => {
   }
 };
 
-export default reducerTickets;
+export default reducerEvents;

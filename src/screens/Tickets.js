@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { RefreshControl, ScrollView, View } from 'react-native';
+import { RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
 
 import BtnNavBar from '../components/BtnNavBar';
@@ -73,9 +73,6 @@ class Tickets extends React.Component {
     );
     if (orders.length > 0) {
       actionAddOrdersAll(orders);
-    } else {
-      // XX TODO
-      // If they have none, present instructions to add a ticket
     }
     this.setState({ isLoading: false });
   };
@@ -102,7 +99,7 @@ class Tickets extends React.Component {
 
   renderHeader = {};
 
-  sortTickets = (a, b) => a.dateStart - b.dateStart;
+  sortOrders = (a, b) => a.dateStart - b.dateStart;
 
   onRefresh = () => {
     this.setState({ refreshing: true });
@@ -115,7 +112,7 @@ class Tickets extends React.Component {
     // console.log('Tickets orders are', this.props.orders);
     const { isLoading, refreshing } = this.state;
     const { orders } = this.props;
-    const ordersSorted = orders.sort(this.sortTickets);
+    const ordersSorted = orders.sort(this.sortOrders);
 
     const listTickets = (
       <ListTickets

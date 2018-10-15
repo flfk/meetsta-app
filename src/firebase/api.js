@@ -45,6 +45,24 @@ export const fetchCollOrders = async uid => {
   return orders;
 };
 
+export const fetchCollEvents = async () => {
+  const events = [];
+  try {
+    const eventsRef = db.collection(COLL_EVENTS);
+    const snapshot = await eventsRef.get();
+    snapshot.forEach(snap => {
+      const event = snap.data();
+      const { id } = snap;
+      event.eventID = id;
+      events.push(event);
+    });
+    return events;
+  } catch (error) {
+    console.error('Error api fetchCollEvents ', error);
+  }
+  return events;
+};
+
 export const fetchCollEventTickets = async eventID => {
   const tickets = [];
   try {
