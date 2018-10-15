@@ -11,6 +11,7 @@ import Fonts from '../utils/Fonts';
 import { getDate, getTimeStart } from '../utils/Helpers';
 import ListTickets from '../components/ListTickets';
 import ListTicketsPlaceholder from '../components/ListTicketsPlaceholder';
+import OnboardingBubble from '../components/OnboardingBubble';
 
 import { fetchCollOrders, fetchAdditionalOrderFields } from '../firebase/api';
 import { addOrdersAll } from '../redux/orders/orders.actions';
@@ -126,7 +127,11 @@ class Tickets extends React.Component {
       />
     );
 
-    const list = isLoading ? <ListTicketsPlaceholder /> : listTickets;
+    let list = isLoading ? <ListTicketsPlaceholder /> : listTickets;
+
+    if (!isLoading && orders.length == 0) {
+      list = <OnboardingBubble text={'Click here to add your first ticket'} />;
+    }
 
     return <Container>{list}</Container>;
   }

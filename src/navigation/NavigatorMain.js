@@ -35,11 +35,12 @@ StackTickets.navigationOptions = ({ navigation }) => {
     tabBarIcon: ({ focused }) => (
       <TabBarIcon
         focused={focused}
-        name={
-          Platform.OS === 'ios'
-            ? `ios-information-circle${focused ? '' : '-outline'}`
-            : 'md-information-circle'
-        }
+        name="ticket"
+        // name={
+        //   Platform.OS === 'ios'
+        //     ? `ios-information-circle${focused ? '' : '-outline'}`
+        //     : 'md-information-circle'
+        // }
       />
     ),
   };
@@ -60,7 +61,8 @@ StackEventsOrganiser.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? `ios-options${focused ? '' : '-outline'}` : 'md-options'}
+      name="calendar"
+      // name={Platform.OS === 'ios' ? `ios-options${focused ? '' : '-outline'}` : 'md-options'}
     />
   ),
 };
@@ -89,7 +91,7 @@ StackAccount.navigationOptions = ({ navigation }) => {
     tabBarIcon: ({ focused }) => (
       <TabBarIcon
         focused={focused}
-        name={Platform.OS === 'ios' ? `ios-settings${focused ? '' : '-outline'}` : 'md-settings'}
+        name={Platform.OS === 'ios' ? `account${focused ? '' : '-outline'}` : 'account'}
       />
     ),
   };
