@@ -15,11 +15,19 @@ import List from '../components/List';
 import ListTicketsPlaceholder from '../components/ListTicketsPlaceholder';
 import OnboardingBubble from '../components/OnboardingBubble';
 
-import { addToQueue, fetchCollOrders, fetchAdditionalOrderFields } from '../firebase/api';
-import { addQueue, addOrderID } from '../redux/call/call.actions';
+import {
+  addToQueue,
+  fetchCollOrders,
+  fetchAdditionalQueueFields,
+  fetchAdditionalOrderFields,
+} from '../firebase/api';
+import { addQueue, addEventIDToCall, addOrderIDToCall } from '../redux/call/call.actions';
 import { addOrdersAll } from '../redux/orders/orders.actions';
 
 const propTypes = {
+  actionAddEventIDToCall: PropTypes.func.isRequired,
+  actionAddOrderIDToCall: PropTypes.func.isRequired,
+  actionAddQueue: PropTypes.func.isRequired,
   actionAddOrdersAll: PropTypes.func.isRequired,
   orders: PropTypes.arrayOf(
     PropTypes.shape({
@@ -46,7 +54,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actionAddOrdersAll: orders => dispatch(addOrdersAll(orders)),
   actionAddQueue: queue => dispatch(addQueue(queue)),
-  actionAddOrderID: orderID => dispatch(addOrderID(orderID)),
+  actionAddOrderIDToCall: orderID => dispatch(addOrderIDToCall(orderID)),
+  actionAddEventIDToCall: eventID => dispatch(addEventIDToCall(eventID)),
 });
 
 class Tickets extends React.Component {
@@ -71,8 +80,9 @@ class Tickets extends React.Component {
     this.setState({ isLoading: true });
     const { actionAddOrdersAll, uid } = this.props;
     const orderColl = await fetchCollOrders(uid);
+    const ordersNotCompleted = orderColl.filter(orderDoc => !orderDoc.wasCompleted);
     const orders = await Promise.all(
-      orderColl.map(async orderDoc => {
+      ordersNotCompleted.map(async orderDoc => {
         const additionalFields = await fetchAdditionalOrderFields(orderDoc);
         return { ...orderDoc, ...additionalFields };
       })
@@ -84,12 +94,19 @@ class Tickets extends React.Component {
   };
 
   joinQueue = async (orderID, eventID) => {
-    const { actionAddQueue, actionAddOrderID } = this.props;
-    console.log('Tickets joinQueue with event and order IDs of', eventID, orderID);
-    const queue = await addToQueue(eventID, orderID);
-    console.log('Tickets queue is ', queue);
+    const { actionAddQueue, actionAddEventIDToCall, actionAddOrderIDToCall } = this.props;
+    console.log('Tickets, joinQueue with event and order IDs of', eventID, orderID);
+    const queueOrderIDs = await addToQueue(eventID, orderID);
+    const queue = await Promise.all(
+      queueOrderIDs.map(async queueOrderID => {
+        const additionalFields = await fetchAdditionalQueueFields(queueOrderID);
+        return { orderID: queueOrderID, ...additionalFields };
+      })
+    );
+    // console.log('Tickets, queue is ', queue);
     actionAddQueue(queue);
-    actionAddOrderID(orderID);
+    actionAddOrderIDToCall(orderID);
+    actionAddEventIDToCall(eventID);
     const { navigation } = this.props;
     navigation.navigate('EventFan');
   };
@@ -136,7 +153,7 @@ class Tickets extends React.Component {
   };
 
   render() {
-    console.log('Orders are', this.props.orders);
+    // console.log('Orders are', this.props.orders);
     const { isLoading, refreshing } = this.state;
     const { orders } = this.props;
     const ordersSorted = orders.sort(this.sortOrders);

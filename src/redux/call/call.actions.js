@@ -1,8 +1,15 @@
-import { ADD_ORDER_ID, ADD_QUEUE } from './call.types';
+import { ADD_EVENT_ID_TO_CALL, ADD_ORDER_ID_TO_CALL, ADD_QUEUE } from './call.types';
 
-export const addOrderID = orderID => dispatch => {
+export const addEventIDToCall = eventID => dispatch => {
   dispatch({
-    type: ADD_ORDER_ID.SUCCESS,
+    type: ADD_EVENT_ID_TO_CALL.SUCCESS,
+    payload: eventID,
+  });
+};
+
+export const addOrderIDToCall = orderID => dispatch => {
+  dispatch({
+    type: ADD_ORDER_ID_TO_CALL.SUCCESS,
     payload: orderID,
   });
 };

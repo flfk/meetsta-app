@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 
@@ -5,9 +6,32 @@ import Btn from '../components/Btn';
 import Container from '../components/Container';
 import Fonts from '../utils/Fonts';
 
+import { removeFromQueue } from '../firebase/api';
+
+const propTypes = {
+  orderID: PropTypes.string.isRequired,
+  eventID: PropTypes.string.isRequired,
+  queue: PropTypes.arrayOf(
+    PropTypes.shape({
+      lengthMins: PropTypes.number,
+      orderID: PropTypes.string,
+      uid: PropTypes.string,
+    })
+  ).isRequired,
+  currentCall: PropTypes.shape({
+    lengthMins: PropTypes.number,
+    orderID: PropTypes.string,
+    uid: PropTypes.string,
+  }).isRequired,
+};
+
+const defaultProps = {};
+
 const mapStateToProps = state => ({
   orderID: state.call.orderID,
+  eventID: state.call.eventID,
   queue: state.call.queue,
+  currentCall: state.call.currentCall,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -17,8 +41,28 @@ const mapDispatchToProps = dispatch => ({
 class QueueFan extends React.Component {
   state = {
     eventTitle: "Andre Swilley's Online Meet & Greet",
-    queuePosition: 3,
     queueWaitTimeMins: 10,
+  };
+
+  componentDidMount() {}
+
+  getQueueIndex = () => {
+    const { orderID, queue } = this.props;
+    const queueOrderIDs = queue.map(item => item.orderID);
+    const index = queueOrderIDs.indexOf(orderID);
+    if (queueOrderIDs.indexOf(orderID) === -1) {
+      console.error('QueueFan getQueueIndex orderID not found in queue');
+    }
+    return index;
+  };
+
+  getQueueWaitTimeMins = () => {
+    const { queue, currentCall } = this.props;
+    const index = this.getQueueIndex();
+    const queueInfront = queue.slice(0, index);
+    const waitTimeMins =
+      currentCall.lengthMins + queueInfront.reduce((total, order) => total + order.lengthMins, 0);
+    return waitTimeMins;
   };
 
   JOINCALL = () => {
@@ -29,6 +73,8 @@ class QueueFan extends React.Component {
 
   leaveQueue = () => {
     // XX todo
+    const { eventID, orderID } = this.props;
+    removeFromQueue(eventID, orderID);
     this.goToMain();
   };
 
@@ -38,11 +84,9 @@ class QueueFan extends React.Component {
   };
 
   render() {
-    const { eventTitle, queuePosition, queueWaitTimeMins } = this.state;
+    const { eventTitle } = this.state;
 
-    console.log('the queue is ', this.props.queue);
-    console.log('the orderID is ', this.props.orderID);
-
+    const queuePosition = this.getQueueIndex() + 1;
     let queuePositionText = null;
     switch (queuePosition) {
       case 1:
@@ -56,6 +100,8 @@ class QueueFan extends React.Component {
         break;
     }
 
+    const queueWaitTimeMins = this.getQueueWaitTimeMins();
+
     return (
       <Container paddingHorizontal center>
         <Fonts.H2>You are in the queue for </Fonts.H2>
@@ -68,6 +114,9 @@ class QueueFan extends React.Component {
     );
   }
 }
+
+QueueFan.propTypes = propTypes;
+QueueFan.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,

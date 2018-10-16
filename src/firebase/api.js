@@ -42,6 +42,14 @@ export const fetchAdditionalOrderFields = async order => {
   };
 };
 
+export const fetchAdditionalQueueFields = async orderID => {
+  const order = await fetchDocOrderFromOrderID(orderID);
+  return {
+    lengthMins: order.lengthMins,
+    uid: order.uid,
+  };
+};
+
 export const fetchCollOrders = async uid => {
   const orders = [];
   try {
@@ -117,8 +125,21 @@ export const fetchCollEventOrders = async eventID => {
   return orders;
 };
 
-export const fetchDocOrder = async orderRef => {
-  let orderComplete = {};
+export const fetchDocOrderFromOrderID = async orderID => {
+  let order = {};
+  try {
+    const orderRef = db.collection(COLL_ORDERS).doc(orderID);
+    const snapshot = await orderRef.get();
+    order = snapshot.data();
+    order.orderID = snapshot.id;
+  } catch (error) {
+    console.error('Error api fetchDocOrderFromOrderID, ', error);
+  }
+  return order;
+};
+
+export const fetchDocOrderFromOrderRef = async orderRef => {
+  let order = {};
   try {
     const ordersRef = db.collection(COLL_ORDERS);
     const snapshots = await ordersRef.where('orderRef', '==', orderRef).get();
@@ -127,7 +148,7 @@ export const fetchDocOrder = async orderRef => {
       order.orderID = snap.id;
     });
   } catch (error) {
-    console.error('Error api fetchDocOrder, ', error);
+    console.error('Error api fetchDocOrderFromOrderRef, ', error);
   }
   return order;
 };
@@ -223,10 +244,47 @@ export const addToQueue = async (eventID, orderID) => {
     queueUpdated.push(orderID);
     eventRef.set({ queue: queueUpdated }, { merge: true });
   } catch (error) {
-    console.error('Error api setQueue ', error);
+    console.error('Error, api, addToQueue ', error);
   }
   return queueUpdated;
 };
+
+export const removeFromQueue = async (eventID, orderID) => {
+  let queueUpdated = [];
+  try {
+    const eventRef = db.collection(COLL_EVENTS).doc(eventID);
+    const snapshot = await eventRef.get();
+    const data = snapshot.data();
+    const { queue } = data;
+    const index = queue.indexOf(orderID);
+
+    if (!queue || index === -1) {
+      console.log("Api, removeFromQueue, queue doesn't exist or user not in queue");
+      return queueUpdated;
+    }
+    queueUpdated = queue.slice();
+    queueUpdated.splice(index, 1);
+    eventRef.set({ queue: queueUpdated }, { merge: true });
+  } catch (error) {
+    console.error('Error api, removeFromQueue', error);
+  }
+  return queueUpdated;
+};
+
+// export const getQueueDetailed = async queueOrderIDs => {
+//   let queueDetailed = [];
+//   try {
+//     queueDetailed = await Promise.all(
+//       queueOrderIDs.map(async orderID => {
+//         const order = fetchDocOrderFromOrderID(orderID);
+//         return order;
+//       })
+//     );
+//   } catch (error) {
+//     console.error('Error api getQueueDetailed ', error);
+//   }
+//   return queueDetailed;
+// };
 
 // export const removeFromQueue = async (eventID, orderID) => {
 //   try {

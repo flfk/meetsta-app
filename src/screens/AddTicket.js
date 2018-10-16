@@ -9,7 +9,11 @@ import InputText from '../components/InputText';
 
 import { addOrder } from '../redux/orders/orders.actions';
 
-import { fetchAdditionalOrderFields, fetchDocOrder, updateDocOrder } from '../firebase/api';
+import {
+  fetchAdditionalOrderFields,
+  fetchDocOrderFromOrderRef,
+  updateDocOrder,
+} from '../firebase/api';
 import NavigationService from '../navigation/NavigationService';
 
 const propTypes = {
@@ -40,13 +44,13 @@ class AddTicket extends React.Component {
 
   claimOrder = async orderID => {
     const { uid } = this.props;
-    const orderClaimed = await updateDocOrder(orderID, 'uid', uid);
+    await updateDocOrder(orderID, 'uid', uid);
   };
 
   handleAddTicket = async () => {
     const { email, orderRef } = this.state;
     const { actionAddOrder } = this.props;
-    const order = await fetchDocOrder(orderRef);
+    const order = await fetchDocOrderFromOrderRef(orderRef);
 
     if (!this.isValidOrder(order, email)) {
       return;
@@ -56,7 +60,7 @@ class AddTicket extends React.Component {
 
     const additionalFields = await fetchAdditionalOrderFields(order);
     // console.log('Full order should be ', { ...order, ...additionalFields });
-    actionAddOrder({ order, ...additionalFields });
+    actionAddOrder({ ...order, ...additionalFields });
     NavigationService.navigate('Tickets');
   };
 

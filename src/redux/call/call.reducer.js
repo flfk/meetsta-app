@@ -1,14 +1,37 @@
-import { ADD_ORDER_ID, ADD_QUEUE } from './call.types';
+import { ADD_EVENT_ID_TO_CALL, ADD_ORDER_ID_TO_CALL, ADD_QUEUE } from './call.types';
 
 const initialState = {
-  // orderID: '',
-  // queue: [orderID1, orderID2],
-  // queueLengthMins: 5,
+  orderID: '',
+  eventID: '',
+  queue: [
+    {
+      orderID: '',
+      lengthMins: 0,
+      uid: '',
+    },
+  ],
+  completedCalls: [
+    {
+      orderID: '',
+      lengthMins: 0,
+      uid: '',
+    },
+  ],
+  currentCall: {
+    orderID: '',
+    lengthMins: 0,
+    uid: '',
+  },
 };
 
 const reducerCall = (state = initialState, action) => {
   switch (action.type) {
-    case ADD_ORDER_ID.SUCCESS:
+    case ADD_EVENT_ID_TO_CALL.SUCCESS:
+      return {
+        ...state,
+        eventID: action.payload,
+      };
+    case ADD_ORDER_ID_TO_CALL.SUCCESS:
       return {
         ...state,
         orderID: action.payload,
