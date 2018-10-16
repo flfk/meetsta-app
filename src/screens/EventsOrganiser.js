@@ -4,17 +4,16 @@ import { Linking, RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
 
 import Btn from '../components/Btn';
-import CellTicket from '../components/CellTicket';
+import CellEvent from '../components/CellEvent';
 import Container from '../components/Container';
 import Fonts from '../utils/Fonts';
-import Icons from '../components/Icons';
-import { getDate, getTimeStart, getTimeRemaining } from '../helpers/TimeFormatting';
 import List from '../components/List';
 import ListEventsPlaceholder from '../components/ListEventsPlaceholder';
 
 import {
   fetchAdditionalCallFields,
   fetchCallInformation,
+  fetchCallersInformation,
   fetchAdditionalEventFields,
   fetchCollEvents,
 } from '../firebase/api';
@@ -82,50 +81,35 @@ class Events extends React.Component {
     actionAddEventDetailsToCall(event);
   };
 
-  renderItem = ({ item, index }) => {
-    let btn = null;
-    const timeRemaining = getTimeRemaining(item.dateStart);
-    const { days, diffMillis, hours, minutes } = timeRemaining;
-    const btnText = `${days}d : ${hours}h : ${minutes}m to go`;
-    if (diffMillis > 0) {
-      btn = (
-        <Btn.Primary
-          title="Start Event"
-          onPress={() => this.startEvent(item.eventID)}
-          icon={Icons.Video}
-        />
-      );
-    } else {
-      btn = <Btn.Tertiary title={btnText} onPress={() => true} disabled icon={Icons.Hourglass} />;
-    }
+  renderItem = ({ item }) => {
     return (
-      <CellTicket key={index}>
-        <CellTicket.Image source={{ uri: item.previewImgURL }} />
-        <Fonts.H1>{item.title}</Fonts.H1>
-        <Fonts.H3>{getDate(item.dateStart)}</Fonts.H3>
-        <Fonts.H3>{getTimeStart(item.dateStart)}</Fonts.H3>
-        <Fonts.H2>
-          ${item.revenue.toFixed(0)} <Fonts.P>earned</Fonts.P>
-        </Fonts.H2>
-        <Fonts.H2>
-          {item.ticketsSold} <Fonts.P>tickets sold</Fonts.P>
-        </Fonts.H2>
-        <Fonts.H2>
-          {item.addOnsSold} <Fonts.P>add ons sold</Fonts.P>
-        </Fonts.H2>
-        {btn}
-      </CellTicket>
+      <CellEvent
+        key={item.eventID}
+        addOnsSold={item.addOnsSold}
+        dateStart={item.dateStart}
+        eventID={item.eventID}
+        previewImgURL={item.previewImgURL}
+        revenue={item.revenue}
+        handleStartEvent={this.handleStartEvent}
+        ticketsSold={item.ticketsSold}
+        title={item.title}
+      />
     );
   };
 
   renderHeader = {};
 
-  startEvent = async eventID => {
+  handleStartEvent = async eventID => {
     // load the queue, completed calls,
     // load the current call?
 
-    const { actionAddCompletedCalls, actionAddEventDetailsToCall, actionAddQueue } = this.props;
-    console.log('Events, startEvent with eventID of', eventID);
+    const {
+      actionAddCompletedCalls,
+      actionAddCurrentCall,
+      actionAddEventDetailsToCall,
+      actionAddQueue,
+    } = this.props;
+    console.log('Events, handleStartEvent with eventID of', eventID);
     const callInformation = await fetchCallInformation(eventID);
 
     const completedCallsOrderIDs = callInformation.completedCalls;
@@ -133,12 +117,7 @@ class Events extends React.Component {
     const queueOrderIDs = callInformation.queue;
     // TODO
 
-    const completedCalls = await Promise.all(
-      completedCallsOrderIDs.map(async completedCallID => {
-        const additionalFields = await fetchAdditionalCallFields(completedCallID);
-        return { orderID: completedCallID, ...additionalFields };
-      })
-    );
+    // getCallersInformation =
 
     const currentCallAdditionalFields = await fetchAdditionalCallFields(currentCallOrderID);
     const currentCall = { orderID: currentCallOrderID, ...currentCallAdditionalFields };

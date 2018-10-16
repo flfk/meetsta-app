@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const CellTicket = styled.View`
+const Cell = styled.View`
   padding: 16px;
 `;
 
@@ -11,6 +11,6 @@ const Image = styled.Image`
   margin-bottom: 16px;
 `;
 
-CellTicket.Image = Image;
+Cell.Image = Image;
 
-export default CellTicket;
+export default Cell;

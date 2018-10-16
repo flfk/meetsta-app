@@ -50,6 +50,16 @@ export const fetchAdditionalCallFields = async orderID => {
   };
 };
 
+export const fetchCallersInformation = async orderIDs => {
+  const callersInformation = await Promise.all(
+    orderIDs.map(async id => {
+      const additionalFields = await fetchAdditionalCallFields(id);
+      return { orderID: id, ...additionalFields };
+    })
+  );
+  return callersInformation;
+};
+
 export const fetchCollOrders = async uid => {
   const orders = [];
   try {

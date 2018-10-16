@@ -5,17 +5,21 @@ import { connect } from 'react-redux';
 
 import BtnNavBar from '../components/BtnNavBar';
 import Btn from '../components/Btn';
-import CellTicket from '../components/CellTicket';
+import CellOrder from '../components/CellOrder';
 import Container from '../components/Container';
 import Fonts from '../utils/Fonts';
-import { getCallersInformation } from '../helpers/CallHelpers';
 import Icons from '../components/Icons';
 import { getDate, getTimeStart, getTimeRemaining } from '../helpers/TimeFormatting';
 import List from '../components/List';
 import ListTicketsPlaceholder from '../components/ListTicketsPlaceholder';
 import OnboardingBubble from '../components/OnboardingBubble';
 
-import { addToQueue, fetchCollOrders, fetchAdditionalOrderFields } from '../firebase/api';
+import {
+  addToQueue,
+  fetchCallersInformation,
+  fetchCollOrders,
+  fetchAdditionalOrderFields,
+} from '../firebase/api';
 import { addQueue, addEventDetailsToCall, addOrderIDToCall } from '../redux/call/call.actions';
 import { addOrdersAll } from '../redux/orders/orders.actions';
 
@@ -100,7 +104,7 @@ class Tickets extends React.Component {
     actionAddEventDetailsToCall(event);
 
     const queueOrderIDs = await addToQueue(eventID, orderID);
-    const queue = await getCallersInformation(queueOrderIDs);
+    const queue = await fetchCallersInformation(queueOrderIDs);
     actionAddQueue(queue);
 
     actionAddOrderIDToCall(orderID);
@@ -109,33 +113,19 @@ class Tickets extends React.Component {
     navigation.navigate('EventFan');
   };
 
-  renderItem = ({ item, index }) => {
-    let btn = null;
-    const timeRemaining = getTimeRemaining(item.dateStart);
-    const { days, diffMillis, hours, minutes } = timeRemaining;
-    const btnText = `${days}d : ${hours}h : ${minutes}m to go`;
-    if (diffMillis > 0) {
-      btn = (
-        <Btn.Primary
-          title="Join Queue"
-          onPress={() => this.handleJoinQueue(item.eventID, item.orderID)}
-          icon={Icons.Video}
-        />
-      );
-    } else {
-      btn = <Btn.Tertiary title={btnText} onPress={() => true} disabled icon={Icons.Hourglass} />;
-    }
-
+  renderItem = ({ item }) => {
     return (
-      <CellTicket key={index}>
-        <CellTicket.Image source={{ uri: item.previewImgURL }} />
-        <Fonts.H1>{item.name}</Fonts.H1>
-        <Fonts.H2>{item.organiserName}</Fonts.H2>
-        <Fonts.P>{getDate(item.dateStart)}</Fonts.P>
-        <Fonts.P>{getTimeStart(item.dateStart)}</Fonts.P>
-        <Fonts.P>Order ref {item.orderRef}</Fonts.P>
-        {btn}
-      </CellTicket>
+      <CellOrder
+        key={item.orderID}
+        dateStart={item.dateStart}
+        eventID={item.eventID}
+        name={item.name}
+        orderID={item.orderID}
+        orderRef={item.orderRef}
+        organiserName={item.organiserName}
+        previewImgURL={item.previewImgURL}
+        handleJoinQueue={this.handleJoinQueue}
+      />
     );
   };
 
