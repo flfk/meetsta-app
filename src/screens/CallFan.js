@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity } from 'react-native';
+import { connect } from 'react-redux';
 
-import Content from '../components/Content';
 import Icons from '../components/Icons';
 import VideoBar from '../components/VideoBar';
 import VideoCaller from '../components/VideoCaller';
@@ -10,13 +10,17 @@ import VideoCallee from '../components/VideoCallee';
 import FAN_ON_CALL from '../assets/FAN_ON_CALL.png';
 import ORGANISER_ON_CALL from '../assets/ORGANISER_ON_CALL.png';
 
+const mapStateToProps = state => ({});
+
+const mapDispatchToProps = dispatch => ({});
+
 class CallFan extends React.Component {
   state = {
     remainingSecs: 5,
     timeFormatted: {
       mins: 0,
-      secs: 0
-    }
+      secs: 0,
+    },
   };
 
   componentDidMount() {
@@ -59,7 +63,7 @@ class CallFan extends React.Component {
   formatTime = secs => {
     const timeFormatted = {
       mins: 0,
-      secs: 0
+      secs: 0,
     };
     timeFormatted.mins = Math.floor(secs / 60);
     timeFormatted.secs = secs % 60;
@@ -110,4 +114,7 @@ class CallFan extends React.Component {
   }
 }
 
-export default CallFan;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CallFan);

@@ -12,10 +12,11 @@ const initialState = [
   //   previewImgURL: 'https://facebook.github.io/react-native/docs/assets/favicon.png',
   //   ticketID: 'abc',
   //   title: 'Meet Andre Swilley',
+  //
   // },
 ];
 
-const reducerEvents = (state = initialState, action) => {
+const reducerOrders = (state = initialState, action) => {
   switch (action.type) {
     case ADD_ORDER.SUCCESS:
       return [...state, action.payload];
@@ -26,4 +27,4 @@ const reducerEvents = (state = initialState, action) => {
   }
 };
 
-export default reducerEvents;
+export default reducerOrders;

@@ -15,7 +15,8 @@ import List from '../components/List';
 import ListTicketsPlaceholder from '../components/ListTicketsPlaceholder';
 import OnboardingBubble from '../components/OnboardingBubble';
 
-import { fetchCollOrders, fetchAdditionalOrderFields } from '../firebase/api';
+import { addToQueue, fetchCollOrders, fetchAdditionalOrderFields } from '../firebase/api';
+import { addQueue, addOrderID } from '../redux/call/call.actions';
 import { addOrdersAll } from '../redux/orders/orders.actions';
 
 const propTypes = {
@@ -27,8 +28,9 @@ const propTypes = {
       dateStart: PropTypes.number.isRequired,
       orderRef: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
-      ticketID: PropTypes.string.isRequired,
+      orderID: PropTypes.string.isRequired,
       eventID: PropTypes.string.isRequired,
+      ticketID: PropTypes.string.isRequired,
     })
   ).isRequired,
   uid: PropTypes.string.isRequired,
@@ -43,6 +45,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actionAddOrdersAll: orders => dispatch(addOrdersAll(orders)),
+  actionAddQueue: queue => dispatch(addQueue(queue)),
+  actionAddOrderID: orderID => dispatch(addOrderID(orderID)),
 });
 
 class Tickets extends React.Component {
@@ -79,8 +83,13 @@ class Tickets extends React.Component {
     this.setState({ isLoading: false });
   };
 
-  joinQueue = () => {
-    // XX TODO
+  joinQueue = async (orderID, eventID) => {
+    const { actionAddQueue, actionAddOrderID } = this.props;
+    console.log('Tickets joinQueue with event and order IDs of', eventID, orderID);
+    const queue = await addToQueue(eventID, orderID);
+    console.log('Tickets queue is ', queue);
+    actionAddQueue(queue);
+    actionAddOrderID(orderID);
     const { navigation } = this.props;
     navigation.navigate('EventFan');
   };
@@ -91,7 +100,13 @@ class Tickets extends React.Component {
     const { days, diffMillis, hours, minutes } = timeRemaining;
     const btnText = `${days}d : ${hours}h : ${minutes}m to go`;
     if (diffMillis > 0) {
-      btn = <Btn.Primary title="Join Queue" onPress={this.joinQueue} icon={Icons.Video} />;
+      btn = (
+        <Btn.Primary
+          title="Join Queue"
+          onPress={() => this.joinQueue(item.orderID, item.eventID)}
+          icon={Icons.Video}
+        />
+      );
     } else {
       btn = <Btn.Tertiary title={btnText} onPress={() => true} disabled icon={Icons.Hourglass} />;
     }
@@ -121,7 +136,7 @@ class Tickets extends React.Component {
   };
 
   render() {
-    // console.log('Tickets orders are', this.props.orders);
+    console.log('Orders are', this.props.orders);
     const { isLoading, refreshing } = this.state;
     const { orders } = this.props;
     const ordersSorted = orders.sort(this.sortOrders);

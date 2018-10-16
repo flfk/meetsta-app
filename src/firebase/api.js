@@ -10,6 +10,7 @@ const COLL_ORDERS = 'orders';
 const COLL_TICKETS = 'tickets';
 const FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID;
 const FACEBOOK_OPTIONS = { permissions: ['public_profile', 'email'], behaviour: 'native' };
+const FIELD_EVENT_QUEUE = 'queue';
 
 export const addUser = async (email, password) => {
   const data = await auth.createUserWithEmailAndPassword(email, password);
@@ -198,6 +199,47 @@ export const setEmail = async email => {
     email: email,
   });
 };
+
+export const addToQueue = async (eventID, orderID) => {
+  let queueUpdated = [];
+  try {
+    const eventRef = db.collection(COLL_EVENTS).doc(eventID);
+    const snapshot = await eventRef.get();
+    const data = snapshot.data();
+    const { queue } = data;
+
+    if (!queue) {
+      queueUpdated.push(orderID);
+      eventRef.set({ queue: queueUpdated }, { merge: true });
+      return queueUpdated;
+    }
+
+    if (queue && queue.indexOf(orderID) !== -1) {
+      console.log('User is Already in queue');
+      return queue;
+    }
+
+    queueUpdated = queue.slice();
+    queueUpdated.push(orderID);
+    eventRef.set({ queue: queueUpdated }, { merge: true });
+  } catch (error) {
+    console.error('Error api setQueue ', error);
+  }
+  return queueUpdated;
+};
+
+// export const removeFromQueue = async (eventID, orderID) => {
+//   try {
+//     const queueRef = db.collection(COLL_EVENTS).doc(eventID);
+//     const snapshot = await queueRef.get();
+//     const data = snapshot.data();
+//     const { queue } = data;
+//     const queueUpdated = queue.push(orderID);
+//     queueRef.update({ queue: queueUpdated });
+//   } catch (error) {
+//     console.error('Error api setQueue ', error);
+//   }
+// };
 
 export const signOutUser = async () => {
   await auth.signOut();

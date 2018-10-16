@@ -1,8 +1,18 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import Btn from '../components/Btn';
 import Container from '../components/Container';
 import Fonts from '../utils/Fonts';
+
+const mapStateToProps = state => ({
+  orderID: state.call.orderID,
+  queue: state.call.queue,
+});
+
+const mapDispatchToProps = dispatch => ({
+  // leaveQueue
+});
 
 class QueueFan extends React.Component {
   state = {
@@ -30,6 +40,9 @@ class QueueFan extends React.Component {
   render() {
     const { eventTitle, queuePosition, queueWaitTimeMins } = this.state;
 
+    console.log('the queue is ', this.props.queue);
+    console.log('the orderID is ', this.props.orderID);
+
     let queuePositionText = null;
     switch (queuePosition) {
       case 1:
@@ -56,4 +69,7 @@ class QueueFan extends React.Component {
   }
 }
 
-export default QueueFan;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(QueueFan);
