@@ -18,6 +18,12 @@ import {
   fetchCollEvents,
 } from '../firebase/api';
 import { addEventsAll } from '../redux/events/events.actions';
+import {
+  addCompletedCalls,
+  addCurrentCall,
+  addEventDetailsToCall,
+  addQueue,
+} from '../redux/call/call.actions';
 
 const propTypes = {
   actionAddEventsAll: PropTypes.func.isRequired,
@@ -41,7 +47,11 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  actionAddEventsAll: orders => dispatch(addEventsAll(orders)),
+  actionAddCompletedCalls: completedCalls => dispatch(addCompletedCalls(completedCalls)),
+  actionAddCurrentCall: currentCall => dispatch(addCurrentCall(currentCall)),
+  actionAddEventsAll: events => dispatch(addEventsAll(events)),
+  actionAddEventDetailsToCall: event => dispatch(addEventDetailsToCall(event)),
+  actionAddQueue: queue => dispatch(addQueue(queue)),
 });
 
 class Events extends React.Component {
@@ -68,17 +78,6 @@ class Events extends React.Component {
       actionAddEventsAll(events);
     }
     this.setState({ isLoading: false });
-  };
-
-  loadCallOrderID = orderID => {
-    const { actionAddOrderIDToCall } = this.props;
-    actionAddOrderIDToCall(orderID);
-  };
-
-  loadCallEventDetails = orderID => {
-    const { actionAddEventDetailsToCall, orders } = this.props;
-    const event = orders.find(order => order.orderID === orderID);
-    actionAddEventDetailsToCall(event);
   };
 
   renderItem = ({ item }) => {
@@ -108,34 +107,31 @@ class Events extends React.Component {
       actionAddCurrentCall,
       actionAddEventDetailsToCall,
       actionAddQueue,
+      events,
     } = this.props;
-    console.log('Events, handleStartEvent with eventID of', eventID);
+
     const callInformation = await fetchCallInformation(eventID);
+    const eventSelected = events.find(event => event.eventID === eventID);
 
     const completedCallsOrderIDs = callInformation.completedCalls;
     const currentCallOrderID = callInformation.currentCall;
     const queueOrderIDs = callInformation.queue;
-    // TODO
 
-    // getCallersInformation =
+    if (completedCallsOrderIDs) {
+      const completedCalls = await fetchCallersInformation(completedCallsOrderIDs);
+      actionAddCompletedCalls(completedCalls);
+    }
+    if (currentCallOrderID) {
+      const currentCallAdditionalFields = await fetchAdditionalCallFields(currentCallOrderID);
+      const currentCall = { orderID: currentCallOrderID, ...currentCallAdditionalFields };
+      actionAddCurrentCall(currentCall);
+    }
+    if (queueOrderIDs) {
+      const queue = await fetchCallersInformation(queueOrderIDs);
+      actionAddQueue(queue);
+    }
+    actionAddEventDetailsToCall(eventSelected);
 
-    const currentCallAdditionalFields = await fetchAdditionalCallFields(currentCallOrderID);
-    const currentCall = { orderID: currentCallOrderID, ...currentCallAdditionalFields };
-
-    const queue = await Promise.all(
-      queueOrderIDs.map(async queueOrderID => {
-        const additionalFields = await fetchAdditionalCallFields(queueOrderID);
-        return { orderID: queueOrderID, ...additionalFields };
-      })
-    );
-
-    // console.log('Tickets, queue is ', queue);
-    actionAddQueue(queue);
-    actionAddOrderIDToCall(orderID);
-    const event = orders.find(order => order.orderID === orderID);
-    actionAddEventDetailsToCall(event);
-
-    // XX TODO
     const { navigation } = this.props;
     navigation.navigate('EventOrganiser');
   };
@@ -158,7 +154,7 @@ class Events extends React.Component {
       <List
         ListHeaderComponent={<Fonts.H1 marginLeft>My Events</Fonts.H1>}
         renderItem={this.renderItem}
-        data={events}
+        data={eventsSorted}
         keyExtractor={(event, index) => event + index}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} />}
       />

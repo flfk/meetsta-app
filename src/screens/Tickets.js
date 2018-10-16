@@ -4,12 +4,9 @@ import { RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
 
 import BtnNavBar from '../components/BtnNavBar';
-import Btn from '../components/Btn';
 import CellOrder from '../components/CellOrder';
 import Container from '../components/Container';
 import Fonts from '../utils/Fonts';
-import Icons from '../components/Icons';
-import { getDate, getTimeStart, getTimeRemaining } from '../helpers/TimeFormatting';
 import List from '../components/List';
 import ListTicketsPlaceholder from '../components/ListTicketsPlaceholder';
 import OnboardingBubble from '../components/OnboardingBubble';
@@ -101,13 +98,12 @@ class Tickets extends React.Component {
     } = this.props;
 
     const event = orders.find(order => order.orderID === orderID);
-    actionAddEventDetailsToCall(event);
-
     const queueOrderIDs = await addToQueue(eventID, orderID);
     const queue = await fetchCallersInformation(queueOrderIDs);
-    actionAddQueue(queue);
 
+    actionAddEventDetailsToCall(event);
     actionAddOrderIDToCall(orderID);
+    actionAddQueue(queue);
 
     const { navigation } = this.props;
     navigation.navigate('EventFan');
