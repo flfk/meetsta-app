@@ -9,8 +9,13 @@ import Fonts from '../utils/Fonts';
 import { removeFromQueue } from '../firebase/api';
 
 const propTypes = {
-  orderID: PropTypes.string.isRequired,
+  currentCall: PropTypes.shape({
+    lengthMins: PropTypes.number,
+    orderID: PropTypes.string,
+    uid: PropTypes.string,
+  }).isRequired,
   eventID: PropTypes.string.isRequired,
+  eventTitle: PropTypes.string.isRequired,
   queue: PropTypes.arrayOf(
     PropTypes.shape({
       lengthMins: PropTypes.number,
@@ -18,33 +23,23 @@ const propTypes = {
       uid: PropTypes.string,
     })
   ).isRequired,
-  currentCall: PropTypes.shape({
-    lengthMins: PropTypes.number,
-    orderID: PropTypes.string,
-    uid: PropTypes.string,
-  }).isRequired,
+  orderID: PropTypes.string.isRequired,
 };
 
 const defaultProps = {};
 
 const mapStateToProps = state => ({
-  orderID: state.call.orderID,
-  eventID: state.call.eventID,
-  queue: state.call.queue,
   currentCall: state.call.currentCall,
-});
-
-const mapDispatchToProps = dispatch => ({
-  // leaveQueue
+  eventID: state.call.eventID,
+  eventTitle: state.call.eventTitle,
+  queue: state.call.queue,
+  orderID: state.call.orderID,
 });
 
 class QueueFan extends React.Component {
   state = {
     eventTitle: "Andre Swilley's Online Meet & Greet",
-    queueWaitTimeMins: 10,
   };
-
-  componentDidMount() {}
 
   getQueueIndex = () => {
     const { orderID, queue } = this.props;
@@ -84,7 +79,7 @@ class QueueFan extends React.Component {
   };
 
   render() {
-    const { eventTitle } = this.state;
+    const { eventTitle } = this.props;
 
     const queuePosition = this.getQueueIndex() + 1;
     let queuePositionText = null;
@@ -120,5 +115,5 @@ QueueFan.defaultProps = defaultProps;
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(QueueFan);

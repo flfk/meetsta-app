@@ -1,8 +1,9 @@
-import { ADD_EVENT_ID_TO_CALL, ADD_ORDER_ID_TO_CALL, ADD_QUEUE } from './call.types';
+import { ADD_EVENT_DETAILS_TO_CALL, ADD_ORDER_ID_TO_CALL, ADD_QUEUE } from './call.types';
 
 const initialState = {
-  orderID: '',
   eventID: '',
+  eventTitle: '',
+  orderID: '',
   queue: [
     {
       orderID: '',
@@ -26,10 +27,11 @@ const initialState = {
 
 const reducerCall = (state = initialState, action) => {
   switch (action.type) {
-    case ADD_EVENT_ID_TO_CALL.SUCCESS:
+    case ADD_EVENT_DETAILS_TO_CALL.SUCCESS:
       return {
         ...state,
-        eventID: action.payload,
+        eventID: action.payload.eventID,
+        eventTitle: action.payload.title,
       };
     case ADD_ORDER_ID_TO_CALL.SUCCESS:
       return {

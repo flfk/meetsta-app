@@ -1,17 +1,56 @@
+import PropTypes from 'prop-types';
 import React from 'react';
-import { View } from 'react-native';
+import { connect } from 'react-redux';
 
 import Btn from '../components/Btn';
 import Container from '../components/Container';
 import Content from '../components/Content';
 import Fonts from '../utils/Fonts';
 
+const propTypes = {
+  completedCalls: PropTypes.arrayOf(
+    PropTypes.shape({
+      lengthMins: PropTypes.number,
+      orderID: PropTypes.string,
+      uid: PropTypes.string,
+    })
+  ).isRequired,
+  currentCall: PropTypes.shape({
+    lengthMins: PropTypes.number,
+    orderID: PropTypes.string,
+    uid: PropTypes.string,
+  }).isRequired,
+  eventID: PropTypes.string.isRequired,
+  eventTitle: PropTypes.string.isRequired,
+  queue: PropTypes.arrayOf(
+    PropTypes.shape({
+      lengthMins: PropTypes.number,
+      orderID: PropTypes.string,
+      uid: PropTypes.string,
+    })
+  ).isRequired,
+  orderID: PropTypes.string.isRequired,
+};
+
+const defaultProps = {};
+
+const mapStateToProps = state => ({
+  completedCalls: state.call.completedCalls,
+  currentCall: state.call.currentCall,
+  eventID: state.call.eventID,
+  eventTitle: state.call.eventTitle,
+  queue: state.call.queue,
+  orderID: state.call.orderID,
+});
+
+const mapDispatchToProps = dispatch => ({});
+
 class QueueOrganiser extends React.Component {
   state = {
     callsTotal: 8,
     remainingCalls: 4,
     remainingMins: 60,
-    nextCaller: 'Jessica'
+    nextCaller: 'Jessica',
   };
 
   ENDEVENT = () => {
@@ -48,4 +87,10 @@ class QueueOrganiser extends React.Component {
   }
 }
 
-export default QueueOrganiser;
+QueueOrganiser.propTypes = propTypes;
+QueueOrganiser.defaultProps = defaultProps;
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(QueueOrganiser);

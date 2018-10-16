@@ -2,30 +2,25 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
-import moment from 'moment-timezone';
 
 import BtnNavBar from '../components/BtnNavBar';
 import Btn from '../components/Btn';
 import CellTicket from '../components/CellTicket';
 import Container from '../components/Container';
 import Fonts from '../utils/Fonts';
+import { getCallersInformation } from '../helpers/CallHelpers';
 import Icons from '../components/Icons';
-import { getDate, getTimeStart, getTimeRemaining } from '../utils/Helpers';
+import { getDate, getTimeStart, getTimeRemaining } from '../helpers/TimeFormatting';
 import List from '../components/List';
 import ListTicketsPlaceholder from '../components/ListTicketsPlaceholder';
 import OnboardingBubble from '../components/OnboardingBubble';
 
-import {
-  addToQueue,
-  fetchCollOrders,
-  fetchAdditionalQueueFields,
-  fetchAdditionalOrderFields,
-} from '../firebase/api';
-import { addQueue, addEventIDToCall, addOrderIDToCall } from '../redux/call/call.actions';
+import { addToQueue, fetchCollOrders, fetchAdditionalOrderFields } from '../firebase/api';
+import { addQueue, addEventDetailsToCall, addOrderIDToCall } from '../redux/call/call.actions';
 import { addOrdersAll } from '../redux/orders/orders.actions';
 
 const propTypes = {
-  actionAddEventIDToCall: PropTypes.func.isRequired,
+  actionAddEventDetailsToCall: PropTypes.func.isRequired,
   actionAddOrderIDToCall: PropTypes.func.isRequired,
   actionAddQueue: PropTypes.func.isRequired,
   actionAddOrdersAll: PropTypes.func.isRequired,
@@ -55,7 +50,7 @@ const mapDispatchToProps = dispatch => ({
   actionAddOrdersAll: orders => dispatch(addOrdersAll(orders)),
   actionAddQueue: queue => dispatch(addQueue(queue)),
   actionAddOrderIDToCall: orderID => dispatch(addOrderIDToCall(orderID)),
-  actionAddEventIDToCall: eventID => dispatch(addEventIDToCall(eventID)),
+  actionAddEventDetailsToCall: event => dispatch(addEventDetailsToCall(event)),
 });
 
 class Tickets extends React.Component {
@@ -93,20 +88,23 @@ class Tickets extends React.Component {
     this.setState({ isLoading: false });
   };
 
-  joinQueue = async (orderID, eventID) => {
-    const { actionAddQueue, actionAddEventIDToCall, actionAddOrderIDToCall } = this.props;
-    console.log('Tickets, joinQueue with event and order IDs of', eventID, orderID);
+  handleJoinQueue = async (eventID, orderID) => {
+    const {
+      actionAddEventDetailsToCall,
+      actionAddOrderIDToCall,
+      actionAddQueue,
+      orders,
+    } = this.props;
+
+    const event = orders.find(order => order.orderID === orderID);
+    actionAddEventDetailsToCall(event);
+
     const queueOrderIDs = await addToQueue(eventID, orderID);
-    const queue = await Promise.all(
-      queueOrderIDs.map(async queueOrderID => {
-        const additionalFields = await fetchAdditionalQueueFields(queueOrderID);
-        return { orderID: queueOrderID, ...additionalFields };
-      })
-    );
-    // console.log('Tickets, queue is ', queue);
+    const queue = await getCallersInformation(queueOrderIDs);
     actionAddQueue(queue);
+
     actionAddOrderIDToCall(orderID);
-    actionAddEventIDToCall(eventID);
+
     const { navigation } = this.props;
     navigation.navigate('EventFan');
   };
@@ -120,7 +118,7 @@ class Tickets extends React.Component {
       btn = (
         <Btn.Primary
           title="Join Queue"
-          onPress={() => this.joinQueue(item.orderID, item.eventID)}
+          onPress={() => this.handleJoinQueue(item.eventID, item.orderID)}
           icon={Icons.Video}
         />
       );

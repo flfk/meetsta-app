@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Linking, RefreshControl, View } from 'react-native';
+import { Linking, RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
 
 import Btn from '../components/Btn';
@@ -8,11 +8,16 @@ import CellTicket from '../components/CellTicket';
 import Container from '../components/Container';
 import Fonts from '../utils/Fonts';
 import Icons from '../components/Icons';
-import { getDate, getTimeStart, getTimeRemaining } from '../utils/Helpers';
+import { getDate, getTimeStart, getTimeRemaining } from '../helpers/TimeFormatting';
 import List from '../components/List';
 import ListEventsPlaceholder from '../components/ListEventsPlaceholder';
 
-import { fetchAdditionalEventFields, fetchCollEvents } from '../firebase/api';
+import {
+  fetchAdditionalCallFields,
+  fetchCallInformation,
+  fetchAdditionalEventFields,
+  fetchCollEvents,
+} from '../firebase/api';
 import { addEventsAll } from '../redux/events/events.actions';
 
 const propTypes = {
@@ -41,12 +46,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 class Events extends React.Component {
-  // static navigationOptions = ({ navigation }) => {
-  //   return {
-  //     headerRight: <BtnNavBar title="Add ticket" onPress={() => navigation.navigate('AddTicket')} />
-  //   };
-  // };
-
   state = {
     isLoading: false,
     refreshing: false,
@@ -72,17 +71,33 @@ class Events extends React.Component {
     this.setState({ isLoading: false });
   };
 
+  loadCallOrderID = orderID => {
+    const { actionAddOrderIDToCall } = this.props;
+    actionAddOrderIDToCall(orderID);
+  };
+
+  loadCallEventDetails = orderID => {
+    const { actionAddEventDetailsToCall, orders } = this.props;
+    const event = orders.find(order => order.orderID === orderID);
+    actionAddEventDetailsToCall(event);
+  };
+
   renderItem = ({ item, index }) => {
     let btn = null;
     const timeRemaining = getTimeRemaining(item.dateStart);
     const { days, diffMillis, hours, minutes } = timeRemaining;
     const btnText = `${days}d : ${hours}h : ${minutes}m to go`;
     if (diffMillis > 0) {
-      btn = <Btn.Primary title="Start Event" onPress={this.startEvent} icon={Icons.Video} />;
+      btn = (
+        <Btn.Primary
+          title="Start Event"
+          onPress={() => this.startEvent(item.eventID)}
+          icon={Icons.Video}
+        />
+      );
     } else {
       btn = <Btn.Tertiary title={btnText} onPress={() => true} disabled icon={Icons.Hourglass} />;
     }
-
     return (
       <CellTicket key={index}>
         <CellTicket.Image source={{ uri: item.previewImgURL }} />
@@ -105,7 +120,42 @@ class Events extends React.Component {
 
   renderHeader = {};
 
-  startEvent = () => {
+  startEvent = async eventID => {
+    // load the queue, completed calls,
+    // load the current call?
+
+    const { actionAddCompletedCalls, actionAddEventDetailsToCall, actionAddQueue } = this.props;
+    console.log('Events, startEvent with eventID of', eventID);
+    const callInformation = await fetchCallInformation(eventID);
+
+    const completedCallsOrderIDs = callInformation.completedCalls;
+    const currentCallOrderID = callInformation.currentCall;
+    const queueOrderIDs = callInformation.queue;
+    // TODO
+
+    const completedCalls = await Promise.all(
+      completedCallsOrderIDs.map(async completedCallID => {
+        const additionalFields = await fetchAdditionalCallFields(completedCallID);
+        return { orderID: completedCallID, ...additionalFields };
+      })
+    );
+
+    const currentCallAdditionalFields = await fetchAdditionalCallFields(currentCallOrderID);
+    const currentCall = { orderID: currentCallOrderID, ...currentCallAdditionalFields };
+
+    const queue = await Promise.all(
+      queueOrderIDs.map(async queueOrderID => {
+        const additionalFields = await fetchAdditionalCallFields(queueOrderID);
+        return { orderID: queueOrderID, ...additionalFields };
+      })
+    );
+
+    // console.log('Tickets, queue is ', queue);
+    actionAddQueue(queue);
+    actionAddOrderIDToCall(orderID);
+    const event = orders.find(order => order.orderID === orderID);
+    actionAddEventDetailsToCall(event);
+
     // XX TODO
     const { navigation } = this.props;
     navigation.navigate('EventOrganiser');

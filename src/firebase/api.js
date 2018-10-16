@@ -42,7 +42,7 @@ export const fetchAdditionalOrderFields = async order => {
   };
 };
 
-export const fetchAdditionalQueueFields = async orderID => {
+export const fetchAdditionalCallFields = async orderID => {
   const order = await fetchDocOrderFromOrderID(orderID);
   return {
     lengthMins: order.lengthMins,
@@ -207,6 +207,20 @@ export const fetchUser = async (email, password) => {
   return data.user;
 };
 
+export const fetchCallInformation = async eventID => {
+  let callInformation = {};
+  try {
+    const eventRef = db.collection(COLL_EVENTS).doc(eventID);
+    const snapshot = await eventRef.get();
+    const data = snapshot.data();
+    const { completedCalls, currentCall, queue } = data;
+    callInformation = { completedCalls, currentCall, queue };
+  } catch (error) {
+    console.error('Error api fetchQueue, ', error);
+  }
+  return callInformation;
+};
+
 export const setDisplayName = async displayName => {
   const user = await auth.currentUser;
   await user.updateProfile({
@@ -270,34 +284,6 @@ export const removeFromQueue = async (eventID, orderID) => {
   }
   return queueUpdated;
 };
-
-// export const getQueueDetailed = async queueOrderIDs => {
-//   let queueDetailed = [];
-//   try {
-//     queueDetailed = await Promise.all(
-//       queueOrderIDs.map(async orderID => {
-//         const order = fetchDocOrderFromOrderID(orderID);
-//         return order;
-//       })
-//     );
-//   } catch (error) {
-//     console.error('Error api getQueueDetailed ', error);
-//   }
-//   return queueDetailed;
-// };
-
-// export const removeFromQueue = async (eventID, orderID) => {
-//   try {
-//     const queueRef = db.collection(COLL_EVENTS).doc(eventID);
-//     const snapshot = await queueRef.get();
-//     const data = snapshot.data();
-//     const { queue } = data;
-//     const queueUpdated = queue.push(orderID);
-//     queueRef.update({ queue: queueUpdated });
-//   } catch (error) {
-//     console.error('Error api setQueue ', error);
-//   }
-// };
 
 export const signOutUser = async () => {
   await auth.signOut();

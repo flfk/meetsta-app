@@ -1,4 +1,4 @@
-import { createActionSet } from '../../utils/ActionHelpers';
+import { createActionSet } from '../../helpers/Actions';
 
 export const CREATE_USER = createActionSet('CREATE_USER');
 export const LOGIN_USER = createActionSet('LOGIN_USER');
