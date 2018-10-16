@@ -8,7 +8,7 @@ class QueueFan extends React.Component {
   state = {
     eventTitle: "Andre Swilley's Online Meet & Greet",
     queuePosition: 3,
-    queueWaitTimeMins: 10
+    queueWaitTimeMins: 10,
   };
 
   JOINCALL = () => {
@@ -44,7 +44,7 @@ class QueueFan extends React.Component {
     }
 
     return (
-      <Container paddingHorizontal>
+      <Container paddingHorizontal center>
         <Fonts.H2>You are in the queue for </Fonts.H2>
         <Fonts.H1>{eventTitle}</Fonts.H1>
         <Fonts.H2>{queuePositionText}</Fonts.H2>

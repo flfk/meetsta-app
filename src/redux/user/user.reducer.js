@@ -94,7 +94,7 @@ const reducerUser = (state = initialState, action) => {
       };
     case UPDATE_DISPLAY_NAME.SUCCESS:
       return {
-        ...stateUpdated,
+        ...state,
         displayName: action.payload,
       };
     case UPDATE_EMAIL.SUCCESS:

@@ -30,7 +30,7 @@ class SignupEmail extends React.Component {
     const { name } = this.getNavParams();
     const { navigation } = this.props;
     navigation.navigate('SignupPassword', {
-      emailFormatted,
+      email: emailFormatted,
       name,
     });
   };

@@ -10,7 +10,7 @@ class CallEndedFan extends React.Component {
     revenue: 0,
     ticketsSold: 0,
     addOnsSold: 0,
-    paypalEmail: 'test@paypal.com'
+    paypalEmail: 'test@paypal.com',
   };
 
   goToCreateEvent = () => {
@@ -26,7 +26,7 @@ class CallEndedFan extends React.Component {
     const { revenue, ticketsSold, addOnsSold, paypalEmail } = this.state;
 
     return (
-      <Container paddingHorizontal>
+      <Container paddingHorizontal center>
         <Fonts.H1>🎉 Done!</Fonts.H1>
         <Fonts.H1>
           ${revenue} <Fonts.H3>earned</Fonts.H3>

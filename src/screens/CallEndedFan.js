@@ -10,7 +10,7 @@ class CallEndedFan extends React.Component {
   state = {
     organiserName: 'Andre Swilley',
     email: 'test@email.com',
-    addOns: []
+    addOns: [],
   };
 
   goToSouvenirCheckout = () => {
@@ -51,7 +51,7 @@ class CallEndedFan extends React.Component {
     }
 
     return (
-      <Container paddingHorizontal>
+      <Container paddingHorizontal center>
         <Fonts.H1 center>🎉 We hope you had an awesome time meeting {organiserName}!</Fonts.H1>
         {addOnsView}
         <Content.Seperator />

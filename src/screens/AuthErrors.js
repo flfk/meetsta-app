@@ -21,7 +21,7 @@ class AuthErrors extends React.Component {
   getErrorText = errorCode => {
     const errorText = {
       title: "Oops, something wen't wrong",
-      message: 'Please try again or contact us at contact.meetsta.com for help.',
+      message: 'Please try again or contact us at contact.meetsta@gmail.com for help.',
     };
 
     if (errorCode === 'auth/email-already-in-use') {
@@ -43,7 +43,7 @@ class AuthErrors extends React.Component {
     if (errorCode === 'auth/wrong-password') {
       errorText.title = 'Wrong password';
       errorText.message =
-        "The email and password don't match. Please try again or contact us at contact.meetsta.com for help.";
+        "The email and password don't match. Please try again or contact us at contact.meetsta@gmail.com for help.";
     }
 
     if (errorCode === 'auth/user-not-found') {

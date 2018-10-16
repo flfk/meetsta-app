@@ -77,7 +77,7 @@ class Events extends React.Component {
     const timeRemaining = getTimeRemaining(item.dateStart);
     const { days, diffMillis, hours, minutes } = timeRemaining;
     const btnText = `${days}d : ${hours}h : ${minutes}m to go`;
-    if (diffMillis < 0) {
+    if (diffMillis > 0) {
       btn = <Btn.Primary title="Start Event" onPress={this.startEvent} icon={Icons.Video} />;
     } else {
       btn = <Btn.Tertiary title={btnText} onPress={() => true} disabled icon={Icons.Hourglass} />;
