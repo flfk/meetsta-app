@@ -1,6 +1,13 @@
-import { ADD_ORDER_ID_SELECTED, ADD_QUEUE } from './runSheet.types';
+import { ADD_EVENT_DETAILS_SELECTED, ADD_ORDER_ID_SELECTED, ADD_QUEUE } from './runSheet.types';
 
-export const actionAddOrderIDSelected = orderID => dispatch => {
+export const addEventDetailsSelected = eventDetails => dispatch => {
+  dispatch({
+    type: ADD_EVENT_DETAILS_SELECTED.SUCCESS,
+    payload: eventDetails,
+  });
+};
+
+export const addOrderIDSelected = orderID => dispatch => {
   dispatch({
     type: ADD_ORDER_ID_SELECTED.SUCCESS,
     payload: orderID,

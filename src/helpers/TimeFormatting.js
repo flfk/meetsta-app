@@ -13,6 +13,8 @@ export const getTimeStart = dateStart => {
   return timeRange;
 };
 
+export const getTimestamp = () => moment().unix();
+
 export const getDate = dateStart =>
   moment.tz(dateStart, 'America/Los_Angeles').format('dddd, MMM Do, YYYY');
 

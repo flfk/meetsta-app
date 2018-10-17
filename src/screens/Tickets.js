@@ -12,7 +12,11 @@ import ListTicketsPlaceholder from '../components/ListTicketsPlaceholder';
 import OnboardingBubble from '../components/OnboardingBubble';
 
 import { joinQueue } from '../redux/runSheet/runSheet.api';
-import { addQueue, addOrderIDSelected } from '../redux/runSheet/runSheet.actions';
+import {
+  addEventDetailsSelected,
+  addQueue,
+  addOrderIDSelected,
+} from '../redux/runSheet/runSheet.actions';
 import { fetchCollOrders, fetchAdditionalOrderFields } from '../redux/orders/orders.api';
 import { addOrdersAll } from '../redux/orders/orders.actions';
 
@@ -43,6 +47,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  actionAddEventDetailsSelected: eventDetails => dispatch(addEventDetailsSelected(eventDetails)),
   actionAddOrdersAll: orders => dispatch(addOrdersAll(orders)),
   actionAddQueue: queue => dispatch(addQueue(queue)),
   actionAddOrderIDSelected: orderID => dispatch(addOrderIDSelected(orderID)),
@@ -84,11 +89,22 @@ class Tickets extends React.Component {
   };
 
   handleJoinQueue = async (eventID, orderID) => {
-    const { actionAddOrderIDSelected, actionAddQueue } = this.props;
+    const {
+      actionAddQueue,
+      actionAddOrderIDSelected,
+      actionAddEventDetailsSelected,
+      orders,
+    } = this.props;
 
-    const queue = joinQueue(eventID, orderID);
+    const queue = await joinQueue(eventID, orderID);
+    const order = orders.find(item => item.orderID === orderID);
+    const { name, organiserName } = order;
+    console.log('order name is ', name);
+
+    console.log('Tickets adding queue, ', queue);
 
     actionAddQueue(queue);
+    actionAddEventDetailsSelected({ name, organiserName });
     actionAddOrderIDSelected(orderID);
 
     const { navigation } = this.props;

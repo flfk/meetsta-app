@@ -1,6 +1,7 @@
 import db from '../../firebase/db';
 
 import { COLL_EVENTS, COLL_QUEUE, SECS_PER_MIN } from '../../utils/Constants';
+import { getTimestamp } from '../../helpers/TimeFormatting';
 import { fetchDocOrderFromOrderID } from '../orders/orders.api';
 import { fetchDisplayName } from '../user/user.api';
 
@@ -15,7 +16,6 @@ export const getPosition = queue => {
 export const addToQueue = async (eventID, callerInfo) => {
   try {
     const queueRef = getQueueRef(eventID);
-    console.log('Adding to queue with caller info ', callerInfo);
     await queueRef.add(callerInfo);
   } catch (error) {
     console.error('Error, api queue, addToQueue ', error);
@@ -41,6 +41,7 @@ export const fetchQueue = async eventID => {
 
     snapshots.forEach(snap => {
       const callerInfo = snap.data();
+      callerInfo.callerInfoID = snap.id;
       queue.push(callerInfo);
     });
   } catch (error) {
@@ -67,19 +68,21 @@ export const joinQueue = async (eventID, orderID) => {
   try {
     queue = await fetchQueue(eventID);
 
-    console.log('Api runsheet, joinQueue, queue fetched is ', queue);
+    console.log('API joinQueue fetched queue is ', queue);
+    let callerInfo = { ...queue.find(info => info.orderID === orderID) };
+    console.log('API joinQueue callerInfo before edit', callerInfo);
 
-    let callerInfo = queue.find(info => info.orderID === orderID);
     if (!callerInfo) {
       callerInfo = await fetchNewCallerInfo(orderID);
     }
-    callerInfo.position = getPosition(queue);
-    console.log('Api runsheet, callerInfo is ', callerInfo);
+    callerInfo.dateJoined = getTimestamp();
+
+    console.log('API joinQueue callerInfo after edit', callerInfo);
 
     queue.push(callerInfo);
-    await addToQueue(eventID, callerInfo);
+    console.log('API joinQueue returning queue ', queue);
 
-    console.log('Api runsheet, queue updated is ', queue);
+    await addToQueue(eventID, callerInfo);
   } catch (error) {
     console.error('Error, api queue, joinQueue ', error);
   }
