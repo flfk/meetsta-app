@@ -6,15 +6,14 @@ import Btn from '../components/Btn';
 import Container from '../components/Container';
 import Fonts from '../utils/Fonts';
 import InputText from '../components/InputText';
+import NavigationService from '../navigation/NavigationService';
 
 import { addOrder } from '../redux/orders/orders.actions';
-
 import {
   fetchAdditionalOrderFields,
   fetchDocOrderFromOrderRef,
   updateDocOrder,
-} from '../firebase/api';
-import NavigationService from '../navigation/NavigationService';
+} from '../redux/orders/orders.api';
 
 const propTypes = {
   actionAddOrder: PropTypes.func.isRequired,

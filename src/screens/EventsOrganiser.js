@@ -14,9 +14,8 @@ import {
   fetchAdditionalCallFields,
   fetchCallInformation,
   fetchCallersInformation,
-  fetchAdditionalEventFields,
-  fetchCollEvents,
-} from '../firebase/api';
+} from '../redux/call/call.api';
+import { fetchAdditionalEventFields, fetchCollEvents } from '../redux/events/events.api';
 import { addEventsAll } from '../redux/events/events.actions';
 import {
   addCompletedCalls,

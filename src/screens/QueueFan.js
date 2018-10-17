@@ -6,7 +6,7 @@ import Btn from '../components/Btn';
 import Container from '../components/Container';
 import Fonts from '../utils/Fonts';
 
-import { removeFromQueue } from '../firebase/api';
+import { removeFromQueue } from '../redux/call/call.api';
 
 const propTypes = {
   currentCall: PropTypes.shape({

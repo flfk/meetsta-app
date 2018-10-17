@@ -1,4 +1,3 @@
-import {} from '../../firebase/api';
 import { ADD_EVENTS_ALL } from './events.types';
 
 export const addEventsAll = events => dispatch => {

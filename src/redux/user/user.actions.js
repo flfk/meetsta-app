@@ -6,7 +6,7 @@ import {
   setEmail,
   signInWithCredential,
   signOutUser,
-} from '../../firebase/api';
+} from './user.api';
 import NavigationService from '../../navigation/NavigationService';
 import {
   CREATE_USER,

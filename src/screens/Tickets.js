@@ -11,13 +11,9 @@ import List from '../components/List';
 import ListTicketsPlaceholder from '../components/ListTicketsPlaceholder';
 import OnboardingBubble from '../components/OnboardingBubble';
 
-import {
-  addToQueue,
-  fetchCallersInformation,
-  fetchCollOrders,
-  fetchAdditionalOrderFields,
-} from '../firebase/api';
+import { addToQueue, fetchCallersInformation } from '../redux/call/call.api';
 import { addQueue, addEventDetailsToCall, addOrderIDToCall } from '../redux/call/call.actions';
+import { fetchCollOrders, fetchAdditionalOrderFields } from '../redux/orders/orders.api';
 import { addOrdersAll } from '../redux/orders/orders.actions';
 
 const propTypes = {

@@ -1,5 +1,3 @@
-import {} from '../../firebase/api';
-import NavigationService from '../../navigation/NavigationService';
 import { ADD_ORDER, ADD_ORDERS_ALL } from './orders.types';
 
 export const addOrder = order => dispatch => {
