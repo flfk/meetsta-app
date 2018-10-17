@@ -11,14 +11,13 @@ import List from '../components/List';
 import ListTicketsPlaceholder from '../components/ListTicketsPlaceholder';
 import OnboardingBubble from '../components/OnboardingBubble';
 
-import { addToQueue, fetchCallersInformation } from '../redux/call/call.api';
-import { addQueue, addEventDetailsToCall, addOrderIDToCall } from '../redux/call/call.actions';
+import { joinQueue } from '../redux/runSheet/runSheet.api';
+import { addQueue, addOrderIDSelected } from '../redux/runSheet/runSheet.actions';
 import { fetchCollOrders, fetchAdditionalOrderFields } from '../redux/orders/orders.api';
 import { addOrdersAll } from '../redux/orders/orders.actions';
 
 const propTypes = {
-  actionAddEventDetailsToCall: PropTypes.func.isRequired,
-  actionAddOrderIDToCall: PropTypes.func.isRequired,
+  actionAddOrderIDSelected: PropTypes.func.isRequired,
   actionAddQueue: PropTypes.func.isRequired,
   actionAddOrdersAll: PropTypes.func.isRequired,
   orders: PropTypes.arrayOf(
@@ -46,8 +45,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actionAddOrdersAll: orders => dispatch(addOrdersAll(orders)),
   actionAddQueue: queue => dispatch(addQueue(queue)),
-  actionAddOrderIDToCall: orderID => dispatch(addOrderIDToCall(orderID)),
-  actionAddEventDetailsToCall: event => dispatch(addEventDetailsToCall(event)),
+  actionAddOrderIDSelected: orderID => dispatch(addOrderIDSelected(orderID)),
 });
 
 class Tickets extends React.Component {
@@ -86,20 +84,12 @@ class Tickets extends React.Component {
   };
 
   handleJoinQueue = async (eventID, orderID) => {
-    const {
-      actionAddEventDetailsToCall,
-      actionAddOrderIDToCall,
-      actionAddQueue,
-      orders,
-    } = this.props;
+    const { actionAddOrderIDSelected, actionAddQueue } = this.props;
 
-    const event = orders.find(order => order.orderID === orderID);
-    const queueOrderIDs = await addToQueue(eventID, orderID);
-    const queue = await fetchCallersInformation(queueOrderIDs);
+    const queue = joinQueue(eventID, orderID);
 
-    actionAddEventDetailsToCall(event);
-    actionAddOrderIDToCall(orderID);
     actionAddQueue(queue);
+    actionAddOrderIDSelected(orderID);
 
     const { navigation } = this.props;
     navigation.navigate('EventFan');

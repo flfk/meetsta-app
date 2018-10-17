@@ -6,21 +6,19 @@ import Btn from '../components/Btn';
 import Container from '../components/Container';
 import Fonts from '../utils/Fonts';
 
-import { removeFromQueue } from '../redux/call/call.api';
+import { removeFromQueue } from '../redux/runSheet/runSheet.api';
 
 const propTypes = {
-  currentCall: PropTypes.shape({
-    lengthMins: PropTypes.number,
-    orderID: PropTypes.string,
-    uid: PropTypes.string,
-  }).isRequired,
   eventID: PropTypes.string.isRequired,
   eventTitle: PropTypes.string.isRequired,
   queue: PropTypes.arrayOf(
     PropTypes.shape({
-      lengthMins: PropTypes.number,
-      orderID: PropTypes.string,
-      uid: PropTypes.string,
+      displayName: PropTypes.string.isRequired,
+      isCurrentCall: PropTypes.bool.isRequired,
+      orderID: PropTypes.string.isRequired,
+      queuePosition: PropTypes.number.isRequired,
+      secondsLeft: PropTypes.number.isRequired,
+      uid: PropTypes.string.isRequired,
     })
   ).isRequired,
   orderID: PropTypes.string.isRequired,
@@ -29,11 +27,10 @@ const propTypes = {
 const defaultProps = {};
 
 const mapStateToProps = state => ({
-  currentCall: state.call.currentCall,
-  eventID: state.call.eventID,
-  eventTitle: state.call.eventTitle,
-  queue: state.call.queue,
-  orderID: state.call.orderID,
+  eventID: state.runSheet.eventID,
+  eventTitle: state.runSheet.eventTitle,
+  queue: state.runSheet.queue,
+  orderID: state.runSheet.orderID,
 });
 
 class QueueFan extends React.Component {
@@ -42,22 +39,26 @@ class QueueFan extends React.Component {
   };
 
   getQueueIndex = () => {
-    const { orderID, queue } = this.props;
-    const queueOrderIDs = queue.map(item => item.orderID);
-    const index = queueOrderIDs.indexOf(orderID);
-    if (queueOrderIDs.indexOf(orderID) === -1) {
-      console.error('QueueFan getQueueIndex orderID not found in queue');
-    }
-    return index;
+    // XX TODO
+    // const { orderID, queue } = this.props;
+    // const queueOrderIDs = queue.map(item => item.orderID);
+    // const index = queueOrderIDs.indexOf(orderID);
+    // if (queueOrderIDs.indexOf(orderID) === -1) {
+    //   console.error('QueueFan getQueueIndex orderID not found in queue');
+    // }
+    // return index;
+    return 0;
   };
 
   getQueueWaitTimeMins = () => {
-    const { queue, currentCall } = this.props;
-    const index = this.getQueueIndex();
-    const queueInfront = queue.slice(0, index);
-    const waitTimeMins =
-      currentCall.lengthMins + queueInfront.reduce((total, order) => total + order.lengthMins, 0);
-    return waitTimeMins;
+    // XX TODO
+    // const { queue } = this.props;
+    // const index = this.getQueueIndex();
+    // const queueInfront = queue.slice(0, index);
+    // const waitTimeMins =
+    //   currentCall.lengthMins + queueInfront.reduce((total, order) => total + order.lengthMins, 0);
+    // return waitTimeMins;]
+    return 0;
   };
 
   JOINCALL = () => {

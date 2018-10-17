@@ -10,23 +10,24 @@ import Fonts from '../utils/Fonts';
 const propTypes = {
   completedCalls: PropTypes.arrayOf(
     PropTypes.shape({
-      lengthMins: PropTypes.number,
-      orderID: PropTypes.string,
-      uid: PropTypes.string,
+      displayName: PropTypes.string.isRequired,
+      isCurrentCall: PropTypes.bool.isRequired,
+      orderID: PropTypes.string.isRequired,
+      queuePosition: PropTypes.number.isRequired,
+      secondsLeft: PropTypes.number.isRequired,
+      uid: PropTypes.string.isRequired,
     })
   ).isRequired,
-  currentCall: PropTypes.shape({
-    lengthMins: PropTypes.number,
-    orderID: PropTypes.string,
-    uid: PropTypes.string,
-  }).isRequired,
   eventID: PropTypes.string.isRequired,
   eventTitle: PropTypes.string.isRequired,
   queue: PropTypes.arrayOf(
     PropTypes.shape({
-      lengthMins: PropTypes.number,
-      orderID: PropTypes.string,
-      uid: PropTypes.string,
+      displayName: PropTypes.string.isRequired,
+      isCurrentCall: PropTypes.bool.isRequired,
+      orderID: PropTypes.string.isRequired,
+      queuePosition: PropTypes.number.isRequired,
+      secondsLeft: PropTypes.number.isRequired,
+      uid: PropTypes.string.isRequired,
     })
   ).isRequired,
   orderID: PropTypes.string.isRequired,
@@ -35,12 +36,11 @@ const propTypes = {
 const defaultProps = {};
 
 const mapStateToProps = state => ({
-  completedCalls: state.call.completedCalls,
-  currentCall: state.call.currentCall,
-  eventID: state.call.eventID,
-  eventTitle: state.call.eventTitle,
-  queue: state.call.queue,
-  orderID: state.call.orderID,
+  completedCalls: state.runSheet.completedCalls,
+  eventID: state.runSheet.eventID,
+  eventTitle: state.runSheet.eventTitle,
+  queue: state.runSheet.queue,
+  orderID: state.runSheet.orderID,
 });
 
 const mapDispatchToProps = dispatch => ({});

@@ -11,6 +11,11 @@ export const addUser = async (email, password) => {
   return data.user;
 };
 
+export const fetchDisplayName = async () => {
+  const displayName = await auth.currentUser.displayName;
+  return displayName;
+};
+
 export const fetchUserFacebook = async () => {
   const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync(
     FACEBOOK_APP_ID,

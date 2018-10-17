@@ -14,15 +14,15 @@ import {
   fetchAdditionalCallFields,
   fetchCallInformation,
   fetchCallersInformation,
-} from '../redux/call/call.api';
+} from '../redux/runSheet/runSheet.api';
 import { fetchAdditionalEventFields, fetchCollEvents } from '../redux/events/events.api';
 import { addEventsAll } from '../redux/events/events.actions';
 import {
   addCompletedCalls,
   addCurrentCall,
-  addEventDetailsToCall,
+  addEventDetails,
   addQueue,
-} from '../redux/call/call.actions';
+} from '../redux/runSheet/runSheet.actions';
 
 const propTypes = {
   actionAddEventsAll: PropTypes.func.isRequired,
@@ -49,7 +49,7 @@ const mapDispatchToProps = dispatch => ({
   actionAddCompletedCalls: completedCalls => dispatch(addCompletedCalls(completedCalls)),
   actionAddCurrentCall: currentCall => dispatch(addCurrentCall(currentCall)),
   actionAddEventsAll: events => dispatch(addEventsAll(events)),
-  actionAddEventDetailsToCall: event => dispatch(addEventDetailsToCall(event)),
+  actionAddEventDetailsToCall: event => dispatch(addEventDetails(event)),
   actionAddQueue: queue => dispatch(addQueue(queue)),
 });
 
