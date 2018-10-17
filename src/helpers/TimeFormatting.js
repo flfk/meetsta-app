@@ -13,7 +13,7 @@ export const getTimeStart = dateStart => {
   return timeRange;
 };
 
-export const getTimestamp = () => moment().unix();
+export const getTimestamp = () => moment().valueOf();
 
 export const getDate = dateStart =>
   moment.tz(dateStart, 'America/Los_Angeles').format('dddd, MMM Do, YYYY');
@@ -30,4 +30,14 @@ export const getTimeRemaining = timestampMillis => {
     minutes: duration.minutes(),
     seconds: duration.seconds(),
   };
+};
+
+export const getformattedTimeFromSecs = secs => {
+  const timeFormatted = {
+    mins: 0,
+    secs: 0,
+  };
+  timeFormatted.mins = Math.floor(secs / 60);
+  timeFormatted.secs = secs % 60;
+  return timeFormatted;
 };

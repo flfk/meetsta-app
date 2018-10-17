@@ -4,11 +4,13 @@ import { connect } from 'react-redux';
 
 import Btn from '../components/Btn';
 import Container from '../components/Container';
+import { getformattedTimeFromSecs } from '../helpers/TimeFormatting';
 import Fonts from '../utils/Fonts';
 
 import { removeFromQueue } from '../redux/runSheet/runSheet.api';
 
 const propTypes = {
+  eventID: PropTypes.string.isRequired,
   queue: PropTypes.arrayOf(
     PropTypes.shape({
       displayName: PropTypes.string.isRequired,
@@ -28,6 +30,7 @@ const propTypes = {
 const defaultProps = {};
 
 const mapStateToProps = state => ({
+  eventID: state.runSheet.eventID,
   queue: state.runSheet.queue,
   ticketName: state.runSheet.ticketName,
   orderID: state.runSheet.orderID,
@@ -43,31 +46,15 @@ class QueueFan extends React.Component {
     const { queue, orderID } = this.props;
     const callerQueueEntries = queue.filter(info => info.orderID === orderID);
     const callerInfo = callerQueueEntries.sort((a, b) => b.dateJoined > a.dateJoined)[0];
-    console.log('getCallerInfo, callerInfo is', callerInfo);
     return callerInfo;
   };
 
   getQueueActiveInfront = () => {
     const { queue } = this.props;
-    console.log('queue is ', queue.sort((a, b) => b.dateJoined > a.dateJoined));
     const { dateJoined } = this.getCallerInfo();
-    console.log('dateJoined is ', dateJoined);
     const queueActiveInfront = queue
-      .sort((a, b) => b.dateJoined > a.dateJoined)
       .filter(info => !info.wasCompleted)
-      .filter(info => {
-        console.log(`dateJoined of info is ${info.dateJoined}`);
-        console.log(`${info.dateJoined < dateJoined}`);
-        return info.dateJoined < dateJoined;
-      });
-    // .filter(info => info.dateJoined < dateJoined);
-    // .map(info => {
-    //   console.log(`dateJoined is ${dateJoined} and comparing it to ${info.dateJoined}`);
-    //   console.log(`result is ${info.dateJoined < dateJoined}`);
-    // });
-    // .filter(info => info.dateJoined < dateJoined);
-    console.log('queuelength is', queue.length);
-    console.log('queueActiveInfront is', queueActiveInfront.length);
+      .filter(info => info.dateJoined < dateJoined);
     return queueActiveInfront;
   };
 
@@ -76,15 +63,16 @@ class QueueFan extends React.Component {
     return queueActiveInfront.length;
   };
 
-  getQueueWaitTimeMins = () => {
-    // XX TODO
-    // const { queue } = this.props;
-    // const index = this.getQueuePosition();
-    // const queueInfront = queue.slice(0, index);
-    // const waitTimeMins =
-    //   currentCall.lengthMins + queueInfront.reduce((total, order) => total + order.lengthMins, 0);
-    // return waitTimeMins;]
-    return 0;
+  getQueueWaitTime = () => {
+    const queueActiveInfront = this.getQueueActiveInfront();
+    console.log(queueActiveInfront);
+    const waitTimeSecs = queueActiveInfront.reduce(
+      (total, callInfo) => total + callInfo.secondsLeft,
+      0
+    );
+    console.log('wait time secs is ', waitTimeSecs);
+    const waitTime = getformattedTimeFromSecs(waitTimeSecs);
+    return waitTime;
   };
 
   JOINCALL = () => {
@@ -95,8 +83,9 @@ class QueueFan extends React.Component {
 
   leaveQueue = () => {
     // XX todo
-    const { eventID, orderID } = this.props;
-    removeFromQueue(eventID, orderID);
+    const { eventID } = this.props;
+    const callerInfo = this.getCallerInfo();
+    removeFromQueue(callerInfo, eventID);
     this.goToMain();
   };
 
@@ -108,11 +97,10 @@ class QueueFan extends React.Component {
   render() {
     const { ticketName, runSheet, organiserName } = this.props;
 
-    // console.log('QueueFan, runSheet in props is', runSheet);
-
     const title = `${ticketName} with ${organiserName}`;
 
     const queuePosition = this.getQueuePosition();
+    // const queuePosition = 5;
     let queuePositionText = null;
     switch (queuePosition) {
       case 1:
@@ -126,14 +114,15 @@ class QueueFan extends React.Component {
         break;
     }
 
-    const queueWaitTimeMins = this.getQueueWaitTimeMins();
+    const queueWaitTime = this.getQueueWaitTime();
+    // const queueWaitTime = { mins: 5 };
 
     return (
       <Container paddingHorizontal center>
         <Fonts.H2>You are in the queue for </Fonts.H2>
         <Fonts.H1>{title}</Fonts.H1>
         <Fonts.H2>{queuePositionText}</Fonts.H2>
-        <Fonts.H2>Your estimated wait time is {queueWaitTimeMins} minutes</Fonts.H2>
+        <Fonts.H2>Your estimated wait time is {queueWaitTime.mins} minutes</Fonts.H2>
         <Btn.Primary title="TEST BTN - JOIN CALL" onPress={this.JOINCALL} />
         <Btn.Secondary title="Leave Queue" onPress={this.leaveQueue} />
       </Container>

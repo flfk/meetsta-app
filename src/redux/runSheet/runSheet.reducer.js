@@ -11,6 +11,7 @@ const callerInfo = {
 };
 
 const initialState = {
+  eventID: '',
   orderID: '',
   organiserName: '',
   ticketName: '',
@@ -23,6 +24,7 @@ const reducerRunSheet = (state = initialState, action) => {
       console.log('reducer runsheet adding event details', action.payload);
       return {
         ...state,
+        eventID: action.payload.eventID,
         ticketName: action.payload.name,
         organiserName: action.payload.organiserName,
       };

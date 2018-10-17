@@ -99,12 +99,9 @@ class Tickets extends React.Component {
     const queue = await joinQueue(eventID, orderID);
     const order = orders.find(item => item.orderID === orderID);
     const { name, organiserName } = order;
-    console.log('order name is ', name);
-
-    console.log('Tickets adding queue, ', queue);
 
     actionAddQueue(queue);
-    actionAddEventDetailsSelected({ name, organiserName });
+    actionAddEventDetailsSelected({ eventID, name, organiserName });
     actionAddOrderIDSelected(orderID);
 
     const { navigation } = this.props;

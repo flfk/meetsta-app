@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 import db from '../../firebase/db';
 
 import { COLL_EVENTS, COLL_QUEUE, SECS_PER_MIN } from '../../utils/Constants';
@@ -67,26 +69,28 @@ export const joinQueue = async (eventID, orderID) => {
   let queue = [];
   try {
     queue = await fetchQueue(eventID);
-
-    console.log('API joinQueue fetched queue is ', queue);
     let callerInfo = { ...queue.find(info => info.orderID === orderID) };
-    console.log('API joinQueue callerInfo before edit', callerInfo);
 
-    if (!callerInfo) {
+    if (_.isEmpty(callerInfo)) {
       callerInfo = await fetchNewCallerInfo(orderID);
     }
     callerInfo.dateJoined = getTimestamp();
-
-    console.log('API joinQueue callerInfo after edit', callerInfo);
-
     queue.push(callerInfo);
-    console.log('API joinQueue returning queue ', queue);
 
     await addToQueue(eventID, callerInfo);
   } catch (error) {
     console.error('Error, api queue, joinQueue ', error);
   }
   return queue;
+};
+
+export const leaveQueue = async (callerInfo, eventID) => {
+  try {
+    const callerInfoRef = getQueueRef(eventID).doc(callerInfo.callerInfoID);
+    await callerInfoRef.update({ ...callerInfo, dateJoined: 0 });
+  } catch (error) {
+    console.error('RunSheet API, leaveQueue ', error);
+  }
 };
 
 export const removeFromQueue = async (eventID, orderID) => {
